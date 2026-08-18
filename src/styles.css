@@ -185,13 +185,13 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .pseudocode-preview li::before { color: var(--lime-ink); content: counter(pseudocode, decimal-leading-zero); counter-increment: pseudocode; font-size: .74rem; }
 
 /* Planning */
-.plan-screen { background-color: var(--paper); background-image: radial-gradient(#d8e1d6 1.15px, transparent 1.15px); background-size: 18px 18px; display: flex; min-height: 100vh; padding-bottom: 30px; }
+.plan-screen { background-color: var(--paper); background-image: radial-gradient(#d8e1d6 1.15px, transparent 1.15px); background-size: 18px 18px; display: flex; min-height: 100vh; padding-bottom: 116px; }
 .plan-stage { align-self: center; margin: 48px auto 0; max-width: none; width: 100%; }
 .plan-heading { text-align: center; }
 .plan-heading h1 { font-family: inherit; font-size: clamp(2.55rem, 4.4vw, 4.3rem); font-weight: 650; letter-spacing: -.06em; margin-bottom: 10px; }
 .plan-heading > p:last-child { color: #5e6860; font-size: 1rem; }
 .plan-layout { display: grid; margin: 34px clamp(24px, 2vw, 44px) 0; max-width: none; }
-.blockly-host { background: transparent; border: 0; border-radius: 0; box-shadow: none; height: min(61vh, 650px); min-height: 520px; overflow: hidden; }
+.blockly-host { background: transparent; border: 0; border-radius: 0; box-shadow: none; height: clamp(420px, calc(100vh - 350px), 650px); min-height: 0; overflow: hidden; }
 .blockly-host--hidden { display: none; }
 .blockly-host .blocklyText { font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14pt !important; font-weight: 700; }
 .blockly-host .blocklyToolboxCategory { display: none !important; }
@@ -209,7 +209,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .plan-message { color: #5e6860; margin: 16px auto 0; max-width: 760px; min-height: 0; opacity: 0; text-align: center; transition: opacity .16s ease; }
 .plan-message--visible { min-height: 24px; opacity: 1; }
 .plan-message--success { color: var(--lime-ink); font-weight: 700; }
-.stage-actions { align-items: center; display: flex; justify-content: flex-end; margin: 18px auto 0; max-width: 1160px; }
+.stage-actions { align-items: center; bottom: 34px; display: flex; justify-content: flex-end; left: clamp(24px, 5vw, 80px); position: absolute; right: clamp(24px, 5vw, 80px); }
 .stage-actions .primary-button { min-width: 224px; }
 .sr-only { height: 1px; left: 0; opacity: 0; overflow: hidden; position: absolute; top: 0; width: 1px; }
 
@@ -311,8 +311,8 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .pseudocode-preview { margin-top: 24px; }
   .plan-stage { margin-top: 78px; }
   .plan-heading h1 { font-size: 2.55rem; }
-  .blockly-host { height: 55vh; min-height: 420px; }
-  .stage-actions { margin-top: 10px; }
+  .blockly-host { height: 52vh; min-height: 390px; }
+  .stage-actions { bottom: auto; margin-top: 18px; position: static; }
   .module-title { margin-top: 78px; }
   .module-title h1 { font-size: 2.55rem; }
   .run-column { display: flex; }

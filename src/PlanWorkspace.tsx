@@ -9,6 +9,15 @@ const REQUIRED_BLOCKS = [
   'show_result',
 ];
 
+// Keep the source bank deliberately out of execution order so learners plan the flow themselves.
+const PALETTE_BLOCKS = [
+  'choose_operation',
+  'show_result',
+  'collect_second_score',
+  'guard_zero_division',
+  'collect_first_score',
+];
+
 const blockLabels: Record<string, string> = {
   collect_first_score: 'Get first score',
   collect_second_score: 'Get second score',
@@ -119,7 +128,7 @@ export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
           kind: 'category',
           name: 'Steps',
           colour: '#557d1e',
-          contents: REQUIRED_BLOCKS.map((type) => ({ kind: 'block', type })),
+          contents: PALETTE_BLOCKS.map((type) => ({ kind: 'block', type })),
         }],
       },
       grid: { spacing: 20, length: 3, colour: '#d9e3d6', snap: true },

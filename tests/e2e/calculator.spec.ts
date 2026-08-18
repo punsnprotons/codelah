@@ -151,6 +151,7 @@ test('activates the alternate planner with the keyboard', async ({ page }) => {
 
 test('keeps the pseudocode palette open after placing a block', async ({ page }) => {
   await reachBlockPlanner(page);
+  await expect(page.getByRole('button', { name: 'Submit plan' })).toBeInViewport();
   const source = page.locator('.blocklyFlyout .blocklyText').filter({ hasText: 'Get first score' }).first();
   await expect(source).toBeVisible();
   const sourceBox = await source.boundingBox();
