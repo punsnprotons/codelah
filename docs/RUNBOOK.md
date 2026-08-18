@@ -14,7 +14,7 @@ This runbook governs the local acceptance phase and the future private-pilot env
 | Region | `ap-southeast-1` is configured; environment-owner approval is still required |
 | Environment owner | unknown |
 | Data classification / criticality | unknown |
-| Existing deployed resources | none known; no estate inventory performed |
+| Existing deployed resources | no resources tagged `Project=codelah` found in `ap-southeast-1` on 2026-08-18; untagged or differently tagged resources remain unknown |
 
 Do not provision while the last four facts are unresolved.
 
@@ -23,8 +23,8 @@ Do not provision while the last four facts are unresolved.
 | Field | Status |
 | --- | --- |
 | Target / reachability | `private` AWS profile; STS identity verified for the account ending `5843` in `ap-southeast-1` |
-| Estate graph | insufficient context: no service, artifact, resource inventory, owner, data class, criticality, or dependency fan-out is known |
-| Action performed | read-only `sts:GetCallerIdentity` and local profile-region lookup; no AWS resources listed, created, changed, or deployed |
+| Estate graph | insufficient context: a targeted `Project=codelah` tag query returned no resources, but no service, artifact, owner, data class, criticality, or dependency fan-out is known |
+| Action performed | read-only `sts:GetCallerIdentity`, local profile-region lookup, and `Resource Groups Tagging API` query for `Project=codelah`; no resources were created, changed, or deployed |
 | Authority | user-authorized M2 read-only preflight |
 | Action class | read-only discovery; no rollback required |
 | Independent corroboration | AWS STS response received locally; no CloudTrail event ID or approved evidence ledger is available yet |
