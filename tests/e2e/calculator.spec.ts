@@ -15,7 +15,7 @@ async function activateWithKeyboard(page: import('@playwright/test').Page, targe
 }
 
 async function continueFromPersonalization(page: import('@playwright/test').Page) {
-  await expect(page.getByText(/journey is ready/)).toBeVisible();
+  await expect(page.getByRole('heading', { name: /best .*code/i })).toBeVisible({ timeout: 6_000 });
   const continueButton = page.getByRole('button', { name: 'Continue', exact: true });
   await expect(continueButton).toBeEnabled({ timeout: 6_000 });
   await continueButton.click();
@@ -57,15 +57,15 @@ test('exposes selected interests and diagnostic choices as named native controls
   await expect(page.getByRole('button', { name: /Continue/ })).toBeEnabled();
 
   await page.getByRole('button', { name: /Continue/ }).click();
-  await expect(page.getByRole('heading', { name: /best scientist you can be/i })).toBeVisible();
+  await expect(page.getByText('Finding the code behind science.')).toBeVisible();
+  await expect(page.getByRole('heading', { name: /best scientist you can be/i })).toBeVisible({ timeout: 6_000 });
   await page.getByRole('button', { name: 'Go back' }).click();
   await expect(page.getByRole('heading', { name: 'What are you curious about?' })).toBeVisible();
   await page.getByRole('button', { name: 'Science' }).click();
   await page.getByRole('button', { name: /Continue/ }).click();
-  await expect(page.getByRole('heading', { name: /best scientist you can be/i })).toBeVisible();
-  await page.getByRole('button', { name: 'Show next inspiration' }).click();
+  await expect(page.getByRole('heading', { name: /best scientist you can be/i })).toBeVisible({ timeout: 6_000 });
+  await page.getByRole('button', { name: /Show inspiration 2/ }).click();
   await expect(page.getByRole('heading', { name: 'Turn training into insight' })).toBeVisible();
-  await expect(page.getByText('Unlocking your science edge…')).toBeVisible();
   await continueFromPersonalization(page);
   const textAnswer = page.getByRole('radio', { name: 'Text' });
   await expect(page.getByRole('radiogroup', { name: 'Concept check answers' })).toBeVisible();

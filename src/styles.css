@@ -89,27 +89,31 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .personalizing-screen .progress { background: #dfe1df; border-radius: 999px; gap: 0; height: 8px; overflow: hidden; padding: 0; }
 .personalizing-screen .progress__segment { background: transparent; border-radius: 0; height: 100%; }
 .personalizing-screen .progress__segment--active { background: linear-gradient(90deg, #13c861, var(--lime)); }
-.personalizing-panel { max-width: 660px; text-align: center; transform: translateY(-10px); }
-.personalizing-panel .codelah-mascot { height: 88px; margin-bottom: 6px; width: 88px; }
-.personalizing-panel h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 650; letter-spacing: -.05em; line-height: 1.06; margin-bottom: 12px; }
+.personalizing-panel { max-width: 1380px; text-align: center; transform: translateY(-10px); width: 100%; }
+.personalizing-panel .codelah-mascot { height: 76px; margin-bottom: 2px; width: 76px; }
+.personalizing-panel h1 { font-size: clamp(1.8rem, 2.35vw, 3.2rem); font-weight: 650; letter-spacing: -.055em; line-height: 1.06; margin-bottom: 10px; white-space: nowrap; }
 .personalizing-copy { color: #5e6860; font-size: 1.06rem; line-height: 1.55; margin: 0 auto; max-width: 500px; }
-.inspiration-carousel { margin: 20px auto 0; max-width: 600px; }
-.inspiration-carousel__card { background: #fff; border: 1px solid #dce2dc; border-radius: 18px; box-shadow: 0 10px 28px #1012110b; overflow: hidden; text-align: left; }
-.inspiration-carousel__image { display: block; height: 180px; object-fit: cover; width: 100%; }
-.inspiration-carousel__copy { padding: 15px 18px 17px; }
+.inspiration-carousel { margin: 18px auto 0; max-width: 1060px; }
+.inspiration-carousel__card { animation: carousel-reveal .38s ease-out; background: #fff; border: 1px solid #dce2dc; border-radius: 20px; box-shadow: 0 10px 28px #1012110b; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(310px, .8fr); min-height: 260px; overflow: hidden; text-align: left; }
+.inspiration-carousel__image { display: block; height: 260px; object-fit: cover; width: 100%; }
+.inspiration-carousel__copy { align-self: center; padding: 30px 34px; }
 .inspiration-carousel__copy > p { color: #5e7f1b; font-size: .7rem; font-weight: 800; letter-spacing: .1em; margin-bottom: 6px; text-transform: uppercase; }
-.inspiration-carousel__copy h2 { font-size: 1.24rem; letter-spacing: -.035em; line-height: 1.15; margin: 0 0 6px; }
-.inspiration-carousel__copy span { color: #5e6860; display: block; font-size: .9rem; line-height: 1.45; }
-.inspiration-carousel__controls { align-items: center; display: grid; grid-template-columns: 90px 1fr 90px; margin: 10px auto 0; }
-.carousel-control { background: transparent; border: 0; color: #4e5b52; font-size: .82rem; font-weight: 800; padding: 8px 4px; }
-.carousel-control:hover:not(:disabled) { color: #202820; }
-.carousel-dots { display: flex; gap: 6px; justify-content: center; }
-.carousel-dots__dot { background: #d7ded8; border-radius: 999px; height: 7px; transition: background .18s ease, width .18s ease; width: 7px; }
-.carousel-dots__dot--active { background: #77ab26; width: 22px; }
-.personalization-loader { background: #e2e7e1; border-radius: 999px; height: 7px; margin: 12px auto 0; max-width: 450px; overflow: hidden; }
-.personalization-loader span { animation: personalizing-load 2.6s ease-out forwards; background: linear-gradient(90deg, #18c968, #c7fa54); border-radius: inherit; display: block; height: 100%; transform-origin: left; }
-.personalizing-status { color: #647066; font-size: .9rem; margin: 10px 0 0; }
+.inspiration-carousel__copy h2 { font-size: clamp(1.35rem, 2vw, 2rem); letter-spacing: -.045em; line-height: 1.1; margin: 0 0 10px; }
+.inspiration-carousel__copy span { color: #5e6860; display: block; font-size: 1rem; line-height: 1.52; }
+.carousel-dots { display: flex; gap: 7px; justify-content: center; margin-top: 12px; }
+.carousel-dots__dot { background: #d7ded8; border: 0; border-radius: 999px; height: 8px; padding: 0; transition: background .18s ease, width .18s ease; width: 8px; }
+.carousel-dots__dot--active { background: #77ab26; width: 26px; }
+.transition-loading { align-items: center; display: flex; flex-direction: column; max-width: 520px; text-align: center; transform: translateY(-20px); }
+.transition-loading .codelah-mascot { height: 112px; margin: 0; width: 112px; }
+.transition-loading__icon { align-items: center; animation: loading-icon-pulse 1.1s ease-in-out infinite alternate; background: #effbd5; border-radius: 14px; color: #639b1d; display: inline-flex; height: 48px; justify-content: center; margin: 2px 0 20px; width: 48px; }
+.transition-loading__icon svg { height: 28px; width: 28px; }
+.transition-loading h1 { font-size: clamp(2rem, 3.5vw, 3.25rem); margin-bottom: 10px; }
+.transition-loading p { color: #5e6860; font-size: 1rem; line-height: 1.5; margin: 0; }
+.transition-loading__bar { background: #e2e7e1; border-radius: 999px; height: 8px; margin-top: 28px; max-width: 420px; overflow: hidden; width: 100%; }
+.transition-loading__bar span { animation: personalizing-load 2s ease-out forwards; background: linear-gradient(90deg, #18c968, #c7fa54); border-radius: inherit; display: block; height: 100%; transform-origin: left; }
 
+@keyframes carousel-reveal { from { opacity: .4; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes loading-icon-pulse { from { transform: scale(.92) rotate(-4deg); } to { transform: scale(1.06) rotate(4deg); } }
 @keyframes personalizing-load { from { transform: scaleX(.08); } to { transform: scaleX(1); } }
 
 /* Diagnostic */
@@ -218,12 +222,15 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .onboarding-button { display: flex; transform: none; }
   .onboarding-button:hover:not(:disabled) { transform: translateY(-1px); }
   .personalizing-panel { transform: none; }
-  .personalizing-panel .codelah-mascot { height: 82px; width: 82px; }
-  .personalizing-panel h1 { font-size: 2.1rem; }
+  .personalizing-panel .codelah-mascot { height: 70px; width: 70px; }
+  .personalizing-panel h1 { font-size: 2.1rem; white-space: normal; }
   .personalizing-screen { display: block; overflow-y: auto; padding-bottom: 28px; }
   .personalizing-actions { margin: 24px 0 8px; position: static; }
-  .inspiration-carousel__image { height: 145px; }
-  .inspiration-carousel__copy { padding: 13px 15px 15px; }
+  .inspiration-carousel__card { grid-template-columns: 1fr; }
+  .inspiration-carousel__image { height: 175px; }
+  .inspiration-carousel__copy { padding: 17px 18px 19px; }
+  .transition-loading { margin: 90px auto 0; transform: none; }
+  .transition-loading .codelah-mascot { height: 92px; width: 92px; }
   .answer-grid { grid-template-columns: 1fr; margin-top: 25px; }
   .answer-card { min-height: 112px; flex-direction: row; justify-content: flex-start; padding: 18px 25px; }
   .answer-card__visual { font-size: 1rem; height: 45px; width: 55px; }
@@ -243,7 +250,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 
 @media (prefers-reduced-motion: reduce) {
   .codelah-mascot__body { animation: none; }
-  .personalization-loader span { animation: none; }
+  .inspiration-carousel__card, .transition-loading__icon, .transition-loading__bar span { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
