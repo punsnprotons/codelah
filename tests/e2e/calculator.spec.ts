@@ -66,6 +66,10 @@ test('exposes selected interests and diagnostic choices as named native controls
   await expect(page.getByRole('heading', { name: /best scientist you can be/i })).toBeVisible({ timeout: 6_000 });
   await page.getByRole('button', { name: /Show inspiration 2/ }).click();
   await expect(page.getByRole('heading', { name: 'Turn training into insight' })).toBeVisible();
+  await page.getByRole('button', { name: 'Show next inspiration' }).click();
+  await expect(page.getByRole('heading', { name: 'Wearable code, real feedback' })).toBeVisible();
+  await page.getByRole('button', { name: 'Show previous inspiration' }).click();
+  await expect(page.getByRole('heading', { name: 'Turn training into insight' })).toBeVisible();
   await continueFromPersonalization(page);
   const textAnswer = page.getByRole('radio', { name: 'Text' });
   await expect(page.getByRole('radiogroup', { name: 'Concept check answers' })).toBeVisible();
