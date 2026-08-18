@@ -8,7 +8,7 @@ CodeLah is complete only when learners can complete the expected flow safely, ac
 
 - `bun run test:lesson` runs the exact assembled calculator source through addition, subtraction, multiplication, division, division by zero, and an invalid operator.
 - `bun run build` passes.
-- `bun run test:e2e` passes six Chromium cases: diagnostic recovery, out-of-order plan recovery, Enter-key planner activation, malformed Python, timeout/reset, and full lesson/reset.
+- `bun run test:e2e` passes eight Chromium cases: diagnostic recovery, out-of-order plan recovery, Enter-key planner activation, malformed Python, timeout/reset, labelled editor/live feedback, full lesson/reset, and a complete Tab-and-Enter path.
 - A local browser smoke completed the full learner journey using the native-button planner and confirmed reset.
 - Accessibility code review confirmed native interactive controls, visible focus styling, labels, live status regions, a keyboard planner alternative, and reduced-motion handling. The inert onboarding back control was removed.
 
@@ -20,10 +20,10 @@ These are local M1 evidence only. Manual keyboard-only/screen-reader review rema
 | --- | --- | --- |
 | Unit | lesson-schema parsing, pseudocode AST validation, interest resolver, answer-leak detector | all required rules covered |
 | Worker integration | input fixtures, output capture, syntax failure, timeout/reset | no unbounded Worker execution |
-| API integration | session TTL, state transition rejection, idempotency, schema validation | no arbitrary state unlock |
+| API integration (future) | session TTL, state transition rejection, idempotency, schema validation | required only if an approved API is introduced |
 | Browser E2E | full calculator journey, reset, fallback hints, keyboard flow | Chromium plus approved pilot browser matrix |
 | Accessibility | keyboard drag/drop alternative, focus order, labels, contrast, reduced motion | manual and automated verification |
-| Security | secret absence in client bundle/logs, CSP, CORS, request limits | review before pilot |
+| Security | secret absence in client bundle, private S3/OAC policy, HTTPS-only edge, Worker isolation | review before deployment |
 | AI evaluation | answer solicitation, misconception response, malformed output, provider failure | zero known answer leaks; deterministic fallback works |
 
 ## Pseudocode validator cases
@@ -60,6 +60,6 @@ Before any pilot deployment:
 
 1. Required checks pass on the exact immutable build artifact.
 2. No high-severity dependency or secret finding remains unresolved.
-3. S3/CloudFront/API configuration is independently checked.
-4. WAF access restriction, metrics, alarms, rollback method, and model fallback are rehearsed in non-production.
+3. S3/CloudFront configuration and the private-origin policy are independently checked.
+4. The selected CloudFront pricing path, budget notification/cap, rollback method, and browser Worker recovery are reviewed before deployment. WAF/model controls are required only when a future approved feature introduces them.
 5. The pilot owner approves access, support, data handling, and rollback criteria.

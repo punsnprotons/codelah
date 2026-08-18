@@ -24,7 +24,7 @@ Run the deterministic calculator checks with `bun run test:lesson`; run the brow
 - Pseudocode, code execution, and mastery rules are deterministic.
 - AI may personalise explanations and questions; it never determines correctness or supplies a complete solution.
 - Interest context is explicit, editable, and optional.
-- Start with anonymous sessions only. Sign-up, sign-in, tutor, and authoring surfaces are out of scope for the initial core product.
+- Start with browser-memory-only lessons. Sign-up, sign-in, remote sessions, tutor, analytics, and authoring surfaces are out of scope for the initial core product.
 
 ## Documentation
 
@@ -37,6 +37,7 @@ Run the deterministic calculator checks with `bun run test:lesson`; run the brow
 | [Runbook](docs/RUNBOOK.md) | Build, release, incident, rollback, and operational procedures |
 | [Security and privacy](docs/SECURITY_PRIVACY.md) | Threat model, data boundaries, and access controls |
 | [Quality strategy](docs/QUALITY_STRATEGY.md) | Test, accessibility, and AI-evaluation requirements |
+| [Infrastructure plan](infra/README.md) | No-apply, cost-first CloudFormation plan and owner review gate |
 | [ADRs](docs/adr) | Durable architectural decisions |
 
 ## Deliberate non-goals for the first build
@@ -45,7 +46,7 @@ Run the deterministic calculator checks with `bun run test:lesson`; run the brow
 - No full Scratch clone or visual-programming language.
 - No server-side execution of untrusted learner Python.
 - No unbounded chatbot or live-web research inside lessons.
-- No AWS provisioning before the unresolved environment decisions in the runbook are approved.
+- No AWS provisioning before owner review of the no-apply infrastructure plan, cost path, blast radius, and rollback handle.
 
 ## Inspiration and licensing boundary
 

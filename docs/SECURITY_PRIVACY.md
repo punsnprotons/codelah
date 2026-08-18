@@ -2,38 +2,35 @@
 
 ## Security posture
 
-This document defines target controls for a private pilot. It does not certify compliance or describe deployed resources.
+This document defines the planned controls for the public, zero-data adult preview. It does not certify compliance or describe deployed resources.
 
 ## Assets and boundaries
 
 | Asset | Risk | Required control |
 | --- | --- | --- |
-| Learner progress | Potentially child-linked learning data | pseudonymous IDs, minimal fields, TTL, deletion endpoint, no public sharing |
-| Interest tags | Profiling/over-collection | controlled taxonomy, explicit selection, editable, optional, no inferred profession |
-| AI credential | provider cost/data exposure | Secrets Manager only, least-privilege read, no client or logs |
+| Learner progress and code | Potential personal data | browser memory only; no network submission, persistence, or telemetry |
+| Interest tags | Profiling/over-collection | explicit, editable browser-only choice; no inference or persistence |
+| AI credential | provider cost/data exposure | no external AI provider in this phase |
 | Lesson packages | content manipulation | Git review, schema/test validation, immutable release version |
 | Browser code runner | denial of service / unwanted capability | Worker isolation, time budget, bounded output, CSP, no credentials |
-| API | abuse / state manipulation | WAF/rate limits, request schema validation, signed cookie, server state machine |
+| Public static delivery | unwanted origin access or excess delivery cost | private S3 origin, CloudFront OAC, HTTPS-only, cost-path owner review |
 
 ## Threat model
 
 | Threat | Mitigation |
 | --- | --- |
-| Learner attempts to unlock later lesson state in the browser | API validates allowed state transitions; client state is not authoritative. |
+| Learner attempts to unlock later lesson state in the browser | no completion record or protected entitlement exists in this phase; deterministic local checks still govern the journey. |
 | Infinite or resource-heavy Python | terminate/recreate Worker after configured budget; cap output and test count. |
 | User code accesses credentials | no secrets or privileged APIs in browser runner; no server-side execution. |
-| Model reveals a solution | constrained schema, short output, answer-leak filter, model evaluation suite, authored fallback. |
-| Model hallucinates interest facts | only approved fact cards may be used; no live web search in learner flow. |
-| Credential leaks | Secrets Manager, no client environment variables, secret scanning, log redaction. |
-| API scraping or abuse | WAF, rate limits, opaque session cookies, payload limits, IP allowlist for private pilot. |
-| Third-party provider outage | authored hint ladder and deterministic lesson completion remain available. |
+| A future model reveals a solution | model is out of scope; require constrained schema, answer-leak checks, evaluations, and authored fallback before enablement. |
+| Public delivery abuse | prefer the eligible CloudFront Free plan; otherwise use a reviewed static-only fallback with no write path, no WAF Web ACL, and AWS Shield Standard. |
 
 ## Identity and access
 
-There is intentionally no learner sign-up/sign-in for the first core product. That does **not** mean every surface is public:
+There is intentionally no learner sign-up/sign-in for the first core product. The zero-data preview's only public surface is its CloudFront URL:
 
-- learner access is restricted at the deployment edge for the private pilot;
-- tutor/author/admin routes do not exist until roles, consent, and authorization are designed;
+- S3 is not public; CloudFront accesses it through Origin Access Control;
+- tutor, author, admin, API, and account routes do not exist in this phase;
 - local deployment uses the named `private` AWS profile only after a human approves the exact stack and region;
 - continuous deployment must later use GitHub OIDC, not long-lived cloud keys.
 
@@ -41,25 +38,23 @@ There is intentionally no learner sign-up/sign-in for the first core product. Th
 
 - Do not request real name, age, employer, school, or job unless a later approved feature needs it.
 - Do not infer an interest from a learner's current profession.
-- Do not send raw code, free text, values entered into programs, or entire prior conversations to the model by default.
-- Provide reset/deletion of the current anonymous session.
-- Retention period, legal basis, child consent, regional storage, and incident notification obligations are unresolved and require owner approval before a live pilot.
+- Do not send learner text, code, values entered into programs, or prior conversations to AWS or an external provider.
+- Reset clears the in-memory lesson state; closing the browser ends it.
+- The audience is adults 18+ under a policy notice; any data-collecting or institutional release requires a new privacy review.
 
 ## Logging standard
 
-Allowed: correlation ID, lesson/version ID, state transition, typed failure category, latency, HTTP status, provider availability, and aggregate counters.
+Allowed: no application telemetry in this phase. Static delivery/cost information may be reviewed only in aggregate through AWS billing/CloudFront controls after owner approval.
 
-Forbidden: cookies, authorization headers, API keys, raw prompts, raw provider responses, raw source code, input values, unredacted IPs, or personal free text.
+Forbidden: cookies, identifiers, request/access logs, API keys, raw prompts, provider responses, source code, input values, IP addresses, or personal free text.
 
 ## AWS implementation baseline
 
 - Private S3 bucket with CloudFront Origin Access Control.
 - TLS at the edge; HTTPS only.
-- AWS WAF managed rules plus pilot-specific rate/access rules.
-- Least-privilege Lambda roles, distinct deployment/runtime roles, and no wildcard data permissions.
-- DynamoDB encryption at rest and TTL.
-- Secrets Manager for Groq credentials.
-- CloudTrail and deployment/CI evidence retained according to the approved environment policy.
+- CloudFront distribution limited to `GET` and `HEAD`, with versioned S3 rollback and security headers.
+- Prefer the eligible CloudFront Free plan; do not add a WAF Web ACL to this preview template because it blocks flat-rate-plan subscription.
+- No Lambda, DynamoDB, Secrets Manager, application API, request logging, or AI credential in this phase.
 
 ## Security review triggers
 

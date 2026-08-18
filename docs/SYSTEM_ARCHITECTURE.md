@@ -2,116 +2,91 @@
 
 ## Status and scope
 
-This is the target architecture for a private pilot. It is not a record of deployed infrastructure.
+This is the **planned M2 public-preview architecture**, not a record of deployed infrastructure. It is an adult (18+) zero-data preview: there is no sign-in, application API, database, learner-data storage, external AI call, request/access log, user analytics, or persistent browser storage.
 
-**Verified AWS boundary:** named profile `private` resolves to AWS account `325212745843` through an SSO administrator role. Region, accountable owner, data classification, criticality, permitted pilot audience, and live-resource inventory are **unknown**. No AWS resources have been created.
+The named AWS profile `private` was read-only verified in the owner-approved `ap-southeast-1` region. No CodeLah-tagged resource was found there; untagged resources remain unknown. No AWS resource, change set, or deployment has been created.
 
-## Context
+## M2 public-preview context
 
 ```mermaid
-flowchart TB
-  L["Learner browser"]
-  C["CloudFront + AWS WAF"]
-  S["Private S3 static application"]
-  G["API Gateway HTTP API"]
-  A["Learning API Lambda"]
-  D["DynamoDB: anonymous sessions and progress"]
-  M["Secrets Manager"]
-  T["Tutor broker"]
-  P["Groq API"]
+flowchart LR
+  L["Adult learner browser"]
+  C["CloudFront HTTPS distribution"]
+  O["Origin Access Control"]
+  S["Private S3 static artefacts"]
+  B["Blockly pseudocode planner"]
   W["Pyodide Worker: local Python execution"]
-  B["Blockly: pseudocode builder"]
 
-  L --> C
-  C --> S
-  C --> G
-  G --> A
-  A --> D
-  A --> T
-  T --> M
-  T --> P
-  L --> W
+  L --> C --> O --> S
   L --> B
+  L --> W
 ```
+
+Learner selections, diagnostic answers, pseudocode, code, and program output never leave browser memory. The browser worker runs untrusted Python locally; AWS never executes learner code.
 
 ## Architecture decisions
 
-| Concern | Decision | Why |
+| Concern | M2 decision | Why |
 | --- | --- | --- |
-| Client | React, TypeScript, Vite SPA | A guided, browser-first interaction has no initial SSR or account requirement. |
-| Pseudocode | Direct Blockly integration with custom lesson blocks | Reuses a maintained block system without rebuilding Scratch. |
-| Python execution | Pyodide in an isolated Web Worker | Fast feedback and no arbitrary learner code in AWS workloads. |
-| API | API Gateway HTTP API plus Lambda | Small private-pilot operational footprint; separates client from data and model keys. |
-| State | DynamoDB with TTL | Pseudonymous short-lived session/progress state; no relational needs in MVP. |
-| Content | Versioned lesson JSON in Git | Curriculum changes need review, tests, and rollback. |
-| Model | Provider-neutral tutor broker; Groq first candidate | Model can be evaluated/replaced without coupling lesson rules to a provider. |
-| Infra | TypeScript CDK, deployed with named profile locally then GitHub OIDC | Repeatable infrastructure and no long-lived CI credentials. |
+| Client | React, TypeScript, Vite SPA | A guided browser flow needs no SSR, account, or API. |
+| Pseudocode | Blockly with approved lesson blocks and keyboard alternative | Reuses a maintained block system without rebuilding Scratch. |
+| Python execution | Pyodide in an isolated Web Worker | Fast feedback without running learner code in AWS. |
+| State | Browser memory only | Meets the public-preview no-data boundary; reset/close clears state. |
+| Content | Versioned lesson JSON and static build artefacts | Curriculum changes are reviewable and rollback-capable. |
+| Delivery | Private S3 + CloudFront Origin Access Control | Keeps the origin private while exposing only the static app over HTTPS. |
+| Infrastructure | CloudFormation no-apply template | Makes the resource graph reviewable before any AWS write. |
+| Cost path | CloudFront Free flat-rate plan if eligible; explicit static-only pay-as-you-go fallback | Keeps a tight budget visible before provisioning. |
 
-## Network and edge controls
+## Edge and cost controls
 
-- S3 is private. CloudFront reads it only through Origin Access Control.
-- CloudFront is the public edge; attach AWS WAF managed rules and a pilot rate limit.
-- For a pre-auth private pilot, use a WAF IP allowlist approved by the pilot owner. This is deployment protection, not product identity.
-- API is reachable only through the application origin; enforce CORS to the CloudFront domain and validate every request server-side.
-- If Lambda is placed in a VPC later, document the required NAT/egress path before enabling Groq access. Do not add a VPC by default merely for appearance.
+- S3 blocks public access and accepts reads only from the planned CloudFront distribution through signed Origin Access Control requests.
+- CloudFront redirects HTTP to HTTPS, uses the default CloudFront certificate and TLS 1.2+, and only allows `GET` and `HEAD`.
+- The template creates versioned S3 artefacts, a retained bucket, cache policies, and conservative response-security headers. A content-security policy is deferred until the deployed Pyodide asset flow is verified, rather than guessed and broken locally.
+- Preferred path: after an explicitly approved deployment, select the CloudFront Free flat-rate plan in the CloudFront console if the account is eligible. The template deliberately contains no WAF Web ACL: an existing Web ACL prevents the plan subscription.
+- Fallback: owner-approved pay-as-you-go CloudFront static delivery with no WAF Web ACL, no application logs, no write path, and AWS Shield Standard. A budget notification/cap is required before this fallback is deployed.
 
-## Application components
+## Component responsibilities
 
 | Component | Responsibilities | Does not do |
 | --- | --- | --- |
-| Learning shell | screen flow, focus management, progress, anonymous session bootstrapping | decide lesson correctness |
-| Lesson engine | load lesson version, apply deterministic unlock rules | generate arbitrary lesson content |
-| Blockly adapter | render approved blocks, serialise workspace, generate lesson AST | act as a general Scratch editor |
-| Pseudocode validator | validate required ordering, nesting, and branch coverage | call a model to mark answers correct |
-| Code module runner | run controlled Python tests locally and report typed outcomes | access AWS credentials or model keys |
-| Learning API | create/expire session, persist safe state, serve lesson version | execute untrusted Python |
-| Tutor broker | create bounded tutor request, validate structured response, apply leak checks | decide pass/fail or directly expose model provider |
-| Content pipeline | validate lesson schemas, fact sources, and tests in CI | publish unreviewed generated content |
+| Learning shell | screen flow, focus management, in-memory progress and reset | store learner data remotely or determine correctness through AI |
+| Lesson engine | deterministic unlock rules and lesson-version loading | generate arbitrary lesson content |
+| Blockly adapter | approved blocks, workspace serialization, keyboard alternative | act as a general Scratch editor |
+| Pseudocode validator | validate required ordering, nesting, and branch coverage | call a model to mark an answer correct |
+| Code module runner | run controlled Python tests locally and report typed outcomes | access AWS credentials or external services |
+| Static delivery | serve reviewed app and lesson artefacts | accept learner submissions, execute code, or create a user session |
 
 ## Data classification and retention
 
-| Data | Intended treatment | Retention |
+| Data | Treatment | Retention |
 | --- | --- | --- |
-| Static lesson content | public-to-pilot content; Git versioned | source-controlled |
-| Interest tags | pseudonymous learner preference | session TTL; exact duration requires approval |
-| Lesson progress | pseudonymous learning state | session TTL; exact duration requires approval |
-| Tutor request | minimum typed state; no raw profile/history | transient; no request-body logs |
-| Groq key | confidential secret | Secrets Manager; rotation plan before pilot |
-| Operational logs | request IDs, status, latency, error category | policy-defined after data classification |
+| Static application and authored lesson content | public static artefact; source-controlled and versioned | retained until replacement and rollback window expiry |
+| Interest tags, answers, pseudocode, code, output | untrusted and potentially personal; browser memory only | reset or browser close |
+| Accounts, cookies, IP addresses, identifiers | not collected by the application | none |
+| Application/request/WAF/learner analytics logs | not enabled | none |
+| Aggregate service-cost information | owner operational data only | 30-day review window; no learner profiling or export |
 
-The final classification is **unknown** until the institution/pilot owner approves it. Treat any potential child-linked data as sensitive during design and logging review.
-
-## Reliability and degradation
+## Reliability and rollback
 
 | Failure | Learner behaviour | Operator response |
 | --- | --- | --- |
-| Groq unavailable | show authored hint ladder; lesson continues | alarm on broker error/latency; disable model route if sustained |
-| DynamoDB unavailable | keep local work; show non-persisted state notice | investigate API/DynamoDB metrics; do not lose browser work on refresh promise |
-| Pyodide timeout | terminate Worker and offer reset of current module | record typed timeout metric; never execute code server-side as a workaround |
-| Invalid lesson package | do not publish; use prior immutable lesson version | CI blocks release; roll back to prior app/content artifact |
+| Pyodide timeout | terminate Worker and offer reset of the current module | verify the browser recovery path; never move code execution server-side |
+| Invalid lesson build | do not publish; use prior artefact | CI blocks release; restore prior versioned S3 object only after approval |
+| CloudFront/S3 delivery fault | user cannot load preview | investigate service status/configuration; roll back to a prior artefact or disable the distribution with owner approval |
+| Cost-path eligibility unavailable | no impact until deployment is approved | review the explicit pay-as-you-go fallback and budget cap; do not silently add WAF or logs |
 
 ## Security invariants
 
-- No API key or provider credential reaches the browser.
-- No user code executes in Lambda, ECS, or the model provider.
-- The browser runner uses a Worker timeout, fixed test inputs, CSP, and no service credentials.
-- Model output must validate against a strict schema and pass answer-leak checks.
-- Logs contain digests/IDs and typed outcomes, never raw prompts, code, cookies, or secrets.
-- IAM is least privilege: each role receives only its explicit resource actions.
+- No learner code executes in Lambda, ECS, a database, or a model provider.
+- No cloud credential, model key, or client-specific secret reaches the browser.
+- The browser runner has a Worker timeout, fixed test inputs, and bounded output.
+- The S3 origin is private; CloudFront is the sole planned public delivery edge.
+- The preview has no application API or storage endpoint, so its static delivery path is intentionally constrained to `GET` and `HEAD`.
+- Any future account, AI tutor, telemetry, API, persistence, upload, or institutional release requires a new architecture/security/privacy decision before implementation.
 
-## Observability
+## Future architecture (not part of M2)
 
-Emit structured metrics for API error rate/latency, session starts, lesson state transitions, validator failures, Worker timeouts, model latency/failure, model response rejection, and fallback-hint usage. Use correlation IDs across CloudFront, API Gateway, Lambda, DynamoDB, and model-broker calls. Do not log raw model bodies.
-
-## Open decisions required before provisioning
-
-1. AWS region and environment naming.
-2. Accountable product, engineering, and operations owners.
-3. Formal data classification and approved retention period.
-4. Pilot access control: approved IP range, VPN, or another temporary mechanism.
-5. Browser support matrix, especially school-managed devices.
-6. CDN/domain ownership and certificate authority.
-7. Whether a separate non-production AWS account is available.
+The previously considered API Gateway, Lambda, DynamoDB, Secrets Manager, AI tutor broker, provider evaluation, WAF rule set, and learner metrics are deferred. They are not authorized merely because they appear in older design ideas. Before a data-collecting or institutional pilot, define the tenant and consent model, a retention/deletion policy, API threat model, provider boundaries, observability limits, cost model, test/evaluation gates, owner approvals, and compensating rollback plan.
 
 ## Reuse and licence decisions
 

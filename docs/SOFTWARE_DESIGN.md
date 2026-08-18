@@ -9,21 +9,19 @@ Define the software contracts for the first CodeLah vertical slice. This documen
 ```text
 apps/
   web/                    # React/Vite learner application
-  api/                    # Lambda handlers and tutor broker
 packages/
   lesson-schema/          # Zod schemas and generated types
   lesson-engine/          # State machine and deterministic validators
   pseudocode-blocks/      # Blockly block definitions and AST converter
   python-runner/          # Pyodide Worker protocol and test harness
-  tutor-contract/         # Provider-neutral model request/response contracts
-  shared/                 # IDs, errors, telemetry event definitions
+  shared/                 # errors and local UI state definitions
 content/
   lessons/calculator/v1/  # lesson JSON, tests, reviewed context cards
-infra/                    # CDK stacks; introduced only after approval
+  infra/                    # CloudFormation static-preview plan
 docs/
 ```
 
-The local prototype currently implements this as a single React/Vite application under `src/`, with Blockly and a dedicated Pyodide Worker. The proposed package layout remains the target for M2+ when durable session/API boundaries are introduced; it is not yet scaffolded.
+The local prototype currently implements this as a single React/Vite application under `src/`, with Blockly and a dedicated Pyodide Worker. M2 adds only the static CloudFormation delivery plan; durable session/API/model boundaries are deferred and are not scaffolded.
 
 ## Domain model
 
@@ -44,12 +42,10 @@ type LessonState =
   | 'transfer'
   | 'completed';
 
-interface AnonymousSession {
-  id: string;
+interface InMemoryLessonState {
   lessonVersion: string;
   selectedDomains: InterestDomain[];
   state: LessonState;
-  expiresAt: string;
 }
 ```
 
@@ -88,7 +84,7 @@ stateDiagram-v2
   completed --> [*]
 ```
 
-The server stores the permitted state transition. The browser may render a local optimistic state, but it cannot unlock a later state until the engine validates it.
+The deterministic browser lesson engine stores and validates the permitted state transition for M2. There is no remote completion record or entitlement; a later server-backed state model needs a new design decision.
 
 ## Pseudocode builder contract
 
@@ -143,7 +139,9 @@ type RunResult =
   | { status: 'timed_out'; durationMs: number };
 ```
 
-## API contract
+## Deferred API contract (not in M2)
+
+There are no `/api` endpoints, cookies, or remote sessions in the public preview. The following is a future design sketch only and must be re-reviewed before an API is implemented.
 
 All endpoints are same-origin under `/api`; cookies are Secure, HttpOnly, SameSite=Lax, and contain only an opaque signed session token.
 
@@ -158,7 +156,7 @@ All endpoints are same-origin under `/api`; cookies are Secure, HttpOnly, SameSi
 
 Requests and responses are validated with Zod on both client and server. Add an idempotency key to state-changing requests.
 
-## Tutor broker
+## Deferred tutor broker (not in M2)
 
 ### Input
 
@@ -192,14 +190,14 @@ The provider response must conform to strict JSON schema, pass a code/answer-lea
 
 ## Interest personalisation
 
-`InterestResolver` maps selected controlled tags to a domain. `ContextComposer` selects an approved template and fact card from the lesson package. A model may rephrase an approved explanation, but cannot introduce a new field-specific fact or alter code requirements.
+`InterestResolver` maps selected controlled tags to a domain. `ContextComposer` selects an approved template and fact card from the lesson package. M2 uses authored text only. A future model may rephrase an approved explanation only after its own safety/evaluation decision, and cannot introduce a new field-specific fact or alter code requirements.
 
-## Telemetry contract
+## Deferred telemetry contract (not in M2)
 
-Events have stable names and a `lessonVersion`, `state`, `conceptId`, `moduleId`, and safe outcome category. Do not send raw code, user inputs, raw prompts, IP addresses, or cookies to product analytics.
+M2 sends no events. If telemetry is later approved, events need stable names and a `lessonVersion`, `state`, `conceptId`, `moduleId`, and safe outcome category. Never send raw code, user inputs, raw prompts, IP addresses, or cookies to product analytics.
 
 ## Error taxonomy
 
-`syntax_error`, `input_conversion_missing`, `invalid_operation_missing`, `zero_division_guard_missing`, `incorrect_operation_logic`, `unexpected_output`, `worker_timeout`, `provider_unavailable`, `content_invalid`.
+`syntax_error`, `input_conversion_missing`, `invalid_operation_missing`, `zero_division_guard_missing`, `incorrect_operation_logic`, `unexpected_output`, `worker_timeout`, `content_invalid`; reserve `provider_unavailable` for a future approved tutor feature.
 
-Every learner-visible error must map to a recovery action: retry, authored hint, AI tutor move, reset current module, or future tutor escalation.
+Every learner-visible M2 error must map to a recovery action: retry, authored hint, or reset current module. Future tutor moves/escalation require a separate approval.

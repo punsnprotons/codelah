@@ -44,7 +44,9 @@ Do not provision while the last four facts are unresolved.
 
 The public preview is intended for adults aged 18+. Because there is no identity or age-verification system, the app must keep the zero-data boundary above: do not solicit personal data, add accounts, or enable external AI tutoring without a separate privacy/institutional review. Manual screen-reader testing remains deferred, but is required before an institutional education release or any release that collects learner data.
 
-**Next implementation step:** create a no-apply IaC plan for a private S3 origin, CloudFront Origin Access Control, public distribution domain, HTTPS-only viewer policy, minimal WAF/rate protection, versioned rollback, and aggregate-only monitoring. Owner review of that plan is required before any AWS write.
+**Current implementation artefact:** `infra/cloudformation/public-preview.yaml` is a no-apply CloudFormation plan for a private S3 origin, CloudFront Origin Access Control, public distribution domain, HTTPS-only access, versioned rollback, and security headers. Owner review of that plan is required before any AWS write.
+
+**Budget-first decision:** prefer CloudFront's Free flat-rate plan if the account is eligible, using the CloudFront console after stack creation. The template intentionally creates no WAF Web ACL because CloudFront flat-rate plans cannot be attached to a distribution with an existing Web ACL. If the plan is unavailable, the fallback remains a zero-data static site with no write endpoints, no request logs, no WAF Web ACL, and AWS Shield Standard; the owner must approve that pay-as-you-go path and its budget cap before deployment.
 
 ## Current local acceptance evidence — 2026-08-18
 
@@ -100,9 +102,9 @@ Validate only the account/role expected for the approved environment. Never past
 
 1. CI validates lesson packages, unit/integration/E2E tests, accessibility, security scans, and AI evaluations.
 2. Build a versioned immutable web artifact and infrastructure plan.
-3. A human reviews the IaC diff, resource targets, CloudFront/S3/API access policy, WAF rule, secret references, and rollback handle.
-4. Deploy to the approved non-production environment using the approved `private` profile/role.
-5. Verify served application, session creation, API health, Worker timeout handling, model fallback, logs, metrics, and WAF restriction directly.
+3. A human reviews the IaC diff, resource targets, CloudFront/S3 access policy, chosen pricing path, versioned rollback handle, and the absence of API, learner-data, logs, and WAF resources.
+4. After explicit owner approval, deploy to the approved environment using the approved `private` profile/role, then select the CloudFront Free plan in the console if eligible.
+5. Verify the served static application, HTTPS redirect, private-origin access, Worker timeout handling, and reset directly. Confirm the chosen pricing path and record the CloudFront URL.
 6. Record build digest, deployment ID, approver, time, rollback reference, and verification evidence.
 
 ## Rollback procedure (future)
@@ -110,7 +112,7 @@ Validate only the account/role expected for the approved environment. Never past
 | Scope | Rollback handle | Validation |
 | --- | --- | --- |
 | Static web app | prior immutable S3 object/version or prior CloudFront origin release | fetch deployed build and run smoke journey |
-| Lambda API | prior published version/alias | health/session endpoint and state-transition test |
+| Future API (not M2) | prior published version/alias | health/session endpoint and state-transition test |
 | Lesson content | prior versioned lesson package | calculator validation/test fixtures pass |
 | AI tutor | disable provider route; authored hints remain | lesson completes with broker unavailable |
 | Infrastructure | reviewed IaC rollback only where resource impact is reversible | plan reviewed; no destructive state action without approval |
@@ -144,7 +146,7 @@ No rollback handle is considered rehearsed until it is executed successfully in 
 
 ## Monitoring and alarms
 
-Create alarms only after owner/threshold approval. Required metrics are API 5xx rate/latency, session failures, DynamoDB errors, Worker timeouts, model failures/latency, response rejections, fallback-hint rate, WAF blocks, and deployment health.
+This zero-data preview creates no application/API, request, WAF, or learner telemetry. Before deployment, set an owner-approved budget notification/cap for the selected billing path. Treat CloudFront console pricing notifications and aggregate service-cost review as the initial detection path. Add API, learner, model, or WAF metrics only with the separate feature and privacy review that enables those components.
 
 ## Change authority
 

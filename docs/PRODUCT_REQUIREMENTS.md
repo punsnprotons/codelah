@@ -66,15 +66,15 @@ Initial domains:
 
 ### Must have
 
-- Anonymous, expiring learner session; no sign-in or sign-up.
+- Browser-memory lesson state; no sign-in, sign-up, anonymous server session, or persistent browser storage.
 - Interest selection and editable preference state.
 - Diagnostic question engine and mastery rules.
 - Blockly-based pseudocode workspace with lesson-specific valid blocks.
 - One-active-module Python editor and browser-side runner.
 - Deterministic requirement and test feedback.
-- Three-level authored hint ladder and bounded AI tutor move.
+- Three-level authored hint ladder; no external AI tutor in M2.
 - Calculator lesson with at least Sports, STEM & Engineering, and Arts & Media contexts.
-- Privacy-safe learning event contract and operational observability.
+- Deterministic local learner flow with no application analytics or learner telemetry.
 
 ### Must not have
 
@@ -90,28 +90,24 @@ No baseline exists yet. Establish it during the pilot rather than inventing targ
 
 | Question | Primary measurement | Counter-measure |
 | --- | --- | --- |
-| Is learning more independent? | completed canonical lesson; hints-before-human-help | time-to-completion |
+| Is learning more independent? | observed canonical lesson completion in a future consented pilot | time-to-completion |
 | Is learning real? | transfer explanation and repeat task with changed values | passing tests without explanation |
-| Is context useful? | learner relevance rating | distraction or reported infantilisation |
+| Is context useful? | future consented learner relevance rating | distraction or reported infantilisation |
 | Does it help tutors? | time to understand a help request | extra tutor workflow burden |
-| Is AI safe? | answer-leak rate in held-out evaluations | harmful/incorrect or unsupported guidance |
+| Is an AI tutor safe? | answer-leak rate in a future held-out evaluation | harmful/incorrect or unsupported guidance |
 
-## Analytics contract
+## Analytics boundary
 
-Record only pseudonymous, privacy-safe events:
-
-`session_started`, `interest_selected`, `diagnostic_answered`, `pseudocode_changed`, `pseudocode_validated`, `module_started`, `module_run`, `module_passed`, `hint_requested`, `tutor_move_shown`, `lesson_completed`, `transfer_answered`.
-
-Do not include raw free-text answers, raw model prompts, user-entered program values, cookies, API keys, or full source code in analytics by default.
+M2 records no application analytics or learner events. The event names previously proposed for a future pilot are not an implementation authorization. Before any event collection, approve the purpose, learner notice/consent model, data classification, retention/deletion, access controls, and measurement plan; never include raw free text, code, program values, cookies, IP addresses, API keys, or full model prompts.
 
 ## Acceptance criteria for the calculator vertical slice
 
 - A learner cannot unlock code modules until required pseudocode semantics validate.
 - An invalid block order returns a specific question, not the answer.
 - Python tests cover valid operations, zero division, and invalid operations.
-- A learner can reset their anonymous lesson state.
+- A learner can reset their in-memory lesson state.
 - The application works with keyboard-only navigation, including pseudocode manipulation.
-- Model failure does not prevent lesson completion; authored hints remain available.
+- The lesson completes without a model; authored hints remain available.
 
 ## Evidence and references
 

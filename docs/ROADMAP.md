@@ -10,7 +10,7 @@ A novice finishes a relevant first coding task independently and can explain the
 | --- | --- | --- | --- |
 | M0: Design baseline | Team can build without re-deciding product/system fundamentals | documentation, lesson schema, ADRs, pilot assumptions | approve implementation scope |
 | M1: Deterministic learning kernel | Calculator works locally end-to-end with no model dependency | onboarding, diagnostic, Blockly plan, modules, Pyodide tests, assembled run | functional acceptance; manual screen-reader review deferred |
-| M2: Private AWS pilot foundation | Core product is safely reachable by approved pilot devices | IaC, edge controls, anonymous sessions, metrics, secrets, rollback evidence | deploy only after environment approvals |
+| M2: Public AWS preview foundation | Zero-data core product is safely reachable by adult preview users | IaC, static edge controls, cost gate, rollback evidence | deploy only after owner review |
 | M3: Constrained AI tutor | Learners receive bounded, relevant help without answer leakage | tutor broker, provider adapter, authored fallback, evaluation suite | answer-leak and quality gates pass |
 | M4: Live pilot | Measure learning and tutor outcomes against current notebook workflow | one cohort, observed sessions, feedback, support path | scale, iterate, pause, or retire |
 | M5: Expansion decision | Choose whether to add new lessons, accounts, or tutor tools | evidence-led prioritisation | roadmap approval |
@@ -33,7 +33,7 @@ A novice finishes a relevant first coding task independently and can explain the
 
 Begin the **M2 public-preview IaC plan**. Do not provision yet:
 
-1. Produce a no-apply plan for a private S3 origin, CloudFront Origin Access Control, public CloudFront URL, HTTPS-only access, WAF/rate protection, versioned rollback, and aggregate-only monitoring.
+1. Review the no-apply plan for a private S3 origin, CloudFront Origin Access Control, public CloudFront URL, HTTPS-only access, versioned rollback, and security headers. Prefer CloudFront's Free flat-rate plan if the account is eligible; the template deliberately omits a WAF Web ACL because an existing Web ACL prevents that subscription. If the plan is unavailable, explicitly approve the no-WAF static fallback and budget cap before deployment.
 2. Preserve the zero-data boundary: no accounts, API, learner submissions, persistent browser storage, request-body logs, or user-level analytics.
 3. Review the plan's cost estimate, blast radius, rollback handle, and detection window before any AWS write.
 
@@ -85,5 +85,5 @@ Baseline measurements are currently unknown. During M4 measure:
 | Blocks can become a game of ordering cards. | Validate semantic understanding, ask a transfer question, and provide an advanced route after diagnostics. |
 | Personalisation could be superficial. | Preserve one learning objective/test suite and measure relevance separately from mastery. |
 | AI could leak answers. | Keep progression deterministic; constrain model output and retain authored fallback. |
-| Anonymous sessions prevent tutoring continuity. | Accept this MVP limitation; do not expose tutor tools until an identity/consent model exists. |
+| Browser-memory-only lessons prevent continuity and product measurement. | Accept this preview limitation; do not add sessions, analytics, or tutor tools until their data/consent model exists. |
 | The first lesson might be too narrow. | It is intentionally narrow: prove the learning kernel before building a curriculum platform. |
