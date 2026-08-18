@@ -194,10 +194,9 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .blockly-host { background: transparent; border: 0; border-radius: 0; box-shadow: none; height: min(61vh, 650px); min-height: 520px; overflow: hidden; }
 .blockly-host--hidden { display: none; }
 .blockly-host .blocklyText { font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14pt !important; font-weight: 700; }
-.blockly-host .blocklyToolboxDiv { background: transparent !important; border: 0 !important; padding: 14px 10px 0 0; }
+.blockly-host .blocklyToolboxCategory { display: none !important; }
 .blockly-host .blocklyTreeRow { border-radius: 999px; height: auto !important; margin: 0; padding: 8px 11px !important; }
 .blockly-host .blocklyTreeLabel { font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: .79rem; font-weight: 800; }
-.blockly-host .blocklyToolboxDiv { pointer-events: none; }
 .blockly-host .blocklyFlyout { box-shadow: none; }
 .blockly-host .blocklyFlyoutBackground { fill: transparent; stroke: transparent; }
 .blockly-host .blocklyMainBackground { stroke: transparent !important; }
