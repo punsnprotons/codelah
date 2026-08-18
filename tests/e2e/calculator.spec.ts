@@ -31,7 +31,7 @@ async function completeFoundationQuiz(page: import('@playwright/test').Page) {
     await page.getByRole('radio', { name: answers[index] }).click();
     await page.getByRole('button', { name: 'Check answer' }).click();
     await expect(page.getByRole('status')).toContainText('Exactly.');
-    await page.getByRole('button', { name: index === answers.length - 1 ? 'See your result' : 'Next question' }).click();
+    if (index < answers.length - 1) await expect(page.getByText(`Question ${index + 2} of 3`)).toBeVisible({ timeout: 3_000 });
   }
   await expect(page.getByRole('heading', { name: 'You’re ready to plan it out.' })).toBeVisible();
   await page.getByRole('button', { name: 'Start planning' }).click();
@@ -112,18 +112,15 @@ test('celebrates three correct answers before introducing pseudocode', async ({ 
   await page.getByRole('radio', { name: 'Text' }).click();
   await page.getByRole('button', { name: 'Check answer' }).click();
   await expect(page.locator('.confetti-burst span')).toHaveCount(14);
-  await page.getByRole('button', { name: 'Next question' }).click();
-  await expect(page.getByText('Question 2 of 3')).toBeVisible();
+  await expect(page.getByText('Question 2 of 3')).toBeVisible({ timeout: 3_000 });
 
   await page.getByRole('radio', { name: 'Convert text to numbers' }).click();
   await page.getByRole('button', { name: 'Check answer' }).click();
-  await page.getByRole('button', { name: 'Next question' }).click();
-  await expect(page.getByText('Question 3 of 3')).toBeVisible();
+  await expect(page.getByText('Question 3 of 3')).toBeVisible({ timeout: 3_000 });
 
   await page.getByRole('radio', { name: 'Show a helpful error' }).click();
   await page.getByRole('button', { name: 'Check answer' }).click();
-  await page.getByRole('button', { name: 'See your result' }).click();
-  await expect(page.getByRole('heading', { name: 'You’re ready to plan it out.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'You’re ready to plan it out.' })).toBeVisible({ timeout: 3_000 });
   await expect(page.getByRole('list', { name: 'Pseudocode preview' })).toContainText('Get the two scores');
 });
 
@@ -154,9 +151,9 @@ test('completes the canonical lesson using Tab and Enter only', async ({ page })
     await activateWithKeyboard(page, page.getByRole('radio', { name: answer }));
     await activateWithKeyboard(page, page.getByRole('button', { name: 'Check answer' }));
     await expect(page.getByRole('status')).toContainText('Exactly.');
-    await activateWithKeyboard(page, page.getByRole('button', { name: index === 2 ? 'See your result' : 'Next question' }));
+    if (index < 2) await expect(page.getByText(`Question ${index + 2} of 3`)).toBeVisible({ timeout: 3_000 });
   }
-  await expect(page.getByRole('heading', { name: 'You’re ready to plan it out.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'You’re ready to plan it out.' })).toBeVisible({ timeout: 3_000 });
   await activateWithKeyboard(page, page.getByRole('button', { name: 'Start planning' }));
   await activateWithKeyboard(page, page.getByRole('button', { name: 'Use keyboard planner' }));
 

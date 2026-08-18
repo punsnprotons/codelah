@@ -169,6 +169,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .feedback--success { background: #eff9e7; border-color: #9fc57e; color: #397019; }
 .diagnostic-actions { bottom: 34px; display: flex; justify-content: space-between; left: clamp(24px, 5vw, 80px); position: absolute; right: clamp(24px, 5vw, 80px); }
 .bottom-button { min-width: 224px; }
+.quiz-advance-message { align-self: center; color: var(--lime-ink); font-size: .95rem; font-weight: 800; margin-left: auto; }
 .confetti-burst { height: 1px; left: 50%; pointer-events: none; position: absolute; top: 46%; width: 1px; z-index: 3; }
 .confetti-burst span { animation: confetti-burst 1s cubic-bezier(.16,.8,.28,1) both; border-radius: 2px; height: 10px; left: 0; position: absolute; top: 0; transform: translate(0, 0) rotate(0); width: 6px; }
 
@@ -299,6 +300,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .diagnostic-content { margin-top: 92px; transform: none; }
   .diagnostic-content h1 { font-size: 2.4rem; }
   .diagnostic-actions { margin: 24px 0 8px; position: static; }
+  .quiz-advance-message { font-size: .82rem; }
   .quiz-complete-content { margin-top: 92px; transform: none; }
   .pseudocode-preview { margin-top: 24px; }
   .plan-stage { margin-top: 78px; }
