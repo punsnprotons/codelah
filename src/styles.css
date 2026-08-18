@@ -50,8 +50,8 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .onboarding-screen { display: grid; place-items: center; }
 .onboarding-content { margin-top: 26px; max-width: 760px; text-align: center; width: 100%; }
 .onboarding-content h1 { font-family: inherit; font-size: clamp(2.25rem, 3.8vw, 3.7rem); font-weight: 600; letter-spacing: -.045em; line-height: 1.08; margin-bottom: 0; white-space: nowrap; }
-.interest-heading { display: inline-block; position: relative; }
-.codelah-mascot { height: 82px; position: absolute; right: -96px; top: -20px; width: 82px; }
+.interest-heading { align-items: center; display: flex; flex-direction: column; }
+.codelah-mascot { height: 82px; margin-bottom: 12px; width: 82px; }
 .codelah-mascot__body { animation: mascot-float 3.2s ease-in-out infinite; transform-origin: 60px 62px; }
 .codelah-mascot__shadow { fill: #1620181c; }
 .onboarding-actions { bottom: 34px; display: flex; justify-content: space-between; left: clamp(24px, 5vw, 80px); position: absolute; right: clamp(24px, 5vw, 80px); }
@@ -180,8 +180,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .interest-grid { gap: 10px; grid-template-columns: 1fr; margin-top: 30px; }
   .interest-card { min-height: 70px; padding: 12px 15px; }
   .onboarding-screen { display: block; overflow-y: auto; padding-bottom: 28px; }
-  .interest-heading { display: block; }
-  .codelah-mascot { height: 58px; right: 0; top: -52px; width: 58px; }
+  .codelah-mascot { height: 58px; margin-bottom: 8px; width: 58px; }
   .onboarding-actions { margin: 24px 0 8px; position: static; }
   .journey-back { min-width: 116px; padding: 0 20px; }
   .onboarding-button { display: flex; transform: none; }
