@@ -10,13 +10,27 @@ This runbook governs the local acceptance phase and the future private-pilot env
 | --- | --- |
 | Local repository | initialized after this documentation baseline is committed |
 | GitHub target | `punsnprotons/codelah`, verified reachable and empty before first push |
-| AWS named profile | `private`, verified as a private AWS account SSO administrator role |
-| Region | unknown |
+| AWS named profile | `private`, read-only identity verified 2026-08-18: SSO `AdministratorAccess` assumed role in the account ending `5843` |
+| Region | `ap-southeast-1` is configured; environment-owner approval is still required |
 | Environment owner | unknown |
 | Data classification / criticality | unknown |
 | Existing deployed resources | none known; no estate inventory performed |
 
 Do not provision while the last four facts are unresolved.
+
+## M2 read-only preflight record — 2026-08-18
+
+| Field | Status |
+| --- | --- |
+| Target / reachability | `private` AWS profile; STS identity verified for the account ending `5843` in `ap-southeast-1` |
+| Estate graph | insufficient context: no service, artifact, resource inventory, owner, data class, criticality, or dependency fan-out is known |
+| Action performed | read-only `sts:GetCallerIdentity` and local profile-region lookup; no AWS resources listed, created, changed, or deployed |
+| Authority | user-authorized M2 read-only preflight |
+| Action class | read-only discovery; no rollback required |
+| Independent corroboration | AWS STS response received locally; no CloudTrail event ID or approved evidence ledger is available yet |
+| Provisioning decision | refused pending the unresolved preflight facts and owner-approved IaC review |
+
+**Next fact to obtain:** the named environment owner must approve the region, internal-only audience, private-access mechanism, data classification/retention rule, and DNS/certificate owner. Then the team can produce an IaC plan for review; it must not be applied at this stage.
 
 ## Current local acceptance evidence — 2026-08-18
 
