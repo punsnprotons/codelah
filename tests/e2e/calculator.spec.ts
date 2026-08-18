@@ -1,5 +1,19 @@
 import { expect, test } from '@playwright/test';
 
+async function tabTo(page: import('@playwright/test').Page, target: import('@playwright/test').Locator) {
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    if (await target.evaluate((element) => document.activeElement === element)) return;
+    await page.keyboard.press('Tab');
+  }
+  throw new Error(`Could not reach ${await target.getAttribute('aria-label') ?? await target.textContent()} with Tab.`);
+}
+
+async function activateWithKeyboard(page: import('@playwright/test').Page, target: import('@playwright/test').Locator) {
+  await expect(target).toBeEnabled({ timeout: 12_000 });
+  await tabTo(page, target);
+  await page.keyboard.press('Enter');
+}
+
 async function reachKeyboardPlanner(page: import('@playwright/test').Page) {
   await page.goto('/');
   await page.getByRole('button', { name: 'Sports' }).click();
@@ -62,6 +76,39 @@ test('activates the alternate planner with the keyboard', async ({ page }) => {
   await page.keyboard.press('Enter');
   await expect(page.getByRole('list')).toContainText('Get first score');
   await expect(firstStep).toBeDisabled();
+});
+
+test('completes the canonical lesson using Tab and Enter only', async ({ page }) => {
+  await page.goto('/');
+  await activateWithKeyboard(page, page.getByRole('button', { name: 'Sports' }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: /Continue/ }));
+  await activateWithKeyboard(page, page.getByRole('radio', { name: 'Text' }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: 'Check answer' }));
+  await expect(page.getByRole('status')).toContainText('Input begins as text');
+  await activateWithKeyboard(page, page.getByRole('button', { name: /Plan the program/ }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: 'Use keyboard planner' }));
+
+  for (const name of ['Get first score', 'Get second score', 'Choose an operation', 'Check for division by zero', 'Show result or helpful error']) {
+    await activateWithKeyboard(page, page.getByRole('button', { name, exact: true }));
+  }
+  await activateWithKeyboard(page, page.getByRole('button', { name: /Check plan/ }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: /Write the first block/ }));
+
+  for (let index = 0; index < 5; index += 1) {
+    await activateWithKeyboard(page, page.getByRole('button', { name: /Check this block/ }));
+    const continueButton = page.getByRole('button', { name: index === 4 ? /Assemble the program/ : /Write the next block/ });
+    await expect(continueButton).toBeVisible();
+    await activateWithKeyboard(page, continueButton);
+  }
+
+  await activateWithKeyboard(page, page.getByRole('button', { name: /Run the complete program/ }));
+  await expect(page.getByRole('status')).toContainText('Result: 4.0 * 3.0 = 12.0');
+  await activateWithKeyboard(page, page.getByRole('button', { name: /One quick transfer check/ }));
+  await activateWithKeyboard(page, page.getByRole('radio', { name: /Check that parts is not zero/ }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: 'Check answer' }));
+  await expect(page.getByRole('status')).toContainText('The same safety rule transfers');
+  await activateWithKeyboard(page, page.getByRole('button', { name: /Lesson complete/ }));
+  await expect(page.getByRole('heading', { name: 'What are you curious about?' })).toBeVisible();
 });
 
 test('keeps a learner in the module after malformed Python', async ({ page }) => {
