@@ -133,7 +133,8 @@ function TopicsScreen({ onBack, onContinue }: { onBack: () => void; onContinue: 
 }
 
 function QuizIntroScreen({ onBack, onStart }: { onBack: () => void; onStart: () => void }) {
-  return <main className="light-screen orientation-screen quiz-intro-screen"><Progress screen="quizIntro" /><section className="quiz-intro-content" aria-labelledby="quiz-intro-title"><CodeLahMascot /><p className="orientation-kicker">Quick warm-up</p><h1 id="quiz-intro-title">Ready for a quick warm-up?</h1><p>Three short questions will help us choose the right level of guidance while you build. This is not a test—you’ll get help whenever you need it.</p><div className="quiz-intro-points"><span>3 questions</span><span>About 1 minute</span><span>Hints if you need them</span></div></section><div className="onboarding-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" onClick={onStart} type="button">Start quiz</button></div></main>;
+  const quizTopics = foundationTopics.slice(0, 3);
+  return <main className="light-screen orientation-screen quiz-intro-screen"><Progress screen="quizIntro" /><section className="quiz-intro-content" aria-labelledby="quiz-intro-title"><CodeLahMascot /><h1 id="quiz-intro-title">Before we build, a quick check.</h1><div className="quiz-topic-preview">{quizTopics.map((topic) => <article className="quiz-topic-preview__card" key={topic.concept}><img alt={topic.alt} src={topic.image} /><h2>{topic.concept}</h2></article>)}</div></section><div className="onboarding-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" onClick={onStart} type="button">Start quiz</button></div></main>;
 }
 
 function DiagnosticScreen({ onContinue }: { onContinue: () => void }) {
