@@ -26,3 +26,7 @@ The reviewed public-preview runbook requires a project-scoped cost guardrail bef
 ## Evidence requirements
 
 Record the API response and follow with a read-only status check. Do not store account contact information, credentials, learner data, signed URLs, or request bodies in this record. CloudTrail correlation has not yet been verified for this account.
+
+## Result
+
+2026-08-18: `ce:UpdateCostAllocationTagsStatus` returned no errors and the follow-up read-only query reported `Project` as `Active`. The account-contact read returned no usable email value, so no budget or notification was created. The remaining required input is an owner-approved budget-alert recipient.
