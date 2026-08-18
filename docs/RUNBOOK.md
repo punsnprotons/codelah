@@ -2,7 +2,7 @@
 
 ## Scope
 
-This runbook governs the future private-pilot environment. No deployment has occurred at the time of writing.
+This runbook governs the local acceptance phase and the future private-pilot environment. No deployment has occurred at the time of writing.
 
 ## Verified target facts
 
@@ -17,6 +17,18 @@ This runbook governs the future private-pilot environment. No deployment has occ
 | Existing deployed resources | none known; no estate inventory performed |
 
 Do not provision while the last four facts are unresolved.
+
+## Current local acceptance evidence — 2026-08-18
+
+| Check | Command / method | Result |
+| --- | --- | --- |
+| Calculator branch coverage | `bun run test:lesson` | passed: +, -, *, /, zero division, invalid operation |
+| Production build | `bun run build` | passed |
+| Browser regression | `bun run test:e2e` | passed: six Chromium cases, including malformed code and runaway-loop recovery |
+| Learner smoke journey | local in-app browser | passed: interest → diagnostic → keyboard planner → five modules → assembly → transfer → reset |
+| Deployment / AWS resources | not run | none created |
+
+This evidence does **not** approve deployment. The outstanding M1 checks in `ROADMAP.md` are required before revisiting AWS preflight.
 
 ## Required preflight before provisioning
 

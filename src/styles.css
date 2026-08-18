@@ -88,6 +88,13 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .plan-heading > p:last-child { color: var(--muted); }
 .plan-layout { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr) 260px; margin: 30px auto 0; max-width: 1190px; }
 .blockly-host { border: 1px solid #3a433e; border-radius: 22px; height: min(51vh, 540px); min-height: 420px; overflow: hidden; }
+.blockly-host--hidden { display: none; }
+.keyboard-plan { background: #191d1b; border: 1px solid #3a433e; border-radius: 22px; min-height: 420px; padding: 28px; }
+.keyboard-plan ol { color: #e7ebe6; display: grid; gap: 10px; margin: 18px 0 26px; padding-left: 26px; }
+.keyboard-plan li::marker { color: var(--lime); font-family: 'DM Mono', monospace; font-weight: 800; }
+.keyboard-plan__choices { display: flex; flex-wrap: wrap; gap: 10px; }
+.keyboard-plan__choices button { background: #252c28; border: 1px solid #465148; border-radius: 10px; color: #edf2ed; font-size: .86rem; font-weight: 700; padding: 11px 13px; text-align: left; }
+.keyboard-plan__choices button:hover:not(:disabled) { border-color: var(--lime); color: var(--lime); }
 .concept-note { align-self: center; background: #19211e; border: 1px solid #445149; border-radius: 18px; color: #e3e8e2; padding: 25px; }
 .concept-note p { font-size: 1rem; font-weight: 700; line-height: 1.5; margin-bottom: 0; }
 .note-mark { color: var(--lime); display: block; font-size: 2rem; margin-bottom: 14px; }

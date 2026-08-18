@@ -15,6 +15,27 @@ A novice finishes a relevant first coding task independently and can explain the
 | M4: Live pilot | Measure learning and tutor outcomes against current notebook workflow | one cohort, observed sessions, feedback, support path | scale, iterate, pause, or retire |
 | M5: Expansion decision | Choose whether to add new lessons, accounts, or tutor tools | evidence-led prioritisation | roadmap approval |
 
+## Current milestone state — 2026-08-18
+
+**M1 is in internal acceptance; do not begin M2 AWS work.** The local calculator flow has now been exercised through interest selection, diagnostic, keyboard-plan alternative, five independently checked Python modules, assembly, transfer check, and reset.
+
+| M1 area | Evidence | Status |
+| --- | --- | --- |
+| Calculator behavior | `bun run test:lesson` verifies addition, subtraction, multiplication, division, zero division, and invalid-operation output against the exact assembled source. | passed locally |
+| Build integrity | `bun run build` passes. | passed locally |
+| Browser regression | `bun run test:e2e` passes six Chromium cases: diagnostic recovery, plan recovery, keyboard planner activation, malformed code, timeout/reset, and full lesson/reset. | passed locally |
+| Keyboard-plan alternative | Native-button planner provides a non-drag path; browser regression verifies activation with Enter. Screen-reader review remains required. | partial |
+| Offline-after-assets claim | No offline cache is currently shipped. A Chromium cache experiment was rejected after its offline regression failed. | not implemented |
+| Timeout and malformed-code recovery | Runner has a timeout/reset path, but focused browser cases remain untested. | partial |
+
+### Next step
+
+Finish M1 acceptance before any AWS pilot foundation work:
+
+1. Complete manual keyboard-only and screen-reader checks; record browser/device coverage.
+2. Verify the post-load offline claim or remove it from M1 acceptance criteria.
+3. Review the resulting evidence against the M1 exit decision. Only then request the M2 environment approvals in the runbook.
+
 ## M1 acceptance criteria
 
 - Calculator lesson works offline after assets load.

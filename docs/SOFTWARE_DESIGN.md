@@ -23,7 +23,7 @@ infra/                    # CDK stacks; introduced only after approval
 docs/
 ```
 
-No code is scaffolded by this document.
+The local prototype currently implements this as a single React/Vite application under `src/`, with Blockly and a dedicated Pyodide Worker. The proposed package layout remains the target for M2+ when durable session/API boundaries are introduced; it is not yet scaffolded.
 
 ## Domain model
 

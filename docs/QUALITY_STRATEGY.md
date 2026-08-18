@@ -4,6 +4,15 @@
 
 CodeLah is complete only when learners can complete the expected flow safely, accessibly, and without model availability. A passing build alone is insufficient.
 
+## Current verification evidence — 2026-08-18
+
+- `bun run test:lesson` runs the exact assembled calculator source through addition, subtraction, multiplication, division, division by zero, and an invalid operator.
+- `bun run build` passes.
+- `bun run test:e2e` passes six Chromium cases: diagnostic recovery, out-of-order plan recovery, Enter-key planner activation, malformed Python, timeout/reset, and full lesson/reset.
+- A local browser smoke completed the full learner journey using the native-button planner and confirmed reset.
+
+These are local M1 evidence only. Manual keyboard-only/screen-reader review remains open. Offline support is not currently implemented; it needs a separately verified caching design before M1 can claim post-load offline use.
+
 ## Test layers
 
 | Layer | Examples | Gate |

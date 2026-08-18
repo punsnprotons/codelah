@@ -9,6 +9,14 @@ const REQUIRED_BLOCKS = [
   'show_result',
 ];
 
+const blockLabels: Record<string, string> = {
+  collect_first_score: 'Get first score',
+  collect_second_score: 'Get second score',
+  choose_operation: 'Choose an operation',
+  guard_zero_division: 'Check for division by zero',
+  show_result: 'Show result or helpful error',
+};
+
 let blocksRegistered = false;
 
 function registerBlocks() {
@@ -81,6 +89,8 @@ export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
   const workspace = useRef<Blockly.WorkspaceSvg | null>(null);
   const [message, setMessage] = useState('Drag the thinking blocks into one connected plan.');
   const [isValid, setIsValid] = useState(false);
+  const [mode, setMode] = useState<'drag' | 'keyboard'>('drag');
+  const [keyboardPlan, setKeyboardPlan] = useState<string[]>([]);
 
   useEffect(() => {
     if (!host.current) return;
@@ -122,10 +132,7 @@ export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
     };
   }, []);
 
-  function validatePlan() {
-    const activeWorkspace = workspace.current;
-    if (!activeWorkspace) return;
-    const types = getOrderedBlockTypes(activeWorkspace);
+  function validateTypes(types: string[] | null) {
     const matches = types?.length === REQUIRED_BLOCKS.length
       && types.every((type, index) => type === REQUIRED_BLOCKS[index]);
 
@@ -150,6 +157,30 @@ export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
     setMessage('Read the plan from top to bottom. What information does the program need before it can choose an operation?');
   }
 
+  function validatePlan() {
+    const types = mode === 'keyboard' ? keyboardPlan : workspace.current ? getOrderedBlockTypes(workspace.current) : null;
+    validateTypes(types);
+  }
+
+  function addKeyboardBlock(type: string) {
+    const expected = REQUIRED_BLOCKS[keyboardPlan.length];
+    setIsValid(false);
+    if (type !== expected) {
+      setMessage(`Before ${blockLabels[type].toLowerCase()}, what is the next thing the program needs?`);
+      return;
+    }
+    const nextPlan = [...keyboardPlan, type];
+    setKeyboardPlan(nextPlan);
+    setMessage(nextPlan.length === REQUIRED_BLOCKS.length ? 'All five planning blocks are in order. Check your plan.' : `Good. Now add step ${nextPlan.length + 1} of ${REQUIRED_BLOCKS.length}.`);
+  }
+
+  function clearPlan() {
+    workspace.current?.clear();
+    setKeyboardPlan([]);
+    setIsValid(false);
+    setMessage(mode === 'keyboard' ? 'Use the buttons to build the plan one step at a time.' : 'Drag the thinking blocks into one connected plan.');
+  }
+
   return (
     <section className="plan-stage" aria-labelledby="plan-title">
       <div className="plan-heading">
@@ -158,7 +189,14 @@ export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
         <p>Put the thinking in order before you write Python.</p>
       </div>
       <div className="plan-layout">
-        <div className="blockly-host" ref={host} aria-label="Pseudocode block workspace" />
+        <div className={`blockly-host ${mode === 'keyboard' ? 'blockly-host--hidden' : ''}`} ref={host} aria-label="Pseudocode block workspace" />
+        {mode === 'keyboard' && (
+          <section className="keyboard-plan" aria-label="Keyboard pseudocode planner">
+            <p className="panel-title">Build the plan with buttons</p>
+            <ol>{keyboardPlan.map((type, index) => <li key={`${type}-${index}`}>{blockLabels[type]}</li>)}</ol>
+            <div className="keyboard-plan__choices">{REQUIRED_BLOCKS.map((type) => <button disabled={keyboardPlan.includes(type)} key={type} onClick={() => addKeyboardBlock(type)} type="button">{blockLabels[type]}</button>)}</div>
+          </section>
+        )}
         <aside className="concept-note">
           <span className="note-mark">✦</span>
           <p>{context.fact}</p>
@@ -168,7 +206,10 @@ export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
         {message}
       </div>
       <div className="stage-actions">
-        <button className="text-button" onClick={() => workspace.current?.clear()} type="button">Clear plan</button>
+        <div>
+          <button className="text-button" onClick={() => { setMode((current) => current === 'drag' ? 'keyboard' : 'drag'); setIsValid(false); setMessage(mode === 'drag' ? 'Use the buttons to build the plan one step at a time.' : 'Drag the thinking blocks into one connected plan.'); }} type="button">{mode === 'drag' ? 'Use keyboard planner' : 'Use drag-and-drop'}</button>
+          <button className="text-button" onClick={clearPlan} type="button">Clear plan</button>
+        </div>
         {isValid ? (
           <button className="primary-button" onClick={onValid} type="button">Write the first block <span>→</span></button>
         ) : (

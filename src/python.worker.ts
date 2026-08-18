@@ -16,14 +16,17 @@ type PyodideRuntime = {
   runPythonAsync: (source: string) => Promise<unknown>;
 };
 
-declare function loadPyodide(options: { indexURL: string }): Promise<PyodideRuntime>;
-declare function importScripts(...urls: string[]): void;
-
 const indexURL = new URL('/pyodide/', self.location.origin).toString();
-importScripts(new URL('pyodide.js', indexURL).toString());
-const pyodideReady = loadPyodide({ indexURL });
+type PyodideModule = { loadPyodide: (options: { indexURL: string }) => Promise<PyodideRuntime> };
+const pyodideReady = import(/* @vite-ignore */ new URL('pyodide.mjs', indexURL).toString())
+  .then((module) => (module as PyodideModule).loadPyodide({ indexURL }));
 
-void pyodideReady.then(() => self.postMessage({ type: 'ready' } satisfies RunResponse));
+void pyodideReady
+  .then(() => self.postMessage({ type: 'ready' } satisfies RunResponse))
+  .catch((error) => {
+    const detail = error instanceof Error ? error.message : 'Pyodide could not start.';
+    self.postMessage({ type: 'failed', message: `Python runtime could not start: ${detail}` } satisfies RunResponse);
+  });
 
 self.addEventListener('message', async ({ data }: MessageEvent<RunRequest>) => {
   if (data.type !== 'run') return;

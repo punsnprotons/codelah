@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { PlanWorkspace } from './PlanWorkspace';
 import { usePythonRunner } from './usePythonRunner';
 
-type Screen = 'interests' | 'diagnostic' | 'plan' | 'module' | 'assembly';
+type Screen = 'interests' | 'diagnostic' | 'plan' | 'module' | 'assembly' | 'transfer';
 
 const interests = [
   { id: 'sports', label: 'Sports', glyph: '◌' }, { id: 'stem', label: 'STEM & Engineering', glyph: '◇' },
@@ -46,8 +46,8 @@ else:
     print("Error: Choose +, -, *, or /.")`;
 
 function Progress({ screen }: { screen: Screen }) {
-  const active = { interests: 0, diagnostic: 1, plan: 2, module: 3, assembly: 4 }[screen];
-  return <div className="progress" aria-label={`Step ${active + 1} of 5`}>{Array.from({ length: 5 }).map((_, index) => <span className={index <= active ? 'progress__segment progress__segment--active' : 'progress__segment'} key={index} />)}</div>;
+  const active = { interests: 0, diagnostic: 1, plan: 2, module: 3, assembly: 4, transfer: 5 }[screen];
+  return <div className="progress" aria-label={`Step ${active + 1} of 6`}>{Array.from({ length: 6 }).map((_, index) => <span className={index <= active ? 'progress__segment progress__segment--active' : 'progress__segment'} key={index} />)}</div>;
 }
 
 function InterestScreen({ onContinue }: { onContinue: (selected: string[]) => void }) {
@@ -69,9 +69,15 @@ function ModuleScreen({ module, index, priorSource, context, onContinue }: Modul
   return <main className="dark-screen module-screen"><Progress screen="module" /><section className="module-title"><p className="eyebrow">Block {index + 1} of {modules.length} · {context.label}</p><h1>{module.title}</h1></section><div className="module-layout"><aside className="module-brief"><div className="plan-chip"><span>✓</span><strong>{module.planStep}</strong><div><code>input</code><b>→</b><code>safe logic</code></div></div><p><span className="bulb">◉</span>{module.hint}</p></aside><label className="code-panel"><span className="sr-only">Python code for the current module</span><span className="line-number">{Array.from({ length: lineCount }, (_, line) => line + 1).join('\n')}</span><textarea spellCheck="false" value={code} onChange={(event) => setCode(event.target.value)} /></label><aside className="run-column"><div className="run-panel"><p className="panel-title">▶ Checked run</p><div className="terminal">Test inputs: <strong>{module.inputs.join(' · ')}</strong>{state.status === 'passed' && state.output.length > 0 && <><br />Output: <strong>{state.output.join(' ')}</strong></>}</div>{state.status === 'loading' && <p className="muted-status">Preparing Python…</p>}{state.status === 'running' && <p className="muted-status">Checking your block…</p>}{state.status === 'passed' && <p className="pass-status">✓ Block complete</p>}{state.status === 'failed' && <p className="error-status">{state.message}</p>}{state.status === 'timed_out' && <p className="error-status">That took too long. The runner was reset safely.</p>}</div><div className="why-card"><p className="panel-title">✦ Why this matters</p><p>{context.fact}</p></div></aside></div><div className="module-actions">{complete ? <button className="primary-button" onClick={() => onContinue(code)} type="button">{index === modules.length - 1 ? 'Assemble the program' : 'Write the next block'} <span>→</span></button> : <button className="primary-button" disabled={state.status === 'loading' || state.status === 'running'} onClick={() => run(source, module.inputs, module.assertion, module.failureMessage)} type="button">Check this block <span>▶</span></button>}</div></main>;
 }
 
-function AssemblyScreen({ restart }: { restart: () => void }) {
+function AssemblyScreen({ onContinue }: { onContinue: () => void }) {
   const { state, run } = usePythonRunner(); const didRun = state.status === 'passed';
-  return <main className="light-screen complete-screen"><Progress screen="assembly" /><section className="complete-card"><p className="emblem" aria-hidden="true">✦</p><p className="eyebrow">Your connected program</p><h1>You built each decision, then connected the whole calculation.</h1><p>Run the sample match: 4, 3, then *.</p><pre>{assembledCalculator}</pre>{didRun && <div className="assembly-output" role="status"><strong>Result</strong><span>{state.output.join('\n') || 'Program ran successfully.'}</span></div>}{state.status === 'failed' && <p className="error-status">{state.message}</p>}{state.status === 'timed_out' && <p className="error-status">The final run timed out and was reset safely.</p>}<div className="assembly-actions">{didRun ? <button className="primary-button" onClick={restart} type="button">Start again <span>↻</span></button> : <button className="primary-button" disabled={state.status === 'loading' || state.status === 'running'} onClick={() => run(assembledCalculator, ['4', '3', '*'])} type="button">Run the complete program <span>▶</span></button>}</div></section></main>;
+  return <main className="light-screen complete-screen"><Progress screen="assembly" /><section className="complete-card"><p className="emblem" aria-hidden="true">✦</p><p className="eyebrow">Your connected program</p><h1>You built each decision, then connected the whole calculation.</h1><p>Run the sample match: 4, 3, then *.</p><pre>{assembledCalculator}</pre>{didRun && <div className="assembly-output" role="status"><strong>Result</strong><span>{state.output.join('\n') || 'Program ran successfully.'}</span></div>}{state.status === 'failed' && <p className="error-status">{state.message}</p>}{state.status === 'timed_out' && <p className="error-status">The final run timed out and was reset safely.</p>}<div className="assembly-actions">{didRun ? <button className="primary-button" onClick={onContinue} type="button">One quick transfer check <span>→</span></button> : <button className="primary-button" disabled={state.status === 'loading' || state.status === 'running'} onClick={() => run(assembledCalculator, ['4', '3', '*'])} type="button">Run the complete program <span>▶</span></button>}</div></section></main>;
+}
+
+function TransferScreen({ restart }: { restart: () => void }) {
+  const [answer, setAnswer] = useState<string | null>(null); const [checked, setChecked] = useState(false); const correct = answer === 'Check that parts is not zero before dividing.';
+  const options = ['Check that parts is not zero before dividing.', 'Convert the total into text before dividing.', 'Always divide by 1 when parts is zero.'];
+  return <main className="dark-screen diagnostic-screen"><Progress screen="transfer" /><section className="diagnostic-content" aria-labelledby="transfer-title"><p className="eyebrow">Transfer check</p><h1 id="transfer-title">A recipe app divides a total amount by the number of parts. What must it do first?</h1><div className="answer-grid transfer-grid" role="radiogroup" aria-label="Transfer check answers">{options.map((option) => <button aria-checked={answer === option} className={`answer-card transfer-card ${answer === option ? 'answer-card--selected' : ''}`} key={option} onClick={() => { setAnswer(option); setChecked(false); }} role="radio" type="button"><span>{option}</span></button>)}</div>{checked && <div className={`feedback ${correct ? 'feedback--success' : ''}`} role="status">{correct ? 'Exactly. The same safety rule transfers to a different kind of program.' : 'Think about which value is the denominator in a division.'}</div>}</section>{checked && correct ? <button className="primary-button bottom-button" onClick={restart} type="button">Lesson complete <span>✓</span></button> : <button className="primary-button bottom-button" disabled={!answer} onClick={() => setChecked(true)} type="button">Check answer</button>}</main>;
 }
 
 export function App() {
@@ -81,6 +87,7 @@ export function App() {
   if (screen === 'interests') return <InterestScreen onContinue={(selected) => { setDomains(selected); setScreen('diagnostic'); }} />;
   if (screen === 'diagnostic') return <DiagnosticScreen onContinue={() => setScreen('plan')} />;
   if (screen === 'plan') return <main className="dark-screen plan-screen"><Progress screen="plan" /><PlanWorkspace context={context} onValid={() => setScreen('module')} /></main>;
-  if (screen === 'module') return <ModuleScreen context={context} index={moduleIndex} module={modules[moduleIndex]} onContinue={(source) => { setCompletedSources((current) => [...current, source]); if (moduleIndex === modules.length - 1) setScreen('assembly'); else setModuleIndex((current) => current + 1); }} priorSource={priorSource} />;
-  return <AssemblyScreen restart={restart} />;
+  if (screen === 'module') return <ModuleScreen context={context} index={moduleIndex} key={moduleIndex} module={modules[moduleIndex]} onContinue={(source) => { setCompletedSources((current) => [...current, source]); if (moduleIndex === modules.length - 1) setScreen('assembly'); else setModuleIndex((current) => current + 1); }} priorSource={priorSource} />;
+  if (screen === 'assembly') return <AssemblyScreen onContinue={() => setScreen('transfer')} />;
+  return <TransferScreen restart={restart} />;
 }

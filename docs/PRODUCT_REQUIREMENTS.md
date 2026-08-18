@@ -39,6 +39,12 @@ The learner can collect two values, convert inputs to numbers, choose an operati
 6. Receive an authored or constrained Socratic hint if blocked.
 7. Review the assembled program, run scenarios, and answer one transfer question.
 
+### Current local implementation status — 2026-08-18
+
+Implemented locally: controlled interest tags, one formative diagnostic, Blockly drag plan, native-button planning alternative, five calculator modules, deterministic browser-side Python checks, assembled run, one transfer question, and reset.
+
+Not yet implemented: expiring anonymous persistence, editable saved preferences, three-level authored hint ladder, constrained AI tutor move, analytics, operational observability, and server-validated state transitions. These remain requirements for the later pilot—not claims about the current local build.
+
 ### Context policy
 
 The same canonical requirements apply to all variants. The context can change task language, examples, imagery, and a reviewed “why this matters” card; it cannot alter the necessary Python concepts or passing tests.

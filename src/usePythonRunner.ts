@@ -19,7 +19,7 @@ export function usePythonRunner() {
   const [state, setState] = useState<RunState>({ status: 'loading' });
 
   const createWorker = useCallback(() => {
-    const worker = new Worker(new URL('./python.worker.ts', import.meta.url));
+    const worker = new Worker(new URL('./python.worker.ts', import.meta.url), { type: 'module' });
     worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => {
       if (data.type === 'ready') setState({ status: 'idle' });
       if (data.type === 'passed') {
@@ -30,6 +30,10 @@ export function usePythonRunner() {
         window.clearTimeout(timeoutRef.current);
         setState({ status: 'failed', message: data.message });
       }
+    };
+    worker.onerror = (event) => {
+      window.clearTimeout(timeoutRef.current);
+      setState({ status: 'failed', message: `Python runtime could not start: ${event.message || 'Worker error'}` });
     };
     workerRef.current = worker;
   }, []);
