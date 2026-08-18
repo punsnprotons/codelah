@@ -30,7 +30,7 @@ Do not provision while the last four facts are unresolved.
 | Independent corroboration | AWS STS response received locally; no CloudTrail event ID or approved evidence ledger is available yet |
 | Provisioning decision | refused pending the unresolved preflight facts and owner-approved IaC review |
 | Exact stack-name check | `codelah-public-preview` does not exist (read-only check, 2026-08-18) |
-| Cost-allocation check | `Project` was activated successfully (2026-08-18); the account-contact lookup returned no usable alert email, so no budget was created |
+| Cost guardrail | `Project` was activated successfully; a CodeLah-only USD 10 monthly budget with USD 5 and USD 10 actual-spend alerts was confirmed (2026-08-18) |
 
 **Preflight decision:** the owner approved a public, no-account preview. The application will use a public CloudFront distribution URL while the S3 origin remains private behind Origin Access Control. No custom DNS is required for this phase. The temporary public URL is the CloudFront distribution domain; when a custom domain is acquired, attach it as an alternate domain name with an ACM certificate in `us-east-1`.
 

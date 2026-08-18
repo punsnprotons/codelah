@@ -50,8 +50,8 @@ CloudFront flat-rate plans cannot be attached to a distribution with an existing
 | Rollback | disable distribution, cancel any pricing plan, restore prior S3 object version, then delete only after the distribution is fully disabled |
 | Detection window | not measured; requires post-deploy synthetic HTTPS and browser-smoke evidence |
 | Existing stack check | `codelah-public-preview` does not exist (read-only check, 2026-08-18) |
-| Cost-allocation check | `Project` was activated successfully (2026-08-18); no budget notification recipient is available yet |
-| Blocking conditions | Free-plan eligibility remains console-only; no project-scoped cost alert or owner-approved alert recipient; no reviewed CloudFormation change set; no rollback rehearsal; detection window unmeasured |
+| Cost guardrail | `Project` activated successfully; `codelah-public-preview-monthly-10-usd` budget confirmed with USD 5 and USD 10 actual-spend alerts (2026-08-18) |
+| Blocking conditions | Free-plan eligibility remains console-only; no reviewed CloudFormation change set; no rollback rehearsal; detection window unmeasured |
 
 ## Local validation only
 

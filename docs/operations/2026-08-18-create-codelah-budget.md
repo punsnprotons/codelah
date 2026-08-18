@@ -27,3 +27,7 @@ The `Project` cost-allocation tag is active. A tightly scoped monthly budget wit
 ## Evidence requirements
 
 Record only the budget name, limit, filter, alert thresholds, and AWS API verification result. Do not retain the alert email, account contact information, credentials, learner data, or raw request bodies. CloudTrail correlation remains to be verified after the action.
+
+## Result
+
+2026-08-18: AWS Budgets confirmed `codelah-public-preview-monthly-10-usd` with a USD 10 monthly `COST` limit, filter `user:Project$codelah`, and two `ACTUAL` alerts at 50% and 100%. The recipient is deliberately omitted from this record.
