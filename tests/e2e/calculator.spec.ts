@@ -14,10 +14,18 @@ async function activateWithKeyboard(page: import('@playwright/test').Page, targe
   await page.keyboard.press('Enter');
 }
 
+async function continueFromPersonalization(page: import('@playwright/test').Page) {
+  await expect(page.getByText(/journey is ready/)).toBeVisible();
+  const continueButton = page.getByRole('button', { name: 'Continue', exact: true });
+  await expect(continueButton).toBeEnabled({ timeout: 6_000 });
+  await continueButton.click();
+}
+
 async function reachKeyboardPlanner(page: import('@playwright/test').Page) {
   await page.goto('/');
   await page.getByRole('button', { name: 'Sports' }).click();
   await page.getByRole('button', { name: /Continue/ }).click();
+  await continueFromPersonalization(page);
   await page.getByRole('radio', { name: /Text/ }).click();
   await page.getByRole('button', { name: 'Check answer' }).click();
   await page.getByRole('button', { name: /Plan the program/ }).click();
@@ -50,7 +58,8 @@ test('exposes selected interests and diagnostic choices as named native controls
 
   await page.getByRole('button', { name: /Continue/ }).click();
   await expect(page.getByText('Your Science journey is ready')).toBeVisible();
-  await expect(page.getByText('Preparing your starting check')).toBeVisible();
+  await expect(page.getByText('Forming your learning path…')).toBeVisible();
+  await continueFromPersonalization(page);
   const textAnswer = page.getByRole('radio', { name: 'Text' });
   await expect(page.getByRole('radiogroup', { name: 'Concept check answers' })).toBeVisible();
   await expect(textAnswer).toHaveAttribute('aria-checked', 'false');
@@ -62,6 +71,7 @@ test('gives a corrective diagnostic hint without exposing the answer', async ({ 
   await page.goto('/');
   await page.getByRole('button', { name: 'Sports' }).click();
   await page.getByRole('button', { name: /Continue/ }).click();
+  await continueFromPersonalization(page);
   await page.getByRole('radio', { name: /A number/ }).click();
   await page.getByRole('button', { name: 'Check answer' }).click();
   await expect(page.getByRole('status')).toContainText('Think about what a keyboard sends');
@@ -88,6 +98,7 @@ test('completes the canonical lesson using Tab and Enter only', async ({ page })
   await page.goto('/');
   await activateWithKeyboard(page, page.getByRole('button', { name: 'Sports' }));
   await activateWithKeyboard(page, page.getByRole('button', { name: /Continue/ }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: 'Continue', exact: true }));
   await activateWithKeyboard(page, page.getByRole('radio', { name: 'Text' }));
   await activateWithKeyboard(page, page.getByRole('button', { name: 'Check answer' }));
   await expect(page.getByRole('status')).toContainText('Input begins as text');

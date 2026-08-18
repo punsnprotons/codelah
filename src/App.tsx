@@ -102,11 +102,12 @@ function InterestScreen({ onContinue }: { onContinue: (selected: string[]) => vo
 function PersonalizingScreen({ context, onContinue }: { context: { label: string; project: string; fact: string }; onContinue: () => void }) {
   const topic = context.label.replace(' context', '');
   const role = ({ Sports: 'athlete', Music: 'music creator', Science: 'scientist', Arts: 'artist', Games: 'game creator', Technology: 'builder', Film: 'filmmaker', Fashion: 'designer' } as Record<string, string>)[topic] ?? 'creator';
+  const [ready, setReady] = useState(false);
   useEffect(() => {
-    const timer = window.setTimeout(onContinue, 3300);
+    const timer = window.setTimeout(() => setReady(true), 2800);
     return () => window.clearTimeout(timer);
-  }, [onContinue]);
-  return <main className="light-screen personalizing-screen"><Progress screen="personalizing" /><section className="personalizing-panel" aria-live="polite"><CodeLahMascot /><p className="personalizing-kicker">Your {topic} journey is ready</p><h1>We’re shaping your first project around {topic.toLowerCase()}.</h1><p className="personalizing-copy">You’ll start with a {context.project}, built to help you grow as a {role}.</p><div className="personalization-steps" role="status"><div className="personalization-step"><span className="personalization-step__mark">✓</span><span>Your focus: {topic}</span></div><div className="personalization-step"><span className="personalization-step__mark">✓</span><span>Choosing your first project</span></div><div className="personalization-step personalization-step--loading"><span className="personalization-step__mark" /><span>Preparing your starting check</span></div></div><div className="personalization-loader" aria-hidden="true"><span /></div><p className="personalizing-status">Almost ready…</p></section></main>;
+  }, []);
+  return <main className="light-screen personalizing-screen"><Progress screen="personalizing" /><section className="personalizing-panel" aria-live="polite"><CodeLahMascot /><p className="personalizing-kicker">Your {topic} journey is ready</p><h1>We’re shaping your first project around {topic.toLowerCase()}.</h1><p className="personalizing-copy">You’ll start with a {context.project}, built to help you grow as a {role}.</p><div aria-hidden="true" className="path-build"><span className="path-build__block path-build__block--explore">Explore</span><span className="path-build__block path-build__block--practice">Practice</span><span className="path-build__block path-build__block--create">Create</span><div className="path-build__core"><span className="path-build__icon"><InterestIcon interest={topic.toLowerCase()} /></span><strong>{context.project}</strong></div></div><div className="personalization-loader" aria-hidden="true"><span /></div><p className="personalizing-status" role="status">{ready ? 'Your path is ready.' : 'Forming your learning path…'}</p><button className="primary-button personalizing-button" disabled={!ready} onClick={onContinue} type="button">Continue</button></section></main>;
 }
 
 function DiagnosticScreen({ onContinue }: { onContinue: () => void }) {
