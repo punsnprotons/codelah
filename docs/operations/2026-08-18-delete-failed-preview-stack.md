@@ -22,3 +22,7 @@
 ## Justification
 
 CloudFormation will not create a new stack using the same name while its previous attempt remains `ROLLBACK_COMPLETE`. AWS has independently confirmed that the only retained logical resource does not physically exist. Deleting this failed stack record is necessary cleanup before a corrected change-set review.
+
+## Result
+
+2026-08-18: `DeleteStack` completed. A follow-up `DescribeStacks` returned `ValidationError: Stack with id codelah-public-preview does not exist`, confirming that the failed stack record is gone. No bucket, object, distribution, or public endpoint was removed because none existed.
