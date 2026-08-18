@@ -88,8 +88,6 @@ Resources:
             HeaderBehavior: none
           QueryStringsConfig:
             QueryStringBehavior: none
-          EnableAcceptEncodingBrotli: true
-          EnableAcceptEncodingGzip: true
 
   VersionedAssetsCachePolicy:
     Type: AWS::CloudFront::CachePolicy

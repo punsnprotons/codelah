@@ -29,3 +29,7 @@
 ## Evidence requirements
 
 Record the stack status, created logical resources, CloudFormation event identifiers/timestamps when available, and post-deploy verification evidence. Do not retain account IDs, credentials, alert-recipient email, learner data, signed URLs, or raw request bodies. Do not upload artefacts or expose an application build under this request.
+
+## Execution result and remediation
+
+2026-08-18: the first execution entered `ROLLBACK_IN_PROGRESS`; no CloudFront distribution or public URL was created. CloudFormation identified the root cause as `HtmlNoCachePolicy`: CloudFront rejects `EnableAcceptEncodingGzip` when caching is disabled. All later resource failures were cancellation fallout. CloudFormation deleted the policies and origin control it had created; the bucket was skipped because the template declares it `Retain`. A narrow template correction removes the incompatible Brotli/Gzip settings only from that no-cache policy. The corrected template has passed read-only CloudFormation validation. Do not retry until the current rollback reaches its terminal state and a new review-only change set is generated.
