@@ -186,19 +186,20 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 
 /* Planning */
 .plan-screen { background-color: var(--paper); background-image: radial-gradient(#d8e1d6 1.15px, transparent 1.15px); background-size: 18px 18px; display: flex; min-height: 100vh; padding-bottom: 30px; }
-.plan-stage { align-self: center; margin: 48px auto 0; max-width: 1280px; width: 100%; }
+.plan-stage { align-self: center; margin: 48px auto 0; max-width: none; width: 100%; }
 .plan-heading { text-align: center; }
 .plan-heading h1 { font-family: inherit; font-size: clamp(2.55rem, 4.4vw, 4.3rem); font-weight: 650; letter-spacing: -.06em; margin-bottom: 10px; }
 .plan-heading > p:last-child { color: #5e6860; font-size: 1rem; }
-.plan-layout { display: grid; margin: 34px auto 0; max-width: 1160px; }
+.plan-layout { display: grid; margin: 34px clamp(24px, 2vw, 44px) 0; max-width: none; }
 .blockly-host { background: transparent; border: 0; border-radius: 0; box-shadow: none; height: min(61vh, 650px); min-height: 520px; overflow: hidden; }
 .blockly-host--hidden { display: none; }
-.blockly-host .blocklyText { font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13pt !important; font-weight: 700; }
+.blockly-host .blocklyText { font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14pt !important; font-weight: 700; }
 .blockly-host .blocklyToolboxDiv { background: transparent !important; border: 0 !important; padding: 14px 10px 0 0; }
 .blockly-host .blocklyTreeRow { border-radius: 999px; height: auto !important; margin: 0; padding: 8px 11px !important; }
 .blockly-host .blocklyTreeLabel { font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: .79rem; font-weight: 800; }
-.blockly-host .blocklyFlyout { box-shadow: 0 8px 22px #1f2b1d12; }
-.blockly-host .blocklyFlyoutBackground { fill: #f7f8f6; stroke: #d9e3d6; stroke-width: 1; }
+.blockly-host .blocklyToolboxDiv { pointer-events: none; }
+.blockly-host .blocklyFlyout { box-shadow: none; }
+.blockly-host .blocklyFlyoutBackground { fill: transparent; stroke: transparent; }
 .blockly-host .blocklyMainBackground { stroke: transparent !important; }
 .keyboard-plan { background: #fff; border: 1px solid #cbd6cb; border-radius: 20px; min-height: 520px; padding: 28px; }
 .keyboard-plan ol { color: #273029; display: grid; gap: 10px; margin: 18px 0 26px; padding-left: 26px; }

@@ -124,10 +124,13 @@ export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
       },
       grid: { spacing: 20, length: 3, colour: '#d9e3d6', snap: true },
       trashcan: false,
-      zoom: { controls: false, wheel: false, startScale: 0.9, maxScale: 1.25, minScale: 0.72 },
+      zoom: { controls: false, wheel: false, startScale: 0.93, maxScale: 1.28, minScale: 0.74 },
       move: { scrollbars: false, drag: true, wheel: false },
     });
     workspace.current = nextWorkspace;
+    const toolbox = nextWorkspace.getToolbox();
+    const stepsCategory = toolbox?.getToolboxItems()[0];
+    if (stepsCategory) toolbox?.setSelectedItem(stepsCategory);
     const resize = () => Blockly.svgResize(nextWorkspace);
     window.addEventListener('resize', resize);
     return () => {
