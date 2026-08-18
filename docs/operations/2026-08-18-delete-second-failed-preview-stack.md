@@ -12,3 +12,7 @@
 | Boundary | does not authorize a new change set execution, artefact upload, or public resource |
 
 The second failed stack cannot be reused. Its cache-policy root cause has been corrected and CloudFormation validation passed; deleting this empty failed record is necessary before creating the third review-only change set.
+
+## Result
+
+2026-08-18: deletion completed. `DescribeStacks` returned that `codelah-public-preview` does not exist.
