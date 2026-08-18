@@ -5,13 +5,13 @@
 | Field | Current decision |
 | --- | --- |
 | Decision | Build the first CodeLah learning kernel before any account, tutor-dashboard, or multi-course platform work. |
-| Customer segment | Mixed-age beginner coders in tutor-led learning sessions. |
+| Customer segment | Adult (18+) beginner coders in tutor-led learning sessions and a zero-data public preview. |
 | Job to be done | “Help me understand how a program thinks, then build it myself in a context that feels relevant.” |
 | Current workflow | Generic Colab notebook, written prompt, empty code cell, tutor intervention after a learner gets stuck. |
 | Pain | Blank-page anxiety, weak evidence of conceptual understanding, and tutors lack precise context before helping. |
 | Desired outcome | A learner can independently plan, implement, run, and explain a beginner Python program. |
-| Constraints | Mixed ages; potential minors; no sign-in initially; private AWS pilot; code correctness must not depend on an LLM. |
-| Unknowns | Institution policy, pilot cohort size, supported browsers, approved region, data classification, and pilot owner. |
+| Constraints | 18+ eligibility policy; no sign-in; no learner-data collection or persistence; public CloudFront preview with private AWS origin; code correctness must not depend on an LLM. |
+| Unknowns | Institution policy, pilot cohort size, supported browsers, custom-domain timing, and future data-collection requirements. |
 
 ## Problem and hypothesis
 

@@ -11,7 +11,7 @@ This runbook governs the local acceptance phase and the future private-pilot env
 | Local repository | initialized after this documentation baseline is committed |
 | GitHub target | `punsnprotons/codelah`, verified reachable and empty before first push |
 | AWS named profile | `private`, read-only identity verified 2026-08-18: SSO `AdministratorAccess` assumed role in the account ending `5843` |
-| Region | `ap-southeast-1` is configured; environment-owner approval is still required |
+| Region | `ap-southeast-1` is configured and owner-approved |
 | Environment owner | Sufi (user-designated) |
 | Data classification / criticality | static lesson artefacts: Public; any learner-entered text/code: untrusted and potentially personal data, prohibited from server storage; aggregate operational metrics: Internal |
 | Existing deployed resources | no resources tagged `Project=codelah` found in `ap-southeast-1` on 2026-08-18; untagged or differently tagged resources remain unknown |
@@ -40,8 +40,9 @@ Do not provision while the last four facts are unresolved.
 | Interest selections, diagnostic answers, pseudocode, learner code, and output | Process in browser memory only; do not send to AWS, persist in browser storage, or include in logs/analytics | Session only; cleared by lesson reset or browser close |
 | IP addresses, cookies, accounts, or persistent identifiers | Do not add for this MVP | Not collected by the application |
 | Operational telemetry | Aggregate availability/security metrics only; no request-body, learner-content, or user-level analytics logging | 30-day operational review window; no export or profiling use |
+| Eligibility | 18+ only; no account, age-verification, or personal-data collection in this MVP | Policy notice only; no age data retained |
 
-The public URL can be visited by minors. This is acceptable only for the zero-data static preview above: do not solicit personal data, add accounts, target minors, or enable external AI tutoring without a separate privacy/institutional review. Manual screen-reader testing remains deferred, but is required before an education-partner or minor-targeted release.
+The public preview is intended for adults aged 18+. Because there is no identity or age-verification system, the app must keep the zero-data boundary above: do not solicit personal data, add accounts, or enable external AI tutoring without a separate privacy/institutional review. Manual screen-reader testing remains deferred, but is required before an institutional education release or any release that collects learner data.
 
 **Next implementation step:** create a no-apply IaC plan for a private S3 origin, CloudFront Origin Access Control, public distribution domain, HTTPS-only viewer policy, minimal WAF/rate protection, versioned rollback, and aggregate-only monitoring. Owner review of that plan is required before any AWS write.
 
@@ -61,7 +62,7 @@ This evidence does **not** approve deployment. It does approve the M2 **read-onl
 
 **Decision:** defer the manual VoiceOver/NVDA acceptance run from the current internal MVP phase. The automated keyboard journey and semantic regression remain required and have passed locally.
 
-**Boundary:** the first AWS environment is for internal product/tutor validation only. Do not invite external learners, expose a public endpoint, process learner personal data, or include minors until a manual screen-reader check is recorded on the intended browser/device and the applicable privacy/institutional approvals exist.
+**Boundary:** the first AWS environment may expose the zero-data public preview to adults 18+ through CloudFront. Do not add accounts, learner-data collection, external AI tutoring, or age verification without a separate privacy/institutional review. Complete manual screen-reader testing before an institutional education release or any release that collects learner data.
 
 ## Offline-support decision
 
@@ -76,7 +77,7 @@ This evidence does **not** approve deployment. It does approve the M2 **read-onl
 3. Confirm whether a dedicated non-production account exists; do not use an unknown shared account as a pilot by assumption.
 4. Confirm the DNS zone and certificate ownership.
 5. Review IaC plan with the owner; declare resources, cost estimate, blast radius, rollback handle, and detection window.
-6. Confirm that no minors will use the product until appropriate institutional/privacy approval exists.
+6. Publish a clear 18+ eligibility notice; do not collect age or personal data in the MVP.
 
 ## Local setup after implementation begins
 

@@ -27,7 +27,7 @@ A novice finishes a relevant first coding task independently and can explain the
 | Keyboard-plan alternative | Native-button planner provides a non-drag path; browser regression completes the full alternate path with Tab and Enter only. Local semantic preflight confirms native controls and state semantics. | passed locally |
 | Offline support decision | **Deferred from M1.** No observed pilot requirement justifies cache complexity yet; the Chromium cache experiment was rejected after its offline regression failed. Revisit only with pilot device/network evidence. | documented deferral |
 | Timeout and malformed-code recovery | Browser regression verifies malformed code remains locked and a runaway Worker terminates then recovers. | passed locally |
-| Accessibility code review | Native buttons, labels, visible focus, reduced-motion rule, touch interaction, and alternate planner reviewed; inert back control removed. Local semantic and keyboard regressions passed. VoiceOver/NVDA review is deliberately deferred; it is required before an education-partner or minor-targeted release. | deferred — does not block zero-data public preview planning |
+| Accessibility code review | Native buttons, labels, visible focus, reduced-motion rule, touch interaction, and alternate planner reviewed; inert back control removed. Local semantic and keyboard regressions passed. VoiceOver/NVDA review is deliberately deferred; it is required before an institutional education release or any release that collects learner data. | deferred — does not block zero-data public preview planning |
 
 ### Next step
 
@@ -45,7 +45,7 @@ Begin the **M2 public-preview IaC plan**. Do not provision yet:
 - Keyboard-only learner path passes.
 - No model/API key is needed to complete the lesson.
 - Reset works without corrupting state.
-- Manual VoiceOver/NVDA validation is deferred until before an education-partner or minor-targeted release; it remains a release requirement for that audience.
+- Manual VoiceOver/NVDA validation is deferred until before an institutional education release or any release that collects learner data.
 
 ## M3 model gate
 
