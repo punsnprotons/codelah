@@ -49,6 +49,8 @@ test('exposes selected interests and diagnostic choices as named native controls
   await expect(page.getByRole('button', { name: /Continue/ })).toBeEnabled();
 
   await page.getByRole('button', { name: /Continue/ }).click();
+  await expect(page.getByText('Your Science journey is ready')).toBeVisible();
+  await expect(page.getByText('Preparing your starting check')).toBeVisible();
   const textAnswer = page.getByRole('radio', { name: 'Text' });
   await expect(page.getByRole('radiogroup', { name: 'Concept check answers' })).toBeVisible();
   await expect(textAnswer).toHaveAttribute('aria-checked', 'false');

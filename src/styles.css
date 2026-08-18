@@ -84,6 +84,32 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 @keyframes mascot-float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(2deg); } }
 @keyframes selection-badge { 0% { transform: scale(.65) rotate(0); } 75% { transform: scale(1.12) rotate(-4deg); } 100% { transform: scale(1) rotate(-4deg); } }
 
+/* Personalized transition */
+.personalizing-screen { display: grid; overflow: hidden; place-items: center; }
+.personalizing-screen .progress { background: #dfe1df; border-radius: 999px; gap: 0; height: 8px; overflow: hidden; padding: 0; }
+.personalizing-screen .progress__segment { background: transparent; border-radius: 0; height: 100%; }
+.personalizing-screen .progress__segment--active { background: linear-gradient(90deg, #13c861, var(--lime)); }
+.personalizing-panel { max-width: 590px; text-align: center; transform: translateY(-18px); }
+.personalizing-panel .codelah-mascot { height: 116px; margin-bottom: 8px; width: 116px; }
+.personalizing-kicker { color: #5e7f1b; font-size: .78rem; font-weight: 800; letter-spacing: .1em; margin-bottom: 14px; text-transform: uppercase; }
+.personalizing-panel h1 { font-size: clamp(2.2rem, 4vw, 3.55rem); font-weight: 650; letter-spacing: -.05em; line-height: 1.06; margin-bottom: 16px; }
+.personalizing-copy { color: #5e6860; font-size: 1.06rem; line-height: 1.55; margin: 0 auto; max-width: 500px; }
+.personalization-steps { display: grid; gap: 10px; margin: 36px auto 0; max-width: 450px; text-align: left; }
+.personalization-step { align-items: center; animation: personalization-step-in .45s both; background: #fff; border: 1px solid #dfe6df; border-radius: 14px; color: #354037; display: flex; font-size: .95rem; font-weight: 650; gap: 12px; min-height: 54px; padding: 10px 15px; }
+.personalization-step:nth-child(2) { animation-delay: .35s; }
+.personalization-step:nth-child(3) { animation-delay: .7s; }
+.personalization-step__mark { align-items: center; background: #eaf6cf; border-radius: 50%; color: #5d8b1d; display: inline-flex; font-size: .78rem; height: 24px; justify-content: center; width: 24px; }
+.personalization-step--loading .personalization-step__mark { background: conic-gradient(#73ad25 0 30%, #e3efcc 30% 100%); position: relative; }
+.personalization-step--loading .personalization-step__mark::after { background: #fff; border-radius: 50%; content: ''; height: 16px; position: absolute; width: 16px; }
+.personalization-step--loading .personalization-step__mark { animation: loading-spin 1s linear infinite; }
+.personalization-loader { background: #e2e7e1; border-radius: 999px; height: 8px; margin: 26px auto 0; max-width: 450px; overflow: hidden; }
+.personalization-loader span { animation: personalizing-load 3.1s ease-out forwards; background: linear-gradient(90deg, #18c968, #c7fa54); border-radius: inherit; display: block; height: 100%; transform-origin: left; }
+.personalizing-status { color: #647066; font-size: .9rem; margin: 14px 0 0; }
+
+@keyframes personalization-step-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes personalizing-load { from { transform: scaleX(.08); } to { transform: scaleX(1); } }
+@keyframes loading-spin { to { transform: rotate(360deg); } }
+
 /* Diagnostic */
 .diagnostic-screen { display: flex; justify-content: center; }
 .diagnostic-content { align-self: center; margin-top: 38px; max-width: 1080px; text-align: center; width: 100%; }
@@ -189,6 +215,10 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .journey-back { min-width: 116px; padding: 0 20px; }
   .onboarding-button { display: flex; transform: none; }
   .onboarding-button:hover:not(:disabled) { transform: translateY(-1px); }
+  .personalizing-panel { transform: none; }
+  .personalizing-panel .codelah-mascot { height: 82px; width: 82px; }
+  .personalizing-panel h1 { font-size: 2.1rem; }
+  .personalization-steps { margin-top: 26px; }
   .answer-grid { grid-template-columns: 1fr; margin-top: 25px; }
   .answer-card { min-height: 112px; flex-direction: row; justify-content: flex-start; padding: 18px 25px; }
   .answer-card__visual { font-size: 1rem; height: 45px; width: 55px; }
@@ -208,6 +238,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 
 @media (prefers-reduced-motion: reduce) {
   .codelah-mascot__body { animation: none; }
+  .personalization-step, .personalization-loader span, .personalization-step--loading .personalization-step__mark { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
