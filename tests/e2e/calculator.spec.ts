@@ -42,10 +42,10 @@ test('exposes selected interests and diagnostic choices as named native controls
   await expect(sports).toHaveAttribute('aria-pressed', 'false');
   await sports.click();
   await expect(sports).toHaveAttribute('aria-pressed', 'true');
-  const stem = page.getByRole('button', { name: 'STEM & Engineering' });
-  await stem.click();
+  const science = page.getByRole('button', { name: 'Science' });
+  await science.click();
   await expect(sports).toHaveAttribute('aria-pressed', 'false');
-  await expect(stem).toHaveAttribute('aria-pressed', 'true');
+  await expect(science).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('button', { name: /Continue/ })).toBeEnabled();
 
   await page.getByRole('button', { name: /Continue/ }).click();

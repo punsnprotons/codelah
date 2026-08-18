@@ -5,18 +5,21 @@ import { usePythonRunner } from './usePythonRunner';
 type Screen = 'interests' | 'diagnostic' | 'plan' | 'module' | 'assembly' | 'transfer';
 
 const interests = [
-  { id: 'sports', label: 'Sports' }, { id: 'stem', label: 'STEM & Engineering' },
-  { id: 'arts', label: 'Arts & Media' }, { id: 'games', label: 'Games & Storytelling' },
-  { id: 'business', label: 'Business' }, { id: 'public', label: 'Society & Public Service' },
+  { id: 'sports', label: 'Sports' }, { id: 'music', label: 'Music' },
+  { id: 'science', label: 'Science' }, { id: 'arts', label: 'Arts' },
+  { id: 'games', label: 'Games' }, { id: 'technology', label: 'Technology' },
+  { id: 'film', label: 'Film' }, { id: 'fashion', label: 'Fashion' },
 ];
 
 const lessonContexts: Record<string, { label: string; project: string; fact: string }> = {
   sports: { label: 'Sports context', project: 'match calculator', fact: 'Sports dashboards convert incoming score data before calculating results.' },
-  stem: { label: 'STEM context', project: 'measurement calculator', fact: 'Engineering tools validate measurements before using them in a calculation.' },
-  arts: { label: 'Arts context', project: 'production calculator', fact: 'Creative tools turn typed settings into reliable values before rendering.' },
+  music: { label: 'Music context', project: 'setlist calculator', fact: 'Music apps turn typed durations and counts into reliable setlists.' },
+  science: { label: 'Science context', project: 'measurement calculator', fact: 'Science tools validate measurements before using them in a calculation.' },
+  arts: { label: 'Arts context', project: 'palette calculator', fact: 'Creative tools turn typed settings into reliable values before rendering.' },
   games: { label: 'Games context', project: 'game-score calculator', fact: 'Game systems check player inputs before updating a score.' },
-  business: { label: 'Business context', project: 'revenue calculator', fact: 'Business dashboards validate source values before showing a total.' },
-  public: { label: 'Public service context', project: 'incident calculator', fact: 'Public-service software needs clear validation so a bad value cannot silently produce a bad result.' },
+  technology: { label: 'Technology context', project: 'device calculator', fact: 'Technology tools validate values before they make a calculation.' },
+  film: { label: 'Film context', project: 'scene calculator', fact: 'Film tools calculate timings from the settings a creator enters.' },
+  fashion: { label: 'Fashion context', project: 'size calculator', fact: 'Fashion tools check measurements before suggesting a size.' },
 };
 
 type ModuleSpec = { title: string; planStep: string; hint: string; why: string; starter: string; inputs: string[]; assertion: string; failureMessage: string };
@@ -53,11 +56,13 @@ function Progress({ screen }: { screen: Screen }) {
 function InterestIcon({ interest }: { interest: string }) {
   const common = { fill: 'none', stroke: 'currentColor', strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, strokeWidth: 1.8 };
   if (interest === 'sports') return <svg aria-hidden="true" viewBox="0 0 24 24"><circle {...common} cx="12" cy="12" r="8" /><path {...common} d="M5.2 8.1c3.4.1 6.5 1.4 8.5 3.9 1.6 2 2.5 4.3 2.7 6.7M18.8 7.1c-2.8 1-4.6 2.9-5.3 5.5-.8 3-2.8 4.7-5.7 5.2M12 4v16" /></svg>;
-  if (interest === 'stem') return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M9 3h3l1.1 5.4-4.2 1.1L7.6 4.1 9 3Z" /><path {...common} d="m9.1 10.6 4.1-1.1 1 3.8a4.4 4.4 0 0 1-7.7 4.1" /><path {...common} d="M5 20h14M8.2 17.2 6 20M16 6.5l1.2 1.2M16.8 3.5v1.8" /><circle {...common} cx="8.7" cy="14.3" r="1.2" /></svg>;
+  if (interest === 'music') return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M15.5 4.5v10.2a3.1 3.1 0 1 1-1.8-2.8V7l5.2-1.3v8a3.1 3.1 0 1 1-1.8-2.8V4Z" /></svg>;
+  if (interest === 'science') return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M9 3h3l1.1 5.4-4.2 1.1L7.6 4.1 9 3Z" /><path {...common} d="m9.1 10.6 4.1-1.1 1 3.8a4.4 4.4 0 0 1-7.7 4.1" /><path {...common} d="M5 20h14M8.2 17.2 6 20M16 6.5l1.2 1.2M16.8 3.5v1.8" /><circle {...common} cx="8.7" cy="14.3" r="1.2" /></svg>;
   if (interest === 'arts') return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="m15.7 3.5 4.8 4.8-4.3 4.3-4.8-4.8 4.3-4.3Z" /><path {...common} d="m11.4 7.8 4.8 4.8-3.4 3.4a4 4 0 0 1-2.8 1.2H6.5l.6-3.5a4 4 0 0 1 1.1-2.3l3.2-3.6Z" /><path {...common} d="M6.5 17.2c.9-1 2.1-1.4 3.5-1.2" /></svg>;
   if (interest === 'games') return <svg aria-hidden="true" viewBox="0 0 24 24"><rect {...common} x="4" y="6" width="16" height="11" rx="2" /><path {...common} d="M8 21h8M12 17v4M8 10v3m-1.5-1.5h3" /><circle {...common} cx="16" cy="10.5" r=".7" /><circle {...common} cx="17.8" cy="12.5" r=".7" /></svg>;
-  if (interest === 'business') return <svg aria-hidden="true" viewBox="0 0 24 24"><rect {...common} x="4" y="7" width="16" height="11" rx="2" /><path {...common} d="M9 7V5.5h6V7M4 11h16M10 14h4" /></svg>;
-  return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M4 20h16M6 20v-8h12v8M4 12h16L12 5 4 12ZM9 15v2m3-2v2m3-2v2" /></svg>;
+  if (interest === 'technology') return <svg aria-hidden="true" viewBox="0 0 24 24"><rect {...common} x="6" y="6" width="12" height="12" rx="2" /><path {...common} d="M9 2v4m3-4v4m3-4v4M9 18v4m3-4v4m3-4v4M2 9h4m-4 3h4m-4 3h4m12-6h4m-4 3h4m-4 3h4" /></svg>;
+  if (interest === 'film') return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M4 9h16v10H4zM4 9l2-4h4l2 4 2-4h4l2 4" /><path {...common} d="M4 13h16M9 16h6" /></svg>;
+  return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M12 4a3 3 0 0 0-3 3v1L4.5 13.5 3 17h18l-1.5-3.5L15 8V7a3 3 0 0 0-3-3Z" /><path {...common} d="M5 17h14" /></svg>;
 }
 
 function CodeLahMascot() {

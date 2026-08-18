@@ -67,11 +67,13 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .interest-card__glyph { align-items: center; border-radius: 10px; display: inline-flex; height: 36px; justify-content: center; width: 36px; }
 .interest-card__glyph svg { height: 25px; width: 25px; }
 .interest-card--sports .interest-card__glyph { background: #fff0e9; color: #ed6a35; }
-.interest-card--stem .interest-card__glyph { background: #edf0ff; color: #5865d7; }
-.interest-card--arts .interest-card__glyph { background: #f7ebff; color: #a855d5; }
+.interest-card--music .interest-card__glyph { background: #f7eaff; color: #ad52d7; }
+.interest-card--science .interest-card__glyph { background: #edf0ff; color: #5865d7; }
+.interest-card--arts .interest-card__glyph { background: #fff0df; color: #e8861f; }
 .interest-card--games .interest-card__glyph { background: #fff5dd; color: #e89b16; }
-.interest-card--business .interest-card__glyph { background: #e7f8ef; color: #23966a; }
-.interest-card--public .interest-card__glyph { background: #e9f3ff; color: #277fd5; }
+.interest-card--technology .interest-card__glyph { background: #e5f7f6; color: #168d8a; }
+.interest-card--film .interest-card__glyph { background: #ffe8ee; color: #d94b6b; }
+.interest-card--fashion .interest-card__glyph { background: #e7f8ef; color: #23966a; }
 .interest-card__label { padding-right: 12px; }
 .interest-card__check { align-items: center; border: 1.5px solid #cbd4cc; border-radius: 8px; color: transparent; display: inline-flex; height: 24px; justify-content: center; transition: background .15s ease, border-color .15s ease, transform .15s ease; width: 24px; }
 .interest-card__check svg { fill: none; height: 16px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; width: 16px; }
