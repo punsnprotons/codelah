@@ -17,7 +17,7 @@ A novice finishes a relevant first coding task independently and can explain the
 
 ## Current milestone state — 2026-08-18
 
-**M1 functional acceptance is complete; M2 static-delivery infrastructure is deployed but the application artefact is not yet published.** The local calculator flow has now been exercised through interest selection, diagnostic, keyboard-plan alternative, five independently checked Python modules, assembly, transfer check, and reset.
+**M1 functional acceptance is complete; M2 static delivery and the first reviewed application artefact are deployed.** The deployed CloudFront URL passed HTTP, private-origin, and browser onboarding/diagnostic smoke checks. The local calculator flow has also been exercised through interest selection, diagnostic, keyboard-plan alternative, five independently checked Python modules, assembly, transfer check, and reset.
 
 | M1 area | Evidence | Status |
 | --- | --- | --- |
@@ -31,11 +31,11 @@ A novice finishes a relevant first coding task independently and can explain the
 
 ### Next step
 
-Complete the **M2 static-artifact publication**:
+Complete the **M2 operational acceptance**:
 
-1. Create an immutable static build manifest, upload only reviewed files to the private S3 origin, then invalidate CloudFront paths deliberately.
-2. Verify the deployed HTTPS URL, private-origin policy, learner journey, Worker timeout/reset, and absence of learner-data network calls.
-3. Select the CloudFront Free plan in the console if eligible; otherwise record the approved fallback cost path. Rehearse rollback and measure the detection window.
+1. Select the CloudFront Free plan in the console if eligible; otherwise record the approved fallback cost path.
+2. Rehearse rollback to a prior reviewed artefact and measure the detection window.
+3. Complete a live full-lesson browser smoke, including Worker timeout/reset and absence of learner-data network calls.
 
 ## M1 acceptance criteria
 

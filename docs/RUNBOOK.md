@@ -2,7 +2,7 @@
 
 ## Scope
 
-This runbook governs the local acceptance phase and the deployed static-delivery foundation. Stack `codelah-public-preview` reached `CREATE_COMPLETE` on 2026-08-18; no CodeLah artefact has been uploaded yet.
+This runbook governs the local acceptance phase and the deployed static preview. Stack `codelah-public-preview` reached `CREATE_COMPLETE` on 2026-08-18 and serves the first reviewed CodeLah artefact through CloudFront.
 
 ## Verified target facts
 
@@ -14,7 +14,7 @@ This runbook governs the local acceptance phase and the deployed static-delivery
 | Region | `ap-southeast-1` is configured and owner-approved |
 | Environment owner | Sufi (user-designated) |
 | Data classification / criticality | static lesson artefacts: Public; any learner-entered text/code: untrusted and potentially personal data, prohibited from server storage; aggregate operational metrics: Internal |
-| Existing deployed resources | `codelah-public-preview` has a private S3 bucket/policy, CloudFront distribution/OAC, three cache policies, and security headers; application artefact upload is pending |
+| Existing deployed resources | `codelah-public-preview` has a private S3 bucket/policy, CloudFront distribution/OAC, three cache policies, security headers, and the first reviewed static artefact |
 
 Do not provision while the last four facts are unresolved.
 
@@ -58,7 +58,7 @@ The public preview is intended for adults aged 18+. Because there is no identity
 | Production build | `bun run build` | passed |
 | Browser regression | `bun run test:e2e` | passed: eight Chromium cases, including a full Tab-and-Enter journey, labelled editor/live feedback, malformed code, and runaway-loop recovery |
 | Learner smoke journey | local in-app browser | passed: interest → diagnostic → keyboard planner → five modules → assembly → transfer → reset |
-| Static infrastructure deployment | CloudFormation `codelah-public-preview` | passed: eight planned infrastructure resources are `CREATE_COMPLETE`; no application artefact uploaded |
+| Static publication and edge smoke | CloudFormation/S3/CloudFront | passed: 18 artefact files uploaded, invalidation completed, CloudFront served HTTPS `200`, direct S3 was denied, and live onboarding/diagnostic smoke had no console errors |
 
 This evidence does **not** approve deployment. It does approve the M2 **read-only preflight** described below. The project-scoped cost guardrail is active and the review-only change set is available; execution remains blocked until the owner approves that exact change set and accepts the unrehearsed rollback/detection risk.
 

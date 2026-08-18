@@ -2,7 +2,7 @@
 
 ## Status
 
-The reviewed CloudFormation plan has been executed for the CodeLah 18+ zero-data public preview in `ap-southeast-1`. Stack `codelah-public-preview` reached `CREATE_COMPLETE` on 2026-08-18. It currently provides only the private S3 origin and CloudFront delivery infrastructure; no application artefact has been uploaded or served yet. Future updates still require explicit owner approval after review.
+The reviewed CloudFormation plan has been executed for the CodeLah 18+ zero-data public preview in `ap-southeast-1`. Stack `codelah-public-preview` reached `CREATE_COMPLETE` on 2026-08-18, and the first reviewed static artefact is served through CloudFront. Future updates still require explicit owner approval after review.
 
 ## Scope
 
@@ -52,7 +52,8 @@ CloudFront flat-rate plans cannot be attached to a distribution with an existing
 | Existing stack | `codelah-public-preview` is `CREATE_COMPLETE` (2026-08-18) |
 | Cost guardrail | `Project` activated successfully; `codelah-public-preview-monthly-10-usd` budget confirmed with USD 5 and USD 10 actual-spend alerts (2026-08-18) |
 | Deployment evidence | Eight resources are `CREATE_COMPLETE`: private S3 bucket/policy, CloudFront distribution/OAC, three cache policies, and security headers |
-| Remaining conditions | Free-plan eligibility remains console-only; static-artifact upload, post-upload verification, rollback rehearsal, and detection-window measurement remain pending |
+| Published artefact | 18 files / 16.6 MiB; CloudFront invalidation completed and live HTTPS/browser smoke passed (2026-08-18) |
+| Remaining conditions | Free-plan eligibility remains console-only; rollback rehearsal and detection-window measurement remain pending |
 
 ## Local validation only
 

@@ -2,9 +2,9 @@
 
 ## Status and scope
 
-This is the **M2 public-preview architecture**. Its AWS static-delivery infrastructure was deployed on 2026-08-18; no application artefact has been uploaded yet. It is an adult (18+) zero-data preview: there is no sign-in, application API, database, learner-data storage, external AI call, request/access log, user analytics, or persistent browser storage.
+This is the **M2 public-preview architecture**. Its AWS static-delivery infrastructure and first reviewed application artefact were deployed on 2026-08-18. It is an adult (18+) zero-data preview: there is no sign-in, application API, database, learner-data storage, external AI call, request/access log, user analytics, or persistent browser storage.
 
-The named AWS profile `private` is in the owner-approved `ap-southeast-1` region. Stack `codelah-public-preview` is `CREATE_COMPLETE` with a private S3 bucket/policy, CloudFront distribution/OAC, three cache policies, and security headers. Its default CloudFront URL is allocated, but it will not serve the CodeLah app until the reviewed static artefact is uploaded. Untagged pre-existing resources remain outside this deployment evidence.
+The named AWS profile `private` is in the owner-approved `ap-southeast-1` region. Stack `codelah-public-preview` is `CREATE_COMPLETE` with a private S3 bucket/policy, CloudFront distribution/OAC, three cache policies, and security headers. Its default CloudFront URL serves the reviewed static artefact; direct S3 access to `index.html` was verified as denied. Untagged pre-existing resources remain outside this deployment evidence.
 
 ## M2 public-preview context
 

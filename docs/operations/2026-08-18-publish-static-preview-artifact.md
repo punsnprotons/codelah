@@ -15,3 +15,7 @@
 | Boundary | no custom domain, CloudFront pricing-plan selection, telemetry, user data, API/model enablement, or extra AWS resource |
 
 The target bucket has zero object versions and zero delete markers before this first upload. The upload is intentionally split by cache class and does not use `--delete`.
+
+## Result
+
+2026-08-18: all 18 artefact files uploaded successfully and invalidation `I7QK8GZFQAOPWNURSS6IHDO9OS` completed. Live verification found CloudFront `200` for `/` and the hashed JavaScript asset, the intended no-cache/immutable cache headers, TLS/security headers, and direct S3 `403` for `index.html`. A live browser smoke reached onboarding, selected Sports, completed the diagnostic, and showed the expected text-input feedback with zero console errors.
