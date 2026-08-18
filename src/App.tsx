@@ -122,22 +122,14 @@ function PersonalizingScreen({ context, onBack, onContinue }: { context: { label
 }
 
 const foundationTopics = [
-  { id: 'input', concept: 'Input', detail: 'How a program receives what someone types.' },
-  { id: 'numbers', concept: 'Numbers', detail: 'How typed text becomes something you can calculate.' },
-  { id: 'decisions', concept: 'Decisions', detail: 'How a program chooses what to do next.' },
-  { id: 'safe-division', concept: 'Safe division', detail: 'How to catch zero before it causes an error.' },
+  { concept: 'User input', detail: 'How a program receives what someone types.', image: '/images/learning-concepts/user-input.png', alt: 'An abstract keyboard key sending a data point into a program container.' },
+  { concept: 'Data types', detail: 'How code knows whether it is working with text or numbers.', image: '/images/learning-concepts/data-types.png', alt: 'An abstract textured data token transforming into a clean value block.' },
+  { concept: 'Conditional logic', detail: 'How a program chooses between different paths.', image: '/images/learning-concepts/conditional-logic.png', alt: 'An abstract decision diamond branching into two paths.' },
+  { concept: 'Error handling', detail: 'How a program catches a predictable problem before it crashes.', image: '/images/learning-concepts/error-handling.png', alt: 'An abstract shield safely intercepting an error signal.' },
 ];
 
-function FoundationIcon({ topic }: { topic: string }) {
-  const common = { fill: 'none', stroke: 'currentColor', strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, strokeWidth: 1.9 };
-  if (topic === 'input') return <svg aria-hidden="true" viewBox="0 0 32 32"><rect {...common} x="4.5" y="7" width="23" height="15" rx="3" /><path {...common} d="M9 12h.1m4.4 0h.1m4.4 0h.1M10.5 17h11" /><path {...common} d="m20 25 3 3 5-6" /></svg>;
-  if (topic === 'numbers') return <svg aria-hidden="true" viewBox="0 0 32 32"><rect {...common} x="7" y="4.5" width="18" height="23" rx="3" /><path {...common} d="M11 10h10M11 15h2m4 0h2m-8 5h2m4 0h2" /></svg>;
-  if (topic === 'decisions') return <svg aria-hidden="true" viewBox="0 0 32 32"><path {...common} d="M16 5v7m0 0 7 5m-7-5-7 5M9 17v8m0 0-3-3m3 3 3-3m11-5v8m0 0-3-3m3 3 3-3" /><circle {...common} cx="16" cy="12" r="3" /></svg>;
-  return <svg aria-hidden="true" viewBox="0 0 32 32"><path {...common} d="M16 4.5 25 8v7c0 6-3.7 10.1-9 12.5C10.7 25.1 7 21 7 15V8l9-3.5Z" /><path {...common} d="M11.5 16.5 14.5 19l6-7" /><path {...common} d="M23.5 23.5 27 27" /></svg>;
-}
-
 function TopicsScreen({ onBack, onContinue }: { onBack: () => void; onContinue: () => void }) {
-  return <main className="light-screen orientation-screen"><Progress screen="topics" /><section className="orientation-content" aria-labelledby="topics-title"><CodeLahMascot /><h1 id="topics-title">Here’s what you’ll learn.</h1><div className="foundation-grid">{foundationTopics.map((topic) => <article className={`foundation-card foundation-card--${topic.id}`} key={topic.concept}><span className="foundation-card__icon"><FoundationIcon topic={topic.id} /></span><h2>{topic.concept}</h2><p>{topic.detail}</p></article>)}</div></section><div className="onboarding-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" onClick={onContinue} type="button">Continue</button></div></main>;
+  return <main className="light-screen orientation-screen"><Progress screen="topics" /><section className="orientation-content" aria-labelledby="topics-title"><CodeLahMascot /><h1 id="topics-title">Here’s what you’ll learn.</h1><div className="foundation-grid">{foundationTopics.map((topic) => <article className="foundation-card" key={topic.concept}><img alt={topic.alt} className="foundation-card__image" src={topic.image} /><h2>{topic.concept}</h2><p>{topic.detail}</p></article>)}</div></section><div className="onboarding-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" onClick={onContinue} type="button">Continue</button></div></main>;
 }
 
 function QuizIntroScreen({ onBack, onStart }: { onBack: () => void; onStart: () => void }) {

@@ -127,16 +127,11 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .orientation-copy, .quiz-intro-content > p { color: #5e6860; font-size: 1.08rem; line-height: 1.55; margin: 0 auto; max-width: 620px; }
 .orientation-kicker { color: #668719; font-size: .82rem; font-weight: 800; letter-spacing: .08em; margin: 0 0 12px; text-transform: uppercase; }
 .foundation-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); margin: 42px auto 0; max-width: 760px; text-align: left; }
-.foundation-card { background: #fff; border: 1px solid #dce2dc; border-radius: 16px; min-height: 164px; padding: 22px 24px; }
-.foundation-card__icon { align-items: center; border-radius: 13px; display: inline-flex; height: 48px; justify-content: center; margin-bottom: 16px; width: 48px; }
-.foundation-card__icon svg { animation: foundation-icon-float 2.6s ease-in-out infinite; height: 28px; width: 28px; }
-.foundation-card--input .foundation-card__icon { background: #fff0e5; color: #ed762d; }
-.foundation-card--numbers .foundation-card__icon { background: #eeeaff; color: #7656d6; }
-.foundation-card--decisions .foundation-card__icon { background: #e2f4ff; color: #2584cc; }
-.foundation-card--safe-division .foundation-card__icon { background: #e5f7e9; color: #289766; }
-.foundation-card--numbers .foundation-card__icon svg { animation-delay: -.55s; }
-.foundation-card--decisions .foundation-card__icon svg { animation-delay: -1.1s; }
-.foundation-card--safe-division .foundation-card__icon svg { animation-delay: -1.65s; }
+.foundation-card { background: #fff; border: 1px solid #dce2dc; border-radius: 16px; min-height: 224px; padding: 18px 24px 22px; }
+.foundation-card__image { animation: foundation-image-float 3.2s ease-in-out infinite; display: block; height: 106px; margin: -14px 0 8px -12px; object-fit: contain; object-position: left center; width: 154px; }
+.foundation-card:nth-child(2) .foundation-card__image { animation-delay: -.8s; }
+.foundation-card:nth-child(3) .foundation-card__image { animation-delay: -1.6s; }
+.foundation-card:nth-child(4) .foundation-card__image { animation-delay: -2.4s; }
 .foundation-card h2 { font-size: 1.18rem; letter-spacing: -.03em; margin: 0 0 6px; }
 .foundation-card p { color: #5e6860; font-size: .92rem; line-height: 1.45; margin: 0; }
 .quiz-intro-content { max-width: 700px; }
@@ -144,7 +139,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .quiz-intro-points span { background: #eef5df; border-radius: 999px; color: #48621a; font-size: .9rem; font-weight: 700; padding: 10px 14px; }
 
 @keyframes accordion-reveal { from { opacity: .78; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes foundation-icon-float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-4px) rotate(2deg); } }
+@keyframes foundation-image-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes loading-icon-pulse { from { transform: scale(.92) rotate(-4deg); } to { transform: scale(1.06) rotate(4deg); } }
 @keyframes personalizing-load { from { transform: scaleX(.08); } to { transform: scaleX(1); } }
 
@@ -263,7 +258,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .orientation-screen { display: block; overflow-y: auto; padding-bottom: 28px; }
   .orientation-content, .quiz-intro-content { margin-top: 92px; transform: none; }
   .foundation-grid { grid-template-columns: 1fr; margin-top: 28px; }
-  .foundation-card { min-height: 132px; }
+  .foundation-card { min-height: 204px; }
   .quiz-intro-points { margin-top: 24px; }
   .inspiration-accordion { gap: 8px; height: 360px; margin-top: 48px; }
   .inspiration-accordion__item { min-width: 54px; }
@@ -292,7 +287,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 
 @media (prefers-reduced-motion: reduce) {
   .codelah-mascot__body { animation: none; }
-  .inspiration-accordion__item--active, .foundation-card__icon svg, .transition-loading__icon, .transition-loading__bar span { animation: none; }
+  .inspiration-accordion__item--active, .foundation-card__image, .transition-loading__icon, .transition-loading__bar span { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
