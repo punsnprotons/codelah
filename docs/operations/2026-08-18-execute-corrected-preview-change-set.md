@@ -30,3 +30,7 @@
 ## Evidence requirements
 
 Record stack status, logical resources, CloudFormation event identifiers/timestamps when available, and post-deploy verification. Do not retain account IDs, credentials, alert-recipient email, learner data, signed URLs, or raw request bodies. Do not upload artefacts or expose an application build under this request.
+
+## Execution result and remediation
+
+2026-08-18: the corrected execution entered `ROLLBACK_IN_PROGRESS` before any CloudFront distribution or public URL was created. CloudFormation identified `HtmlNoCachePolicy` as the root cause: the `EnableAcceptEncodingGzip` property is required even when caching is disabled, but it cannot be enabled in that mode. The only remaining correction sets that required property to `false`; no other resource definition changed. AWS rollback remains in progress at the time of this record. Do not execute again until rollback is terminal, the revised template is read-only validated, and a new review-only change set is inspected.
