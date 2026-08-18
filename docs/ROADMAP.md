@@ -23,7 +23,7 @@ A novice finishes a relevant first coding task independently and can explain the
 | --- | --- | --- |
 | Calculator behavior | `bun run test:lesson` verifies addition, subtraction, multiplication, division, zero division, and invalid-operation output against the exact assembled source. | passed locally |
 | Build integrity | `bun run build` passes. | passed locally |
-| Browser regression | `bun run test:e2e` passes six Chromium cases: diagnostic recovery, plan recovery, keyboard planner activation, malformed code, timeout/reset, and full lesson/reset. | passed locally |
+| Browser regression | `bun run test:e2e` passes seven Chromium cases: named/selected onboarding and diagnostic controls, plan recovery, keyboard planner activation, labelled code editor/live error feedback, timeout/reset, and full lesson/reset. | passed locally |
 | Keyboard-plan alternative | Native-button planner provides a non-drag path; browser regression verifies activation with Enter. Local semantic preflight confirms native controls and state semantics; screen-reader review remains required. | partial |
 | Offline support decision | **Deferred from M1.** No observed pilot requirement justifies cache complexity yet; the Chromium cache experiment was rejected after its offline regression failed. Revisit only with pilot device/network evidence. | documented deferral |
 | Timeout and malformed-code recovery | Browser regression verifies malformed code remains locked and a runaway Worker terminates then recovers. | passed locally |

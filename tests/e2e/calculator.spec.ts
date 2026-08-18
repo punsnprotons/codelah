@@ -20,6 +20,24 @@ async function reachFirstModule(page: import('@playwright/test').Page) {
   await expect(page.getByRole('button', { name: /Check this block/ })).toBeEnabled();
 }
 
+test('exposes selected interests and diagnostic choices as named native controls', async ({ page }) => {
+  await page.goto('/');
+  const sports = page.getByRole('button', { name: 'Sports' });
+  await sports.focus();
+  await expect(sports).toBeFocused();
+  await expect(sports).toHaveAttribute('aria-pressed', 'false');
+  await sports.click();
+  await expect(sports).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: /Continue/ })).toBeEnabled();
+
+  await page.getByRole('button', { name: /Continue/ }).click();
+  const textAnswer = page.getByRole('radio', { name: 'Text' });
+  await expect(page.getByRole('radiogroup', { name: 'Concept check answers' })).toBeVisible();
+  await expect(textAnswer).toHaveAttribute('aria-checked', 'false');
+  await textAnswer.click();
+  await expect(textAnswer).toHaveAttribute('aria-checked', 'true');
+});
+
 test('gives a corrective diagnostic hint without exposing the answer', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Sports' }).click();
@@ -48,9 +66,12 @@ test('activates the alternate planner with the keyboard', async ({ page }) => {
 
 test('keeps a learner in the module after malformed Python', async ({ page }) => {
   await reachFirstModule(page);
-  await page.getByRole('textbox', { name: /Python code for the current module/ }).fill('first_score = float(');
+  const editor = page.getByRole('textbox', { name: 'Python code for the current module' });
+  await expect(editor).toHaveAccessibleName('Python code for the current module');
+  await expect(page.locator('.line-number')).toHaveAttribute('aria-hidden', 'true');
+  await editor.fill('first_score = float(');
   await page.getByRole('button', { name: /Check this block/ }).click();
-  await expect(page.getByText(/Python found an issue/)).toBeVisible();
+  await expect(page.getByRole('status')).toContainText(/Python found an issue/);
   await expect(page.getByRole('button', { name: /Write the next block/ })).toHaveCount(0);
 });
 
