@@ -191,9 +191,9 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .plan-heading h1 { font-family: inherit; font-size: clamp(2.55rem, 4.4vw, 4.3rem); font-weight: 650; letter-spacing: -.06em; margin-bottom: 10px; }
 .plan-heading > p:last-child { color: #5e6860; font-size: 1rem; }
 .plan-layout { display: grid; margin: 34px auto 0; max-width: 1160px; }
-.blockly-host { background: #fbfcf9; border: 1px solid #cbd6cb; border-radius: 20px; box-shadow: 0 14px 34px #1f2b1d0d; height: min(61vh, 650px); min-height: 520px; overflow: hidden; }
+.blockly-host { background: transparent; border: 0; border-radius: 0; box-shadow: none; height: min(61vh, 650px); min-height: 520px; overflow: hidden; }
 .blockly-host--hidden { display: none; }
-.blockly-host .blocklyText { font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 19pt !important; font-weight: 700; }
+.blockly-host .blocklyText { font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 15pt !important; font-weight: 700; }
 .keyboard-plan { background: #fff; border: 1px solid #cbd6cb; border-radius: 20px; min-height: 520px; padding: 28px; }
 .keyboard-plan ol { color: #273029; display: grid; gap: 10px; margin: 18px 0 26px; padding-left: 26px; }
 .keyboard-plan li::marker { color: var(--lime-ink); font-family: 'DM Mono', monospace; font-weight: 800; }

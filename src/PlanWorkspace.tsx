@@ -99,9 +99,9 @@ export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
       base: Blockly.Themes.Classic,
       componentStyles: {
         workspaceBackgroundColour: '#fbfcf9',
-        toolboxBackgroundColour: '#f2f7ed',
+        toolboxBackgroundColour: '#fbfcf9',
         toolboxForegroundColour: '#253029',
-        flyoutBackgroundColour: '#f2f7ed',
+        flyoutBackgroundColour: '#fbfcf9',
         flyoutForegroundColour: '#253029',
         flyoutOpacity: 1,
         scrollbarColour: '#9caea0',
@@ -119,7 +119,7 @@ export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
       },
       grid: { spacing: 20, length: 3, colour: '#d9e3d6', snap: true },
       trashcan: true,
-      zoom: { controls: false, wheel: false, startScale: 1.22, maxScale: 1.55, minScale: 0.92 },
+      zoom: { controls: false, wheel: false, startScale: 1.02, maxScale: 1.35, minScale: 0.78 },
       move: { scrollbars: { horizontal: true, vertical: true }, drag: true, wheel: false },
     });
     workspace.current = nextWorkspace;
