@@ -8,6 +8,7 @@
   --paper: #f7f8f6;
   --lime: #c7fa54;
   --lime-deep: #9dcd38;
+  --lime-ink: #557d1e;
   --red: #ff8a79;
   color: var(--ink);
   font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -154,12 +155,12 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .diagnostic-content { max-width: 820px; text-align: center; transform: translateY(-34px); width: 100%; }
 .diagnostic-content .codelah-mascot { height: 68px; margin-bottom: 10px; width: 68px; }
 .diagnostic-content h1 { font-size: clamp(2.45rem, 4vw, 4.4rem); letter-spacing: -.06em; line-height: 1.04; margin: 0 auto; max-width: 920px; }
-.diagnostic-content h1 code { color: var(--lime); font-family: 'DM Mono', monospace; font-size: .83em; letter-spacing: -.08em; }
+.diagnostic-content h1 code { color: var(--lime-ink); font-family: 'DM Mono', monospace; font-size: .83em; letter-spacing: -.08em; }
 .diagnostic-context { color: #5e6860; font-size: 1rem; margin: 16px auto 0; }
 .answer-grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); margin: 34px auto 0; max-width: 760px; }
 .answer-card { align-items: center; background: #fff; border: 1px solid #dce2dc; border-radius: 16px; color: var(--ink); display: flex; flex-direction: column; font-size: 1.05rem; font-weight: 800; gap: 4px; min-height: 170px; justify-content: center; transition: border .16s, transform .16s, background .16s, box-shadow .16s; }
 .answer-card:hover { border-color: #aeb9b0; box-shadow: 0 4px 14px #1012110a; transform: translateY(-2px); }
-.answer-card--selected { background: #f8fced; border-color: #8fbd35; box-shadow: 0 0 0 2px #c7fa5440 inset; }
+.answer-card--selected { background: #f3f9e5; border-color: var(--lime-ink); box-shadow: 0 0 0 2px #557d1e26 inset; }
 .answer-card__image { animation: foundation-image-float 3.2s ease-in-out infinite; display: block; height: 100px; object-fit: contain; width: 140px; }
 .answer-card:nth-child(2) .answer-card__image { animation-delay: -1s; }
 .answer-card:nth-child(3) .answer-card__image { animation-delay: -2s; }
