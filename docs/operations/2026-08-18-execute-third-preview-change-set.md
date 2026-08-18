@@ -13,3 +13,7 @@
 | Boundary | no app artefact upload, CloudFront Free-plan selection, custom DNS, user-data collection, or broader resources |
 
 The r3 change set is `CREATE_COMPLETE` and `AVAILABLE`. This action has the explicit owner approval required to execute it.
+
+## Result
+
+2026-08-18: CloudFormation execution reached `CREATE_COMPLETE` with all eight reviewed resources created. The stack outputs include a default CloudFront HTTPS URL, distribution ID, and private bucket name. No static artefact was uploaded under this action.

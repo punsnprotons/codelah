@@ -2,7 +2,7 @@
 
 ## Status
 
-This is a **no-apply** CloudFormation plan for the CodeLah 18+ zero-data public preview in `ap-southeast-1`. It does not create AWS resources by existing in this repository. Do not run `create-stack`, `create-change-set`, `deploy`, or any equivalent command without an explicit owner approval after review.
+The reviewed CloudFormation plan has been executed for the CodeLah 18+ zero-data public preview in `ap-southeast-1`. Stack `codelah-public-preview` reached `CREATE_COMPLETE` on 2026-08-18. It currently provides only the private S3 origin and CloudFront delivery infrastructure; no application artefact has been uploaded or served yet. Future updates still require explicit owner approval after review.
 
 ## Scope
 
@@ -49,10 +49,10 @@ CloudFront flat-rate plans cannot be attached to a distribution with an existing
 | Blast radius | one new private S3 bucket and one public CloudFront distribution |
 | Rollback | disable distribution, cancel any pricing plan, restore prior S3 object version, then delete only after the distribution is fully disabled |
 | Detection window | not measured; requires post-deploy synthetic HTTPS and browser-smoke evidence |
-| Existing stack check | `codelah-public-preview` does not exist (read-only check, 2026-08-18) |
+| Existing stack | `codelah-public-preview` is `CREATE_COMPLETE` (2026-08-18) |
 | Cost guardrail | `Project` activated successfully; `codelah-public-preview-monthly-10-usd` budget confirmed with USD 5 and USD 10 actual-spend alerts (2026-08-18) |
-| Change-set evidence | `codelah-public-preview-review-20260818` is `CREATE_COMPLETE` and `AVAILABLE` (2026-08-18); it contains eight reviewed additions and has not been executed |
-| Blocking conditions | Free-plan eligibility remains console-only; owner must explicitly approve change-set execution; no rollback rehearsal; detection window unmeasured |
+| Deployment evidence | Eight resources are `CREATE_COMPLETE`: private S3 bucket/policy, CloudFront distribution/OAC, three cache policies, and security headers |
+| Remaining conditions | Free-plan eligibility remains console-only; static-artifact upload, post-upload verification, rollback rehearsal, and detection-window measurement remain pending |
 
 ## Local validation only
 

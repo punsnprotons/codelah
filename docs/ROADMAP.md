@@ -17,7 +17,7 @@ A novice finishes a relevant first coding task independently and can explain the
 
 ## Current milestone state — 2026-08-18
 
-**M1 functional acceptance is complete; M2 public-preview architecture is approved for planning only, not deployment.** The local calculator flow has now been exercised through interest selection, diagnostic, keyboard-plan alternative, five independently checked Python modules, assembly, transfer check, and reset.
+**M1 functional acceptance is complete; M2 static-delivery infrastructure is deployed but the application artefact is not yet published.** The local calculator flow has now been exercised through interest selection, diagnostic, keyboard-plan alternative, five independently checked Python modules, assembly, transfer check, and reset.
 
 | M1 area | Evidence | Status |
 | --- | --- | --- |
@@ -31,11 +31,11 @@ A novice finishes a relevant first coding task independently and can explain the
 
 ### Next step
 
-Begin the **M2 public-preview IaC plan**. Do not provision yet:
+Complete the **M2 static-artifact publication**:
 
-1. Review the no-apply plan for a private S3 origin, CloudFront Origin Access Control, public CloudFront URL, HTTPS-only access, versioned rollback, and security headers. Prefer CloudFront's Free flat-rate plan if the account is eligible; the template deliberately omits a WAF Web ACL because an existing Web ACL prevents that subscription. If the plan is unavailable, explicitly approve the no-WAF static fallback and budget cap before deployment.
-2. Preserve the zero-data boundary: no accounts, API, learner submissions, persistent browser storage, request-body logs, or user-level analytics.
-3. Review the plan's cost estimate, blast radius, rollback handle, and detection window before any AWS write.
+1. Create an immutable static build manifest, upload only reviewed files to the private S3 origin, then invalidate CloudFront paths deliberately.
+2. Verify the deployed HTTPS URL, private-origin policy, learner journey, Worker timeout/reset, and absence of learner-data network calls.
+3. Select the CloudFront Free plan in the console if eligible; otherwise record the approved fallback cost path. Rehearse rollback and measure the detection window.
 
 ## M1 acceptance criteria
 
