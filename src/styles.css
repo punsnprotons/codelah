@@ -152,8 +152,9 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 
 /* Diagnostic */
 .diagnostic-screen { display: grid; place-items: center; }
-.diagnostic-content { max-width: 820px; text-align: center; transform: translateY(-34px); width: 100%; }
+.diagnostic-content { max-width: 820px; position: relative; text-align: center; transform: translateY(-34px); width: 100%; }
 .diagnostic-content .codelah-mascot { height: 68px; margin-bottom: 10px; width: 68px; }
+.quiz-question-count, .quiz-complete-kicker { color: var(--lime-ink); font-size: .82rem; font-weight: 800; letter-spacing: .06em; margin: 0 0 10px; text-transform: uppercase; }
 .diagnostic-content h1 { font-size: clamp(2.45rem, 4vw, 4.4rem); letter-spacing: -.06em; line-height: 1.04; margin: 0 auto; max-width: 920px; }
 .diagnostic-content h1 code { color: var(--lime-ink); font-family: 'DM Mono', monospace; font-size: .83em; letter-spacing: -.08em; }
 .diagnostic-context { color: #5e6860; font-size: 1rem; margin: 16px auto 0; }
@@ -168,6 +169,19 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .feedback--success { background: #eff9e7; border-color: #9fc57e; color: #397019; }
 .diagnostic-actions { bottom: 34px; display: flex; justify-content: space-between; left: clamp(24px, 5vw, 80px); position: absolute; right: clamp(24px, 5vw, 80px); }
 .bottom-button { min-width: 224px; }
+.confetti-burst { height: 1px; left: 50%; pointer-events: none; position: absolute; top: 46%; width: 1px; z-index: 3; }
+.confetti-burst span { animation: confetti-burst 1s cubic-bezier(.16,.8,.28,1) both; border-radius: 2px; height: 10px; left: 0; position: absolute; top: 0; transform: translate(0, 0) rotate(0); width: 6px; }
+
+@keyframes confetti-burst { from { opacity: 0; transform: translate(0, 0) rotate(0) scale(.45); } 22% { opacity: 1; } to { opacity: .9; transform: translate(var(--confetti-x), var(--confetti-y)) rotate(var(--confetti-r)) scale(1); } }
+
+/* Quiz success and pseudocode introduction */
+.quiz-complete-content { max-width: 650px; position: relative; text-align: center; transform: translateY(-28px); width: 100%; }
+.quiz-complete-content .codelah-mascot { height: 76px; margin-bottom: 12px; width: 76px; }
+.quiz-complete-content h1 { font-size: clamp(2.45rem, 4vw, 4.1rem); letter-spacing: -.06em; margin-bottom: 16px; }
+.quiz-complete-content > p:not(.quiz-complete-kicker) { color: #5e6860; font-size: 1.05rem; line-height: 1.55; margin: 0 auto; max-width: 580px; }
+.pseudocode-preview { background: #fff; border: 1px solid #dce2dc; border-radius: 16px; counter-reset: pseudocode; display: grid; gap: 10px; list-style: none; margin: 32px auto 0; max-width: 500px; padding: 18px; text-align: left; }
+.pseudocode-preview li { align-items: center; background: #f5f9ec; border-radius: 10px; color: #273029; display: flex; font-family: 'DM Mono', monospace; font-size: .9rem; font-weight: 700; gap: 12px; min-height: 44px; padding: 0 14px; }
+.pseudocode-preview li::before { color: var(--lime-ink); content: counter(pseudocode, decimal-leading-zero); counter-increment: pseudocode; font-size: .74rem; }
 
 /* Planning */
 .plan-screen { display: flex; min-height: 100vh; padding-bottom: 30px; }
@@ -285,6 +299,8 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .diagnostic-content { margin-top: 92px; transform: none; }
   .diagnostic-content h1 { font-size: 2.4rem; }
   .diagnostic-actions { margin: 24px 0 8px; position: static; }
+  .quiz-complete-content { margin-top: 92px; transform: none; }
+  .pseudocode-preview { margin-top: 24px; }
   .plan-stage { margin-top: 78px; }
   .plan-heading h1 { font-size: 2.55rem; }
   .blockly-host { height: 49vh; min-height: 360px; }
@@ -298,7 +314,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 
 @media (prefers-reduced-motion: reduce) {
   .codelah-mascot__body { animation: none; }
-  .inspiration-accordion__item--active, .foundation-card__image, .quiz-topic-preview__card img, .transition-loading__icon, .transition-loading__bar span { animation: none; }
+  .inspiration-accordion__item--active, .foundation-card__image, .quiz-topic-preview__card img, .answer-card__image, .transition-loading__icon, .transition-loading__bar span, .confetti-burst span { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

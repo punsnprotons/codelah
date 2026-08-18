@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { PlanWorkspace } from './PlanWorkspace';
 import { usePythonRunner } from './usePythonRunner';
 
-type Screen = 'interests' | 'personalizing' | 'topics' | 'quizIntro' | 'diagnostic' | 'plan' | 'module' | 'assembly' | 'transfer';
+type Screen = 'interests' | 'personalizing' | 'topics' | 'quizIntro' | 'diagnostic' | 'quizComplete' | 'plan' | 'module' | 'assembly' | 'transfer';
 
 const interests = [
   { id: 'sports', label: 'Sports' }, { id: 'music', label: 'Music' },
@@ -57,7 +57,7 @@ else:
     print("Error: Choose +, -, *, or /.")`;
 
 function Progress({ screen }: { screen: Screen }) {
-  const active = { interests: 0, personalizing: 1, topics: 2, quizIntro: 2, diagnostic: 2, plan: 3, module: 4, assembly: 5, transfer: 5 }[screen];
+  const active = { interests: 0, personalizing: 1, topics: 2, quizIntro: 2, diagnostic: 2, quizComplete: 3, plan: 3, module: 4, assembly: 5, transfer: 5 }[screen];
   return <div className="progress" aria-label={`Step ${active + 1} of 6`}>{Array.from({ length: 6 }).map((_, index) => <span className={index <= active ? 'progress__segment progress__segment--active' : 'progress__segment'} key={index} />)}</div>;
 }
 
@@ -137,17 +137,64 @@ function QuizIntroScreen({ onBack, onStart }: { onBack: () => void; onStart: () 
   return <main className="light-screen orientation-screen quiz-intro-screen"><Progress screen="quizIntro" /><section className="quiz-intro-content" aria-labelledby="quiz-intro-title"><CodeLahMascot /><h1 id="quiz-intro-title">Before we build, a quick check.</h1><div className="quiz-topic-preview">{quizTopics.map((topic) => <article className="quiz-topic-preview__card" key={topic.concept}><img alt={topic.alt} src={topic.image} /><h2>{topic.concept}</h2></article>)}</div></section><div className="onboarding-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" onClick={onStart} type="button">Start quiz</button></div></main>;
 }
 
-function DiagnosticScreen({ onBack, onContinue }: { onBack: () => void; onContinue: () => void }) {
+type QuizAnswer = { label: string; image: string };
+type QuizQuestion = { title: ReactNode; context: string; answers: QuizAnswer[]; correct: string; success: string; hint: string };
+
+const quizQuestions: QuizQuestion[] = [
+  {
+    title: <>When someone types <code>12</code>, what does <code>input()</code> give Python?</>,
+    context: 'Choose the value that arrives first.',
+    answers: [{ label: 'A number', image: foundationTopics[1].image }, { label: 'Text', image: foundationTopics[0].image }, { label: 'A calculation', image: foundationTopics[2].image }],
+    correct: 'Text',
+    success: 'Exactly. Input begins as text; you decide when to turn it into a number.',
+    hint: 'Think about what a keyboard sends before the program converts it.',
+  },
+  {
+    title: <>Before you add two values from <code>input()</code>, what comes first?</>,
+    context: 'Pick the step that makes the values safe to calculate.',
+    answers: [{ label: 'Convert text to numbers', image: foundationTopics[1].image }, { label: 'Add the typed text', image: foundationTopics[0].image }, { label: 'Choose an operation', image: foundationTopics[2].image }],
+    correct: 'Convert text to numbers',
+    success: 'Exactly. Convert the typed text before you use it in a calculation.',
+    hint: 'Math needs numeric values, not the characters someone typed.',
+  },
+  {
+    title: <>If someone tries to divide by <code>0</code>, what should the program do?</>,
+    context: 'Choose the response that keeps the program helpful and safe.',
+    answers: [{ label: 'Show a helpful error', image: foundationTopics[3].image }, { label: 'Keep dividing', image: foundationTopics[2].image }, { label: 'Treat zero as text', image: foundationTopics[0].image }],
+    correct: 'Show a helpful error',
+    success: 'Exactly. Good programs catch predictable problems before they become crashes.',
+    hint: 'Think about the result you want a person to see instead of an error crash.',
+  },
+];
+
+const confettiPieces = [
+  [-230, -98, -38, '#13c861'], [-170, -145, 24, '#f0a23a'], [-100, -124, -18, '#5865d7'], [-35, -164, 34, '#c7fa54'], [35, -146, -28, '#df72b6'], [105, -126, 40, '#168d8a'], [175, -148, -20, '#ed6a35'], [235, -96, 28, '#7a5bd6'],
+  [-205, 15, 42, '#c7fa54'], [-125, 42, -30, '#23966a'], [-55, 30, 22, '#e89b16'], [62, 38, -38, '#d94b6b'], [138, 26, 26, '#5865d7'], [218, 12, -22, '#13c861'],
+];
+
+function ConfettiBurst() {
+  return <div aria-hidden="true" className="confetti-burst">{confettiPieces.map(([x, y, rotation, color], index) => <span key={index} style={{ '--confetti-x': `${x}px`, '--confetti-y': `${y}px`, '--confetti-r': `${rotation}deg`, backgroundColor: color } as CSSProperties} />)}</div>;
+}
+
+function DiagnosticScreen({ onBack, onComplete }: { onBack: () => void; onComplete: () => void }) {
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
-  const isCorrect = answer === 'Text';
-  const answers = [
-    { label: 'A number', image: foundationTopics[1].image, alt: foundationTopics[1].alt },
-    { label: 'Text', image: foundationTopics[0].image, alt: foundationTopics[0].alt },
-    { label: 'A calculation', image: foundationTopics[2].image, alt: foundationTopics[2].alt },
-  ];
+  const question = quizQuestions[questionIndex];
+  const isCorrect = answer === question.correct;
+  const isLastQuestion = questionIndex === quizQuestions.length - 1;
+  const advance = () => {
+    if (isLastQuestion) { onComplete(); return; }
+    setQuestionIndex((index) => index + 1);
+    setAnswer(null);
+    setChecked(false);
+  };
 
-  return <main className="light-screen diagnostic-screen"><Progress screen="diagnostic" /><section className="diagnostic-content" aria-labelledby="diagnostic-title"><CodeLahMascot /><h1 id="diagnostic-title">When someone types <code>12</code>, what does <code>input()</code> give Python?</h1><p className="diagnostic-context">Choose the value that arrives first.</p><div className="answer-grid" role="radiogroup" aria-label="Concept check answers">{answers.map((option) => <button aria-checked={answer === option.label} className={`answer-card ${answer === option.label ? 'answer-card--selected' : ''}`} key={option.label} onClick={() => { setAnswer(option.label); setChecked(false); }} role="radio" type="button"><img alt="" aria-hidden="true" className="answer-card__image" src={option.image} /><span>{option.label}</span></button>)}</div>{checked && <div className={`feedback ${isCorrect ? 'feedback--success' : ''}`} role="status">{isCorrect ? 'Exactly. Input begins as text; you decide when to turn it into a number.' : 'Think about what a keyboard sends before the program converts it.'}</div>}</section><div className="diagnostic-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button>{checked && isCorrect ? <button className="primary-button bottom-button" onClick={onContinue} type="button">Plan the program</button> : <button className="primary-button bottom-button" disabled={!answer} onClick={() => setChecked(true)} type="button">Check answer</button>}</div></main>;
+  return <main className="light-screen diagnostic-screen"><Progress screen="diagnostic" /><section className="diagnostic-content" aria-labelledby="diagnostic-title">{checked && isCorrect && <ConfettiBurst />}<CodeLahMascot /><p className="quiz-question-count">Question {questionIndex + 1} of {quizQuestions.length}</p><h1 id="diagnostic-title">{question.title}</h1><p className="diagnostic-context">{question.context}</p><div className="answer-grid" role="radiogroup" aria-label="Concept check answers">{question.answers.map((option) => <button aria-checked={answer === option.label} className={`answer-card ${answer === option.label ? 'answer-card--selected' : ''}`} key={option.label} onClick={() => { setAnswer(option.label); setChecked(false); }} role="radio" type="button"><img alt="" aria-hidden="true" className="answer-card__image" src={option.image} /><span>{option.label}</span></button>)}</div>{checked && <div className={`feedback ${isCorrect ? 'feedback--success' : ''}`} role="status">{isCorrect ? question.success : question.hint}</div>}</section><div className="diagnostic-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button>{checked && isCorrect ? <button className="primary-button bottom-button" onClick={advance} type="button">{isLastQuestion ? 'See your result' : 'Next question'}</button> : <button className="primary-button bottom-button" disabled={!answer} onClick={() => setChecked(true)} type="button">Check answer</button>}</div></main>;
+}
+
+function QuizCompleteScreen({ onBack, onContinue }: { onBack: () => void; onContinue: () => void }) {
+  return <main className="light-screen orientation-screen quiz-complete-screen"><Progress screen="quizComplete" /><section className="quiz-complete-content" aria-labelledby="quiz-complete-title"><ConfettiBurst /><CodeLahMascot /><p className="quiz-complete-kicker">Three foundations complete</p><h1 id="quiz-complete-title">You’re ready to plan it out.</h1><p>Before you write Python, you’ll map the program in simple, plain-English blocks. That’s pseudocode.</p><ol className="pseudocode-preview" aria-label="Pseudocode preview"><li>Get the two scores</li><li>Choose the operation</li><li>Handle a zero division safely</li></ol></section><div className="onboarding-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" onClick={onContinue} type="button">Start planning</button></div></main>;
 }
 
 type ModuleScreenProps = { module: ModuleSpec; index: number; priorSource: string; context: { label: string; project: string; fact: string }; onContinue: (source: string) => void };
@@ -177,7 +224,8 @@ export function App() {
   if (screen === 'personalizing') return <PersonalizingScreen context={context} onBack={() => setScreen('interests')} onContinue={() => setScreen('topics')} />;
   if (screen === 'topics') return <TopicsScreen onBack={() => setScreen('personalizing')} onContinue={() => setScreen('quizIntro')} />;
   if (screen === 'quizIntro') return <QuizIntroScreen onBack={() => setScreen('topics')} onStart={() => setScreen('diagnostic')} />;
-  if (screen === 'diagnostic') return <DiagnosticScreen onBack={() => setScreen('quizIntro')} onContinue={() => setScreen('plan')} />;
+  if (screen === 'diagnostic') return <DiagnosticScreen onBack={() => setScreen('quizIntro')} onComplete={() => setScreen('quizComplete')} />;
+  if (screen === 'quizComplete') return <QuizCompleteScreen onBack={() => setScreen('diagnostic')} onContinue={() => setScreen('plan')} />;
   if (screen === 'plan') return <main className="dark-screen plan-screen"><Progress screen="plan" /><PlanWorkspace context={context} onValid={() => setScreen('module')} /></main>;
   if (screen === 'module') return <ModuleScreen context={context} index={moduleIndex} key={moduleIndex} module={modules[moduleIndex]} onContinue={(source) => { setCompletedSources((current) => [...current, source]); if (moduleIndex === modules.length - 1) setScreen('assembly'); else setModuleIndex((current) => current + 1); }} priorSource={priorSource} />;
   if (screen === 'assembly') return <AssemblyScreen onContinue={() => setScreen('transfer')} />;
