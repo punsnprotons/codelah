@@ -17,7 +17,7 @@ A novice finishes a relevant first coding task independently and can explain the
 
 ## Current milestone state — 2026-08-18
 
-**M1 functional acceptance is complete; begin M2 preflight only, not deployment.** The local calculator flow has now been exercised through interest selection, diagnostic, keyboard-plan alternative, five independently checked Python modules, assembly, transfer check, and reset.
+**M1 functional acceptance is complete; M2 public-preview architecture is approved for planning only, not deployment.** The local calculator flow has now been exercised through interest selection, diagnostic, keyboard-plan alternative, five independently checked Python modules, assembly, transfer check, and reset.
 
 | M1 area | Evidence | Status |
 | --- | --- | --- |
@@ -27,15 +27,15 @@ A novice finishes a relevant first coding task independently and can explain the
 | Keyboard-plan alternative | Native-button planner provides a non-drag path; browser regression completes the full alternate path with Tab and Enter only. Local semantic preflight confirms native controls and state semantics. | passed locally |
 | Offline support decision | **Deferred from M1.** No observed pilot requirement justifies cache complexity yet; the Chromium cache experiment was rejected after its offline regression failed. Revisit only with pilot device/network evidence. | documented deferral |
 | Timeout and malformed-code recovery | Browser regression verifies malformed code remains locked and a runaway Worker terminates then recovers. | passed locally |
-| Accessibility code review | Native buttons, labels, visible focus, reduced-motion rule, touch interaction, and alternate planner reviewed; inert back control removed. Local semantic and keyboard regressions passed. VoiceOver/NVDA review is deliberately deferred; it is required before any external or minor-learner release. | deferred — does not block internal M2 preflight |
+| Accessibility code review | Native buttons, labels, visible focus, reduced-motion rule, touch interaction, and alternate planner reviewed; inert back control removed. Local semantic and keyboard regressions passed. VoiceOver/NVDA review is deliberately deferred; it is required before an education-partner or minor-targeted release. | deferred — does not block zero-data public preview planning |
 
 ### Next step
 
-Begin the **M2 private AWS preflight**. Do not provision yet:
+Begin the **M2 public-preview IaC plan**. Do not provision yet:
 
-1. Record the AWS account/role, region, named environment owner, pilot audience, private-access mechanism, data classification, retention rule, and DNS/certificate owner in the runbook.
-2. Limit the first environment to internal product/tutor validation. No public access, no minors, and no learner personal data until the outstanding approval and accessibility requirements are met.
-3. After those facts have an owner-approved record, review the IaC plan, cost estimate, blast radius, rollback handle, and detection window before any AWS write.
+1. Produce a no-apply plan for a private S3 origin, CloudFront Origin Access Control, public CloudFront URL, HTTPS-only access, WAF/rate protection, versioned rollback, and aggregate-only monitoring.
+2. Preserve the zero-data boundary: no accounts, API, learner submissions, persistent browser storage, request-body logs, or user-level analytics.
+3. Review the plan's cost estimate, blast radius, rollback handle, and detection window before any AWS write.
 
 ## M1 acceptance criteria
 
@@ -45,7 +45,7 @@ Begin the **M2 private AWS preflight**. Do not provision yet:
 - Keyboard-only learner path passes.
 - No model/API key is needed to complete the lesson.
 - Reset works without corrupting state.
-- Manual VoiceOver/NVDA validation is deferred until before external or minor-learner access; it remains a release requirement for that audience.
+- Manual VoiceOver/NVDA validation is deferred until before an education-partner or minor-targeted release; it remains a release requirement for that audience.
 
 ## M3 model gate
 

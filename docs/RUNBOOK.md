@@ -12,8 +12,8 @@ This runbook governs the local acceptance phase and the future private-pilot env
 | GitHub target | `punsnprotons/codelah`, verified reachable and empty before first push |
 | AWS named profile | `private`, read-only identity verified 2026-08-18: SSO `AdministratorAccess` assumed role in the account ending `5843` |
 | Region | `ap-southeast-1` is configured; environment-owner approval is still required |
-| Environment owner | unknown |
-| Data classification / criticality | unknown |
+| Environment owner | Sufi (user-designated) |
+| Data classification / criticality | static lesson artefacts: Public; any learner-entered text/code: untrusted and potentially personal data, prohibited from server storage; aggregate operational metrics: Internal |
 | Existing deployed resources | no resources tagged `Project=codelah` found in `ap-southeast-1` on 2026-08-18; untagged or differently tagged resources remain unknown |
 
 Do not provision while the last four facts are unresolved.
@@ -30,7 +30,20 @@ Do not provision while the last four facts are unresolved.
 | Independent corroboration | AWS STS response received locally; no CloudTrail event ID or approved evidence ledger is available yet |
 | Provisioning decision | refused pending the unresolved preflight facts and owner-approved IaC review |
 
-**Next fact to obtain:** the named environment owner must approve the region, internal-only audience, private-access mechanism, data classification/retention rule, and DNS/certificate owner. Then the team can produce an IaC plan for review; it must not be applied at this stage.
+**Preflight decision:** the owner approved a public, no-account preview. The application will use a public CloudFront distribution URL while the S3 origin remains private behind Origin Access Control. No custom DNS is required for this phase. The temporary public URL is the CloudFront distribution domain; when a custom domain is acquired, attach it as an alternate domain name with an ACM certificate in `us-east-1`.
+
+## Public-preview data and retention policy
+
+| Data class | Decision | Retention |
+| --- | --- | --- |
+| Static application and authored lesson content | Public | Versioned deployment artefacts retained until replaced and rollback window expires |
+| Interest selections, diagnostic answers, pseudocode, learner code, and output | Process in browser memory only; do not send to AWS, persist in browser storage, or include in logs/analytics | Session only; cleared by lesson reset or browser close |
+| IP addresses, cookies, accounts, or persistent identifiers | Do not add for this MVP | Not collected by the application |
+| Operational telemetry | Aggregate availability/security metrics only; no request-body, learner-content, or user-level analytics logging | 30-day operational review window; no export or profiling use |
+
+The public URL can be visited by minors. This is acceptable only for the zero-data static preview above: do not solicit personal data, add accounts, target minors, or enable external AI tutoring without a separate privacy/institutional review. Manual screen-reader testing remains deferred, but is required before an education-partner or minor-targeted release.
+
+**Next implementation step:** create a no-apply IaC plan for a private S3 origin, CloudFront Origin Access Control, public distribution domain, HTTPS-only viewer policy, minimal WAF/rate protection, versioned rollback, and aggregate-only monitoring. Owner review of that plan is required before any AWS write.
 
 ## Current local acceptance evidence — 2026-08-18
 

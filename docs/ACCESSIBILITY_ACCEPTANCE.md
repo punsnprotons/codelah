@@ -2,7 +2,7 @@
 
 ## Scope
 
-This manual check is **deferred from M1**. Run it on the intended browser/device before any external or minor-learner access; it is not required for the internal M2 AWS preflight.
+This manual check is **deferred from M1**. Run it on the intended browser/device before an education-partner or minor-targeted release; it is not required for the zero-data public-preview infrastructure phase.
 
 ## Keyboard-only journey
 
@@ -43,4 +43,4 @@ For a failure, include the screen, exact control or announcement, expected behav
 - Chromium regression also completes the canonical lesson with Tab and Enter only—from interest selection through reset—and checks named/selected controls, keyboard-plan activation with Enter, live status feedback for malformed code, and recovery from timeout states.
 - The required macOS VoiceOver run could not be executed in this workspace because macOS Computer Use permission is not granted. No VoiceOver speech, rotor, or focus-order result is claimed here.
 
-**Deferred acceptance action:** a tester with VoiceOver/NVDA access must complete the two manual journeys above on the intended browser/device and fill in the required environment and result details before an external or minor-learner release.
+**Deferred acceptance action:** a tester with VoiceOver/NVDA access must complete the two manual journeys above on the intended browser/device and fill in the required environment and result details before an education-partner or minor-targeted release.
