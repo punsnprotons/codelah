@@ -60,7 +60,7 @@ The public preview is intended for adults aged 18+. Because there is no identity
 | Learner smoke journey | local in-app browser | passed: interest → diagnostic → keyboard planner → five modules → assembly → transfer → reset |
 | Deployment / AWS resources | not run | none created |
 
-This evidence does **not** approve deployment. It does approve the M2 **read-only preflight** described below. AWS writes remain blocked until the preflight facts and IaC review are owner-approved, a project-scoped cost guardrail is possible, and rollback/detection are rehearsed.
+This evidence does **not** approve deployment. It does approve the M2 **read-only preflight** described below. The project-scoped cost guardrail is active and the review-only change set is available; execution remains blocked until the owner approves that exact change set and accepts the unrehearsed rollback/detection risk.
 
 ## Accessibility deferral boundary
 

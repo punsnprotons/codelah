@@ -26,3 +26,7 @@ The cost guardrail has been confirmed. A review-only change set is the smallest 
 ## Evidence requirements
 
 Record only the change-set status and logical resource changes. Do not retain account IDs, CloudFormation ARNs, credentials, learner data, signed URLs, or raw API bodies. Do not execute this change set under this request.
+
+## Result
+
+2026-08-18: `codelah-public-preview-review-20260818` reached `CREATE_COMPLETE` with execution status `AVAILABLE`. It has not been executed. AWS reports eight `Add` actions: `SiteBucket`, `SiteBucketPolicy`, `SiteDistribution`, `SiteOriginAccessControl`, `HtmlNoCachePolicy`, `RuntimeAssetsCachePolicy`, `VersionedAssetsCachePolicy`, and `SecurityHeadersPolicy`.
