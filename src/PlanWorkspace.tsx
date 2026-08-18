@@ -131,6 +131,8 @@ export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
     const toolbox = nextWorkspace.getToolbox();
     const stepsCategory = toolbox?.getToolboxItems()[0];
     if (stepsCategory) toolbox?.setSelectedItem(stepsCategory);
+    const flyout = nextWorkspace.getFlyout();
+    if (flyout) flyout.autoClose = false;
     const resize = () => Blockly.svgResize(nextWorkspace);
     window.addEventListener('resize', resize);
     return () => {

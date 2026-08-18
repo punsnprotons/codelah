@@ -47,6 +47,14 @@ async function reachKeyboardPlanner(page: import('@playwright/test').Page) {
   await page.keyboard.press('Enter');
 }
 
+async function reachBlockPlanner(page: import('@playwright/test').Page) {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Sports' }).click();
+  await page.getByRole('button', { name: /Continue/ }).click();
+  await continueFromPersonalization(page);
+  await completeFoundationQuiz(page);
+}
+
 async function reachFirstModule(page: import('@playwright/test').Page) {
   await reachKeyboardPlanner(page);
   for (const name of ['Get first score', 'Get second score', 'Choose an operation', 'Check for division by zero', 'Show result or helpful error']) {
@@ -139,6 +147,22 @@ test('activates the alternate planner with the keyboard', async ({ page }) => {
   await page.keyboard.press('Enter');
   await expect(page.getByRole('list')).toContainText('Get first score');
   await expect(firstStep).toBeDisabled();
+});
+
+test('keeps the pseudocode palette open after placing a block', async ({ page }) => {
+  await reachBlockPlanner(page);
+  const source = page.locator('.blocklyFlyout .blocklyText').filter({ hasText: 'Get first score' }).first();
+  await expect(source).toBeVisible();
+  const sourceBox = await source.boundingBox();
+  if (!sourceBox) throw new Error('The first pseudocode block could not be positioned for dragging.');
+
+  await page.mouse.move(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(1_450, 690, { steps: 16 });
+  await page.mouse.up();
+
+  await expect(page.locator('.blocklyWorkspace .blocklyText').filter({ hasText: 'Get first score' })).toHaveCount(2);
+  await expect(source).toBeVisible();
 });
 
 test('completes the canonical lesson using Tab and Enter only', async ({ page }) => {
