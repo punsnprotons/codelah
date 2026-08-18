@@ -30,6 +30,12 @@ Do not provision while the last four facts are unresolved.
 
 This evidence does **not** approve deployment. The outstanding M1 checks in `ROADMAP.md` are required before revisiting AWS preflight.
 
+## Offline-support decision
+
+**Decision:** do not ship an offline cache in M1. This is an internal preference, not an observed pilot requirement. A Chromium cache implementation was tested and rejected after it did not load the learner path offline.
+
+**Revisit trigger:** documented pilot evidence of unreliable connectivity on approved devices, together with an owner-approved storage budget, browser matrix, cache-update policy, and offline regression suite. Until then, the product must state its online requirement accurately.
+
 ## Required preflight before provisioning
 
 1. Obtain written confirmation of AWS region, environment owner, pilot audience, and private-access mechanism.

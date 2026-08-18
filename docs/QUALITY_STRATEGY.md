@@ -10,8 +10,9 @@ CodeLah is complete only when learners can complete the expected flow safely, ac
 - `bun run build` passes.
 - `bun run test:e2e` passes six Chromium cases: diagnostic recovery, out-of-order plan recovery, Enter-key planner activation, malformed Python, timeout/reset, and full lesson/reset.
 - A local browser smoke completed the full learner journey using the native-button planner and confirmed reset.
+- Accessibility code review confirmed native interactive controls, visible focus styling, labels, live status regions, a keyboard planner alternative, and reduced-motion handling. The inert onboarding back control was removed.
 
-These are local M1 evidence only. Manual keyboard-only/screen-reader review remains open. Offline support is not currently implemented; it needs a separately verified caching design before M1 can claim post-load offline use.
+These are local M1 evidence only. Manual keyboard-only/screen-reader review remains open. Offline support is deliberately deferred from M1 and needs separate pilot evidence plus a verified caching design before it is offered.
 
 ## Test layers
 

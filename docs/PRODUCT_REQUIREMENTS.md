@@ -45,6 +45,8 @@ Implemented locally: controlled interest tags, one formative diagnostic, Blockly
 
 Not yet implemented: expiring anonymous persistence, editable saved preferences, three-level authored hint ladder, constrained AI tutor move, analytics, operational observability, and server-validated state transitions. These remain requirements for the later pilot—not claims about the current local build.
 
+Offline use is deliberately deferred from M1: the tutor-led pilot has no observed offline requirement, and no caching approach will ship until pilot device/network evidence justifies it and a browser regression passes.
+
 ### Context policy
 
 The same canonical requirements apply to all variants. The context can change task language, examples, imagery, and a reviewed “why this matters” card; it cannot alter the necessary Python concepts or passing tests.

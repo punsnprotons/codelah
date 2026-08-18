@@ -25,20 +25,20 @@ A novice finishes a relevant first coding task independently and can explain the
 | Build integrity | `bun run build` passes. | passed locally |
 | Browser regression | `bun run test:e2e` passes six Chromium cases: diagnostic recovery, plan recovery, keyboard planner activation, malformed code, timeout/reset, and full lesson/reset. | passed locally |
 | Keyboard-plan alternative | Native-button planner provides a non-drag path; browser regression verifies activation with Enter. Screen-reader review remains required. | partial |
-| Offline-after-assets claim | No offline cache is currently shipped. A Chromium cache experiment was rejected after its offline regression failed. | not implemented |
-| Timeout and malformed-code recovery | Runner has a timeout/reset path, but focused browser cases remain untested. | partial |
+| Offline support decision | **Deferred from M1.** No observed pilot requirement justifies cache complexity yet; the Chromium cache experiment was rejected after its offline regression failed. Revisit only with pilot device/network evidence. | documented deferral |
+| Timeout and malformed-code recovery | Browser regression verifies malformed code remains locked and a runaway Worker terminates then recovers. | passed locally |
+| Accessibility code review | Native buttons, labels, visible focus, reduced-motion rule, touch interaction, and alternate planner reviewed; inert back control removed. | partial — manual screen-reader review remains |
 
 ### Next step
 
 Finish M1 acceptance before any AWS pilot foundation work:
 
 1. Complete manual keyboard-only and screen-reader checks; record browser/device coverage.
-2. Verify the post-load offline claim or remove it from M1 acceptance criteria.
-3. Review the resulting evidence against the M1 exit decision. Only then request the M2 environment approvals in the runbook.
+2. Review the resulting evidence against the M1 exit decision. Only then request the M2 environment approvals in the runbook.
 
 ## M1 acceptance criteria
 
-- Calculator lesson works offline after assets load.
+- Offline support is deliberately deferred pending pilot device/network evidence; it is not an M1 exit criterion.
 - Diagnostic, pseudocode, module, assembly, and transfer states are complete.
 - Every requirement has deterministic tests.
 - Keyboard-only learner path passes.
