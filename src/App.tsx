@@ -88,8 +88,8 @@ function playInterestSelectionSound() {
 function InterestScreen({ onContinue }: { onContinue: (selected: string[]) => void }) {
   const [selected, setSelected] = useState<string[]>([]);
   const toggle = (id: string) => {
-    if (!selected.includes(id) && selected.length < 3) playInterestSelectionSound();
-    setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length === 3 ? current : [...current, id]);
+    if (!selected.includes(id)) playInterestSelectionSound();
+    setSelected([id]);
   };
   return <main className="light-screen onboarding-screen"><Progress screen="interests" /><section className="onboarding-content" aria-labelledby="interest-title"><div className="interest-heading"><CodeLahMascot /><h1 id="interest-title">What are you curious about?</h1></div><div className="interest-grid">{interests.map((interest) => { const isSelected = selected.includes(interest.id); return <button aria-pressed={isSelected} className={`interest-card interest-card--${interest.id} ${isSelected ? 'interest-card--selected' : ''}`} key={interest.id} onClick={() => toggle(interest.id)} type="button"><span className="interest-card__glyph"><InterestIcon interest={interest.id} /></span><span className="interest-card__label">{interest.label}</span><span aria-hidden="true" className="interest-card__check"><svg viewBox="0 0 24 24"><path d="m5.5 12.5 4.2 4.1 8.8-9" /></svg></span></button>; })}</div></section><div className="onboarding-actions"><button aria-label="Go back" className="journey-back" onClick={() => window.history.back()} type="button">Back</button><button className="primary-button onboarding-button" disabled={!selected.length} onClick={() => onContinue(selected)} type="button">Continue</button></div></main>;
 }
