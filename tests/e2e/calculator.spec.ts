@@ -19,6 +19,10 @@ async function continueFromPersonalization(page: import('@playwright/test').Page
   const continueButton = page.getByRole('button', { name: 'Continue', exact: true });
   await expect(continueButton).toBeEnabled({ timeout: 6_000 });
   await continueButton.click();
+  await expect(page.getByRole('heading', { name: 'Here’s what you’ll use.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Ready for a quick warm-up?' })).toBeVisible();
+  await page.getByRole('button', { name: 'Start quiz' }).click();
 }
 
 async function reachKeyboardPlanner(page: import('@playwright/test').Page) {
@@ -110,6 +114,8 @@ test('completes the canonical lesson using Tab and Enter only', async ({ page })
   await activateWithKeyboard(page, page.getByRole('button', { name: 'Sports' }));
   await activateWithKeyboard(page, page.getByRole('button', { name: /Continue/ }));
   await activateWithKeyboard(page, page.getByRole('button', { name: 'Continue', exact: true }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: 'Continue', exact: true }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: 'Start quiz' }));
   await activateWithKeyboard(page, page.getByRole('radio', { name: 'Text' }));
   await activateWithKeyboard(page, page.getByRole('button', { name: 'Check answer' }));
   await expect(page.getByRole('status')).toContainText('Input begins as text');

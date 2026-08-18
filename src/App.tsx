@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { PlanWorkspace } from './PlanWorkspace';
 import { usePythonRunner } from './usePythonRunner';
 
-type Screen = 'interests' | 'personalizing' | 'diagnostic' | 'plan' | 'module' | 'assembly' | 'transfer';
+type Screen = 'interests' | 'personalizing' | 'topics' | 'quizIntro' | 'diagnostic' | 'plan' | 'module' | 'assembly' | 'transfer';
 
 const interests = [
   { id: 'sports', label: 'Sports' }, { id: 'music', label: 'Music' },
@@ -57,7 +57,7 @@ else:
     print("Error: Choose +, -, *, or /.")`;
 
 function Progress({ screen }: { screen: Screen }) {
-  const active = { interests: 0, personalizing: 1, diagnostic: 1, plan: 2, module: 3, assembly: 4, transfer: 5 }[screen];
+  const active = { interests: 0, personalizing: 1, topics: 2, quizIntro: 2, diagnostic: 2, plan: 3, module: 4, assembly: 5, transfer: 5 }[screen];
   return <div className="progress" aria-label={`Step ${active + 1} of 6`}>{Array.from({ length: 6 }).map((_, index) => <span className={index <= active ? 'progress__segment progress__segment--active' : 'progress__segment'} key={index} />)}</div>;
 }
 
@@ -121,6 +121,21 @@ function PersonalizingScreen({ context, onBack, onContinue }: { context: { label
   return <main className="light-screen personalizing-screen"><Progress screen="personalizing" /><section className="personalizing-panel" aria-live="polite"><CodeLahMascot /><h1>Let’s help you become the best {role} you can be—with code.</h1><section aria-label={`${topic} inspiration`} className="inspiration-accordion">{inspiration.map((item, index) => { const isActive = index === activeInspiration; const activate = () => setActiveInspiration(index); return <article className={isActive ? 'inspiration-accordion__item inspiration-accordion__item--active' : 'inspiration-accordion__item'} key={item.title} onMouseEnter={activate}><img alt={item.alt} className="inspiration-accordion__image" src={item.image} /><div className="inspiration-accordion__shade" /><div className="inspiration-accordion__copy"><h2>{item.title}</h2><span>{item.copy}</span></div><button aria-label={`Explore ${item.title}`} aria-pressed={isActive} className="inspiration-accordion__activate" onClick={activate} onFocus={activate} type="button" /></article>; })}</section></section><div className="onboarding-actions personalizing-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" onClick={onContinue} type="button">Continue</button></div></main>;
 }
 
+const foundationTopics = [
+  { concept: 'Input', detail: 'How a program receives what someone types.' },
+  { concept: 'Numbers', detail: 'How typed text becomes something you can calculate.' },
+  { concept: 'Decisions', detail: 'How a program chooses what to do next.' },
+  { concept: 'Safe division', detail: 'How to catch zero before it causes an error.' },
+];
+
+function TopicsScreen({ context, onBack, onContinue }: { context: { label: string; project: string; fact: string }; onBack: () => void; onContinue: () => void }) {
+  return <main className="light-screen orientation-screen"><Progress screen="topics" /><section className="orientation-content" aria-labelledby="topics-title"><CodeLahMascot /><p className="orientation-kicker">For your first {context.project}</p><h1 id="topics-title">Here’s what you’ll use.</h1><p className="orientation-copy">These four ideas are the building blocks of the program you’re about to create.</p><div className="foundation-grid">{foundationTopics.map((topic, index) => <article className="foundation-card" key={topic.concept}><span>{String(index + 1).padStart(2, '0')}</span><h2>{topic.concept}</h2><p>{topic.detail}</p></article>)}</div></section><div className="onboarding-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" onClick={onContinue} type="button">Continue</button></div></main>;
+}
+
+function QuizIntroScreen({ onBack, onStart }: { onBack: () => void; onStart: () => void }) {
+  return <main className="light-screen orientation-screen quiz-intro-screen"><Progress screen="quizIntro" /><section className="quiz-intro-content" aria-labelledby="quiz-intro-title"><CodeLahMascot /><p className="orientation-kicker">Quick warm-up</p><h1 id="quiz-intro-title">Ready for a quick warm-up?</h1><p>Three short questions will help us choose the right level of guidance while you build. This is not a test—you’ll get help whenever you need it.</p><div className="quiz-intro-points"><span>3 questions</span><span>About 1 minute</span><span>Hints if you need them</span></div></section><div className="onboarding-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" onClick={onStart} type="button">Start quiz</button></div></main>;
+}
+
 function DiagnosticScreen({ onContinue }: { onContinue: () => void }) {
   const [answer, setAnswer] = useState<string | null>(null); const [checked, setChecked] = useState(false); const isCorrect = answer === 'Text';
   return <main className="dark-screen diagnostic-screen"><Progress screen="diagnostic" /><section className="diagnostic-content" aria-labelledby="diagnostic-title"><p className="eyebrow">Before we build, one quick check.</p><h1 id="diagnostic-title">What does <code>input()</code> give Python?</h1><div className="answer-grid" role="radiogroup" aria-label="Concept check answers">{['A number', 'Text', 'A calculation'].map((option) => <button aria-checked={answer === option} className={`answer-card ${answer === option ? 'answer-card--selected' : ''}`} key={option} onClick={() => { setAnswer(option); setChecked(false); }} role="radio" type="button"><span className="answer-card__visual">{option === 'Text' ? 'abc' : option === 'A number' ? '123' : '+ ÷'}</span><span>{option}</span></button>)}</div>{checked && <div className={`feedback ${isCorrect ? 'feedback--success' : ''}`} role="status">{isCorrect ? 'Exactly. Input begins as text; you decide when to turn it into a number.' : 'Think about what a keyboard sends before the program converts it.'}</div>}<aside className="explain-card"><span>⌁</span> Good data starts as text — then you decide how to use it.</aside></section>{checked && isCorrect ? <button className="primary-button bottom-button" onClick={onContinue} type="button">Plan the program <span>→</span></button> : <button className="primary-button bottom-button" disabled={!answer} onClick={() => setChecked(true)} type="button">Check answer</button>}</main>;
@@ -150,7 +165,9 @@ export function App() {
   const context = lessonContexts[domains[0] ?? 'sports']; const priorSource = useMemo(() => completedSources.join('\n\n'), [completedSources]);
   const restart = () => { setDomains([]); setModuleIndex(0); setCompletedSources([]); setScreen('interests'); };
   if (screen === 'interests') return <InterestScreen onContinue={(selected) => { setDomains(selected); setScreen('personalizing'); }} />;
-  if (screen === 'personalizing') return <PersonalizingScreen context={context} onBack={() => setScreen('interests')} onContinue={() => setScreen('diagnostic')} />;
+  if (screen === 'personalizing') return <PersonalizingScreen context={context} onBack={() => setScreen('interests')} onContinue={() => setScreen('topics')} />;
+  if (screen === 'topics') return <TopicsScreen context={context} onBack={() => setScreen('personalizing')} onContinue={() => setScreen('quizIntro')} />;
+  if (screen === 'quizIntro') return <QuizIntroScreen onBack={() => setScreen('topics')} onStart={() => setScreen('diagnostic')} />;
   if (screen === 'diagnostic') return <DiagnosticScreen onContinue={() => setScreen('plan')} />;
   if (screen === 'plan') return <main className="dark-screen plan-screen"><Progress screen="plan" /><PlanWorkspace context={context} onValid={() => setScreen('module')} /></main>;
   if (screen === 'module') return <ModuleScreen context={context} index={moduleIndex} key={moduleIndex} module={modules[moduleIndex]} onContinue={(source) => { setCompletedSources((current) => [...current, source]); if (moduleIndex === modules.length - 1) setScreen('assembly'); else setModuleIndex((current) => current + 1); }} priorSource={priorSource} />;

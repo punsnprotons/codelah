@@ -119,6 +119,22 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .transition-loading__bar { background: #e2e7e1; border-radius: 999px; height: 8px; margin-top: 28px; max-width: 420px; overflow: hidden; width: 100%; }
 .transition-loading__bar span { animation: personalizing-load 2s ease-out forwards; background: linear-gradient(90deg, #18c968, #c7fa54); border-radius: inherit; display: block; height: 100%; transform-origin: left; }
 
+/* Learning orientation */
+.orientation-screen { display: grid; place-items: center; }
+.orientation-content, .quiz-intro-content { max-width: 900px; text-align: center; transform: translateY(-36px); width: 100%; }
+.orientation-content .codelah-mascot, .quiz-intro-content .codelah-mascot { height: 68px; margin-bottom: 10px; width: 68px; }
+.orientation-kicker { color: #668719; font-size: .82rem; font-weight: 800; letter-spacing: .08em; margin: 0 0 12px; text-transform: uppercase; }
+.orientation-content h1, .quiz-intro-content h1 { font-size: clamp(2.35rem, 4.3vw, 4rem); font-weight: 650; letter-spacing: -.06em; margin-bottom: 12px; }
+.orientation-copy, .quiz-intro-content > p { color: #5e6860; font-size: 1.08rem; line-height: 1.55; margin: 0 auto; max-width: 620px; }
+.foundation-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); margin: 38px auto 0; max-width: 760px; text-align: left; }
+.foundation-card { background: #fff; border: 1px solid #dce2dc; border-radius: 16px; min-height: 142px; padding: 22px 24px; }
+.foundation-card > span { color: #7aa92b; display: block; font-size: .75rem; font-weight: 800; letter-spacing: .08em; margin-bottom: 14px; }
+.foundation-card h2 { font-size: 1.18rem; letter-spacing: -.03em; margin: 0 0 6px; }
+.foundation-card p { color: #5e6860; font-size: .92rem; line-height: 1.45; margin: 0; }
+.quiz-intro-content { max-width: 700px; }
+.quiz-intro-points { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 32px; }
+.quiz-intro-points span { background: #eef5df; border-radius: 999px; color: #48621a; font-size: .9rem; font-weight: 700; padding: 10px 14px; }
+
 @keyframes accordion-reveal { from { opacity: .78; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes loading-icon-pulse { from { transform: scale(.92) rotate(-4deg); } to { transform: scale(1.06) rotate(4deg); } }
 @keyframes personalizing-load { from { transform: scaleX(.08); } to { transform: scaleX(1); } }
@@ -235,6 +251,11 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .personalizing-panel h1 { font-size: 2.1rem; white-space: normal; }
   .personalizing-screen { display: block; overflow-y: auto; padding-bottom: 28px; }
   .personalizing-actions { margin: 24px 0 8px; position: static; }
+  .orientation-screen { display: block; overflow-y: auto; padding-bottom: 28px; }
+  .orientation-content, .quiz-intro-content { margin-top: 92px; transform: none; }
+  .foundation-grid { grid-template-columns: 1fr; margin-top: 28px; }
+  .foundation-card { min-height: 118px; }
+  .quiz-intro-points { margin-top: 24px; }
   .inspiration-accordion { gap: 8px; height: 360px; margin-top: 48px; }
   .inspiration-accordion__item { min-width: 54px; }
   .inspiration-accordion__copy { bottom: 20px; left: 20px; max-width: calc(100% - 40px); }
