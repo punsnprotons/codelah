@@ -10,7 +10,7 @@
   --lime-deep: #9dcd38;
   --red: #ff8a79;
   color: var(--ink);
-  font-family: "Avenir Next", Avenir, "Helvetica Neue", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-synthesis: none;
 }
 
@@ -49,13 +49,14 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 /* Onboarding */
 .onboarding-screen { display: grid; place-items: center; }
 .onboarding-content { margin-top: 26px; max-width: 760px; text-align: center; width: 100%; }
-.onboarding-kicker { color: #61705c; font-size: .76rem; font-weight: 700; letter-spacing: .11em; margin-bottom: 15px; text-transform: uppercase; }
-.onboarding-content h1 { font-family: inherit; font-size: clamp(2.35rem, 4.4vw, 4.25rem); font-weight: 600; letter-spacing: -.05em; line-height: 1.04; margin-bottom: 16px; }
-.onboarding-content .screen-copy { color: #667069; font-size: 1rem; letter-spacing: -.01em; margin: 0 auto; max-width: 500px; }
+.onboarding-content h1 { font-family: inherit; font-size: clamp(2.25rem, 3.8vw, 3.7rem); font-weight: 600; letter-spacing: -.045em; line-height: 1.08; margin-bottom: 0; white-space: nowrap; }
 .journey-back { align-items: center; background: transparent; border: 0; color: #3f4942; display: inline-flex; font-size: .92rem; font-weight: 700; gap: 7px; left: clamp(24px, 5vw, 80px); padding: 9px 4px; position: absolute; top: 25px; z-index: 6; }
 .journey-back svg { fill: none; height: 20px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; width: 20px; }
 .journey-back:hover { color: #111713; }
-.interest-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 42px auto 0; max-width: 720px; }
+.onboarding-screen .progress { background: #dfe1df; border-radius: 999px; gap: 0; height: 8px; overflow: hidden; padding: 0; }
+.onboarding-screen .progress__segment { background: transparent; border-radius: 0; height: 100%; }
+.onboarding-screen .progress__segment--active { background: linear-gradient(90deg, #13c861, var(--lime)); }
+.interest-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 48px auto 0; max-width: 720px; }
 .interest-card { align-items: center; background: #fff; border: 1px solid #dce2dc; border-radius: 16px; color: var(--ink); display: grid; font-size: 1rem; font-weight: 700; grid-template-columns: 42px 1fr 22px; min-height: 82px; padding: 15px 18px; text-align: left; transition: background .15s ease, border-color .15s ease, box-shadow .15s ease; }
 .interest-card:hover { border-color: #aeb9b0; box-shadow: 0 4px 14px #1012110a; }
 .interest-card--selected { background: #f6fbe9; border-color: #93c43a; box-shadow: 0 0 0 2px #c7fa5435; }
@@ -64,8 +65,8 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .interest-card__label { padding-right: 12px; }
 .interest-card__check { align-items: center; border: 1px solid #cfd6d0; border-radius: 50%; color: transparent; display: inline-flex; font-size: .75rem; height: 20px; justify-content: center; transition: all .15s ease; width: 20px; }
 .interest-card--selected .interest-card__check { background: #76a926; border-color: #76a926; color: #fff; }
-.onboarding-button { border-radius: 14px; bottom: 34px; font-weight: 700; left: 50%; min-width: 224px; position: absolute; transform: translateX(-50%); }
-.onboarding-button:hover:not(:disabled) { transform: translateX(-50%) translateY(-1px); }
+.onboarding-button { border-radius: 14px; bottom: 34px; font-weight: 700; min-width: 224px; position: absolute; right: clamp(24px, 5vw, 80px); }
+.onboarding-button:hover:not(:disabled) { transform: translateY(-1px); }
 
 /* Diagnostic */
 .diagnostic-screen { display: flex; justify-content: center; }
@@ -163,12 +164,12 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .progress { top: 21px; width: 72vw; }
   .back-button { left: 18px; top: 56px; }
   .onboarding-content { margin-top: 64px; }
-  .onboarding-content h1 { font-size: 2.45rem; }
+  .onboarding-content h1 { font-size: 2rem; white-space: normal; }
   .interest-grid { gap: 10px; grid-template-columns: 1fr; margin-top: 30px; }
   .interest-card { min-height: 70px; padding: 12px 15px; }
   .journey-back { left: 18px; top: 16px; }
   .onboarding-screen { display: block; overflow-y: auto; padding-bottom: 28px; }
-  .onboarding-button { display: flex; margin: 24px auto 8px; position: static; transform: none; }
+  .onboarding-button { display: flex; margin: 24px 0 8px auto; position: static; transform: none; }
   .onboarding-button:hover:not(:disabled) { transform: translateY(-1px); }
   .answer-grid { grid-template-columns: 1fr; margin-top: 25px; }
   .answer-card { min-height: 112px; flex-direction: row; justify-content: flex-start; padding: 18px 25px; }
