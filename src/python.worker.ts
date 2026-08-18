@@ -2,53 +2,54 @@ type RunRequest = {
   type: 'run';
   source: string;
   inputs: string[];
+  assertion?: string;
+  failureMessage?: string;
 };
 
 type RunResponse =
-  | { type: 'passed'; value: number }
+  | { type: 'passed'; output: string[] }
   | { type: 'failed'; message: string }
   | { type: 'ready' };
 
-const indexURL = new URL('/pyodide/', self.location.origin).toString();
 type PyodideRuntime = {
   globals: { set: (name: string, value: unknown) => void };
   runPythonAsync: (source: string) => Promise<unknown>;
 };
+
 declare function loadPyodide(options: { indexURL: string }): Promise<PyodideRuntime>;
 declare function importScripts(...urls: string[]): void;
 
+const indexURL = new URL('/pyodide/', self.location.origin).toString();
 importScripts(new URL('pyodide.js', indexURL).toString());
 const pyodideReady = loadPyodide({ indexURL });
 
-void pyodideReady.then(() => {
-  self.postMessage({ type: 'ready' } satisfies RunResponse);
-});
+void pyodideReady.then(() => self.postMessage({ type: 'ready' } satisfies RunResponse));
 
 self.addEventListener('message', async ({ data }: MessageEvent<RunRequest>) => {
   if (data.type !== 'run') return;
-
   try {
     const pyodide = await pyodideReady;
     pyodide.globals.set('codelah_inputs', data.inputs);
     await pyodide.runPythonAsync(`
 import builtins
+import json
 _codelah_values = iter(codelah_inputs)
+_codelah_output = []
 builtins.input = lambda prompt='': next(_codelah_values)
+builtins.print = lambda *args, **kwargs: _codelah_output.append(' '.join(str(arg) for arg in args))
 `);
     await pyodide.runPythonAsync(data.source);
-    const result = await pyodide.runPythonAsync('first_score');
-
-    if (typeof result !== 'number' || result !== 4) {
-      self.postMessage({
-        type: 'failed',
-        message: 'The test expected first_score to become the number 4.0 after the input is converted.',
-      } satisfies RunResponse);
-      return;
+    if (data.assertion) {
+      const assertionPassed = await pyodide.runPythonAsync(data.assertion);
+      if (assertionPassed !== true) {
+        self.postMessage({ type: 'failed', message: data.failureMessage ?? 'That block is not producing the expected value yet.' } satisfies RunResponse);
+        return;
+      }
     }
-
-    self.postMessage({ type: 'passed', value: result } satisfies RunResponse);
+    const output = JSON.parse(String(await pyodide.runPythonAsync('json.dumps(_codelah_output)'))) as string[];
+    self.postMessage({ type: 'passed', output } satisfies RunResponse);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Python could not run that step yet.';
-    self.postMessage({ type: 'failed', message } satisfies RunResponse);
+    const detail = error instanceof Error ? error.message.split('\n')[0] : 'Python could not run that step yet.';
+    self.postMessage({ type: 'failed', message: `Python found an issue: ${detail}` } satisfies RunResponse);
   }
 });

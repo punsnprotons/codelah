@@ -72,10 +72,11 @@ function getOrderedBlockTypes(workspace: Blockly.WorkspaceSvg): string[] | null 
 }
 
 type PlanWorkspaceProps = {
+  context: { label: string; project: string; fact: string };
   onValid: () => void;
 };
 
-export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
+export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
   const host = useRef<HTMLDivElement | null>(null);
   const workspace = useRef<Blockly.WorkspaceSvg | null>(null);
   const [message, setMessage] = useState('Drag the thinking blocks into one connected plan.');
@@ -152,15 +153,15 @@ export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
   return (
     <section className="plan-stage" aria-labelledby="plan-title">
       <div className="plan-heading">
-        <p className="eyebrow">Sports context · Python foundations</p>
-        <h1 id="plan-title">Plan the match calculator</h1>
+        <p className="eyebrow">{context.label} · Python foundations</p>
+        <h1 id="plan-title">Plan the {context.project}</h1>
         <p>Put the thinking in order before you write Python.</p>
       </div>
       <div className="plan-layout">
         <div className="blockly-host" ref={host} aria-label="Pseudocode block workspace" />
         <aside className="concept-note">
           <span className="note-mark">✦</span>
-          <p>A safe program checks a value before using it.</p>
+          <p>{context.fact}</p>
         </aside>
       </div>
       <div className={`plan-message ${isValid ? 'plan-message--success' : ''}`} role="status">

@@ -109,7 +109,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .module-brief > p { color: #d5dbd6; line-height: 1.55; margin: 0; }
 .bulb { color: var(--lime); font-size: 1.15rem; margin-right: 8px; }
 .code-panel { background: #141716; border: 1px solid #3d4540; border-radius: 18px; display: flex; min-height: 430px; overflow: hidden; padding: 27px 18px; }
-.line-number { color: #6a736d; font-family: 'DM Mono', monospace; padding: 3px 18px 0 7px; user-select: none; }
+.line-number { color: #6a736d; font-family: 'DM Mono', monospace; padding: 3px 18px 0 7px; user-select: none; white-space: pre; }
 .code-panel textarea { background: transparent; border: 0; color: #dceade; flex: 1; font-family: 'DM Mono', monospace; font-size: clamp(.86rem, 1.4vw, 1.05rem); line-height: 1.65; min-height: 100%; outline: none; padding: 0; resize: none; white-space: pre; }
 .run-column { display: flex; flex-direction: column; gap: 18px; justify-content: center; }
 .panel-title { color: #eff3ef; font-weight: 800; margin-bottom: 13px; }
@@ -129,6 +129,10 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .complete-card h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.5rem, 5vw, 4.6rem); }
 .complete-card > p:not(.emblem):not(.eyebrow) { color: #566058; font-size: 1.06rem; line-height: 1.6; }
 .complete-card pre { background: #161a18; border-radius: 15px; color: #d8e7d7; font-family: 'DM Mono', monospace; font-size: .86rem; line-height: 1.75; margin: 33px 0; overflow-x: auto; padding: 22px; text-align: left; }
+.assembly-output { background: #e9f4d8; border: 1px solid #9fcb47; border-radius: 15px; color: #26301f; display: flex; flex-direction: column; gap: 6px; margin: -12px auto 24px; max-width: 560px; padding: 16px 20px; text-align: left; }
+.assembly-output strong { color: #547619; font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; }
+.assembly-output span { font-family: 'DM Mono', monospace; font-size: .9rem; }
+.assembly-actions { display: flex; justify-content: center; }
 .sr-only { height: 1px; margin: -1px; overflow: hidden; position: absolute; width: 1px; clip: rect(0, 0, 0, 0); }
 
 @media (max-width: 900px) {

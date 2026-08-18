@@ -4,9 +4,14 @@ type RunState =
   | { status: 'loading' }
   | { status: 'idle' }
   | { status: 'running' }
-  | { status: 'passed'; value: number }
+  | { status: 'passed'; output: string[] }
   | { status: 'failed'; message: string }
   | { status: 'timed_out' };
+
+type WorkerResponse =
+  | { type: 'ready' }
+  | { type: 'passed'; output: string[] }
+  | { type: 'failed'; message: string };
 
 export function usePythonRunner() {
   const workerRef = useRef<Worker | null>(null);
@@ -15,11 +20,11 @@ export function usePythonRunner() {
 
   const createWorker = useCallback(() => {
     const worker = new Worker(new URL('./python.worker.ts', import.meta.url));
-    worker.onmessage = ({ data }: MessageEvent) => {
+    worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => {
       if (data.type === 'ready') setState({ status: 'idle' });
       if (data.type === 'passed') {
         window.clearTimeout(timeoutRef.current);
-        setState({ status: 'passed', value: data.value });
+        setState({ status: 'passed', output: data.output });
       }
       if (data.type === 'failed') {
         window.clearTimeout(timeoutRef.current);
@@ -37,10 +42,10 @@ export function usePythonRunner() {
     };
   }, [createWorker]);
 
-  const run = useCallback((source: string) => {
+  const run = useCallback((source: string, inputs: string[], assertion?: string, failureMessage?: string) => {
     if (!workerRef.current) return;
     setState({ status: 'running' });
-    workerRef.current.postMessage({ type: 'run', source, inputs: ['4'] });
+    workerRef.current.postMessage({ type: 'run', source, inputs, assertion, failureMessage });
     timeoutRef.current = window.setTimeout(() => {
       workerRef.current?.terminate();
       setState({ status: 'timed_out' });
