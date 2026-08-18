@@ -231,7 +231,7 @@ export function App() {
   if (screen === 'quizIntro') return <QuizIntroScreen onBack={() => setScreen('topics')} onStart={() => setScreen('diagnostic')} />;
   if (screen === 'diagnostic') return <DiagnosticScreen onBack={() => setScreen('quizIntro')} onComplete={() => setScreen('quizComplete')} />;
   if (screen === 'quizComplete') return <QuizCompleteScreen onBack={() => setScreen('diagnostic')} onContinue={() => setScreen('plan')} />;
-  if (screen === 'plan') return <main className="dark-screen plan-screen"><Progress screen="plan" /><PlanWorkspace context={context} onValid={() => setScreen('module')} /></main>;
+  if (screen === 'plan') return <main className="light-screen plan-screen"><Progress screen="plan" /><PlanWorkspace onValid={() => setScreen('module')} /></main>;
   if (screen === 'module') return <ModuleScreen context={context} index={moduleIndex} key={moduleIndex} module={modules[moduleIndex]} onContinue={(source) => { setCompletedSources((current) => [...current, source]); if (moduleIndex === modules.length - 1) setScreen('assembly'); else setModuleIndex((current) => current + 1); }} priorSource={priorSource} />;
   if (screen === 'assembly') return <AssemblyScreen onContinue={() => setScreen('transfer')} />;
   return <TransferScreen restart={restart} />;

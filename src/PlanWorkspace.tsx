@@ -80,14 +80,13 @@ function getOrderedBlockTypes(workspace: Blockly.WorkspaceSvg): string[] | null 
 }
 
 type PlanWorkspaceProps = {
-  context: { label: string; project: string; fact: string };
   onValid: () => void;
 };
 
-export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
+export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
   const host = useRef<HTMLDivElement | null>(null);
   const workspace = useRef<Blockly.WorkspaceSvg | null>(null);
-  const [message, setMessage] = useState('Drag the thinking blocks into one connected plan.');
+  const [message, setMessage] = useState('');
   const [isValid, setIsValid] = useState(false);
   const [mode, setMode] = useState<'drag' | 'keyboard'>('drag');
   const [keyboardPlan, setKeyboardPlan] = useState<string[]>([]);
@@ -99,16 +98,16 @@ export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
       name: 'codelah',
       base: Blockly.Themes.Classic,
       componentStyles: {
-        workspaceBackgroundColour: '#151817',
-        toolboxBackgroundColour: '#1d211f',
-        toolboxForegroundColour: '#ecefea',
-        flyoutBackgroundColour: '#1d211f',
-        flyoutForegroundColour: '#ecefea',
+        workspaceBackgroundColour: '#fbfcf9',
+        toolboxBackgroundColour: '#f2f7ed',
+        toolboxForegroundColour: '#253029',
+        flyoutBackgroundColour: '#f2f7ed',
+        flyoutForegroundColour: '#253029',
         flyoutOpacity: 1,
-        scrollbarColour: '#53615b',
-        insertionMarkerColour: '#c7fa54',
+        scrollbarColour: '#9caea0',
+        insertionMarkerColour: '#557d1e',
         insertionMarkerOpacity: 0.3,
-        cursorColour: '#c7fa54',
+        cursorColour: '#557d1e',
       },
     });
 
@@ -118,9 +117,9 @@ export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
         kind: 'flyoutToolbox',
         contents: REQUIRED_BLOCKS.map((type) => ({ kind: 'block', type })),
       },
-      grid: { spacing: 20, length: 3, colour: '#252a28', snap: true },
+      grid: { spacing: 20, length: 3, colour: '#d9e3d6', snap: true },
       trashcan: true,
-      zoom: { controls: false, wheel: false, startScale: 0.92, maxScale: 1.1, minScale: 0.8 },
+      zoom: { controls: false, wheel: false, startScale: 1.22, maxScale: 1.55, minScale: 0.92 },
       move: { scrollbars: { horizontal: true, vertical: true }, drag: true, wheel: false },
     });
     workspace.current = nextWorkspace;
@@ -174,19 +173,11 @@ export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
     setMessage(nextPlan.length === REQUIRED_BLOCKS.length ? 'All five planning blocks are in order. Check your plan.' : `Good. Now add step ${nextPlan.length + 1} of ${REQUIRED_BLOCKS.length}.`);
   }
 
-  function clearPlan() {
-    workspace.current?.clear();
-    setKeyboardPlan([]);
-    setIsValid(false);
-    setMessage(mode === 'keyboard' ? 'Use the buttons to build the plan one step at a time.' : 'Drag the thinking blocks into one connected plan.');
-  }
-
   return (
     <section className="plan-stage" aria-labelledby="plan-title">
       <div className="plan-heading">
-        <p className="eyebrow">{context.label} · Python foundations</p>
-        <h1 id="plan-title">Plan the {context.project}</h1>
-        <p>Put the thinking in order before you write Python.</p>
+        <h1 id="plan-title">Build your plan.</h1>
+        <p>Arrange the steps in the order your program should run.</p>
       </div>
       <div className="plan-layout">
         <div className={`blockly-host ${mode === 'keyboard' ? 'blockly-host--hidden' : ''}`} ref={host} aria-label="Pseudocode block workspace" />
@@ -197,23 +188,16 @@ export function PlanWorkspace({ context, onValid }: PlanWorkspaceProps) {
             <div className="keyboard-plan__choices">{REQUIRED_BLOCKS.map((type) => <button disabled={keyboardPlan.includes(type)} key={type} onClick={() => addKeyboardBlock(type)} type="button">{blockLabels[type]}</button>)}</div>
           </section>
         )}
-        <aside className="concept-note">
-          <span className="note-mark">✦</span>
-          <p>{context.fact}</p>
-        </aside>
       </div>
-      <div className={`plan-message ${isValid ? 'plan-message--success' : ''}`} role="status">
+      <div className={`plan-message ${message ? 'plan-message--visible' : ''} ${isValid ? 'plan-message--success' : ''}`} role="status">
         {message}
       </div>
       <div className="stage-actions">
-        <div>
-          <button className="text-button" onClick={() => { setMode((current) => current === 'drag' ? 'keyboard' : 'drag'); setIsValid(false); setMessage(mode === 'drag' ? 'Use the buttons to build the plan one step at a time.' : 'Drag the thinking blocks into one connected plan.'); }} type="button">{mode === 'drag' ? 'Use keyboard planner' : 'Use drag-and-drop'}</button>
-          <button className="text-button" onClick={clearPlan} type="button">Clear plan</button>
-        </div>
+        <button className="sr-only" onClick={() => { setMode((current) => current === 'drag' ? 'keyboard' : 'drag'); setIsValid(false); setMessage(mode === 'drag' ? 'Use the buttons to build the plan one step at a time.' : ''); }} type="button">{mode === 'drag' ? 'Use keyboard planner' : 'Use drag-and-drop'}</button>
         {isValid ? (
-          <button className="primary-button" onClick={onValid} type="button">Write the first block <span>→</span></button>
+          <button className="primary-button" onClick={onValid} type="button">Continue</button>
         ) : (
-          <button className="primary-button" onClick={validatePlan} type="button">Check plan <span>→</span></button>
+          <button className="primary-button" onClick={validatePlan} type="button">Submit plan</button>
         )}
       </div>
     </section>

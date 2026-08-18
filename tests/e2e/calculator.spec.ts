@@ -43,7 +43,8 @@ async function reachKeyboardPlanner(page: import('@playwright/test').Page) {
   await page.getByRole('button', { name: /Continue/ }).click();
   await continueFromPersonalization(page);
   await completeFoundationQuiz(page);
-  await page.getByRole('button', { name: 'Use keyboard planner' }).click();
+  await page.getByRole('button', { name: 'Use keyboard planner' }).focus();
+  await page.keyboard.press('Enter');
 }
 
 async function reachFirstModule(page: import('@playwright/test').Page) {
@@ -51,8 +52,8 @@ async function reachFirstModule(page: import('@playwright/test').Page) {
   for (const name of ['Get first score', 'Get second score', 'Choose an operation', 'Check for division by zero', 'Show result or helpful error']) {
     await page.getByRole('button', { name, exact: true }).click();
   }
-  await page.getByRole('button', { name: /Check plan/ }).click();
-  await page.getByRole('button', { name: /Write the first block/ }).click();
+  await page.getByRole('button', { name: 'Submit plan' }).click();
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect(page.getByRole('button', { name: /Check this block/ })).toBeEnabled();
 }
 
@@ -128,7 +129,7 @@ test('rejects an out-of-order keyboard plan with a recovery prompt', async ({ pa
   await reachKeyboardPlanner(page);
   await page.getByRole('button', { name: 'Show result or helpful error' }).click();
   await expect(page.getByRole('status')).toContainText('what is the next thing the program needs');
-  await expect(page.getByRole('button', { name: /Write the first block/ })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Continue', exact: true })).toHaveCount(0);
 });
 
 test('activates the alternate planner with the keyboard', async ({ page }) => {
@@ -160,8 +161,8 @@ test('completes the canonical lesson using Tab and Enter only', async ({ page })
   for (const name of ['Get first score', 'Get second score', 'Choose an operation', 'Check for division by zero', 'Show result or helpful error']) {
     await activateWithKeyboard(page, page.getByRole('button', { name, exact: true }));
   }
-  await activateWithKeyboard(page, page.getByRole('button', { name: /Check plan/ }));
-  await activateWithKeyboard(page, page.getByRole('button', { name: /Write the first block/ }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: 'Submit plan' }));
+  await activateWithKeyboard(page, page.getByRole('button', { name: 'Continue', exact: true }));
 
   for (let index = 0; index < 5; index += 1) {
     await activateWithKeyboard(page, page.getByRole('button', { name: /Check this block/ }));
