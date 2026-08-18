@@ -24,6 +24,17 @@ This is the remaining M1 manual acceptance check. Run it on the approved pilot b
 - No critical or high-severity screen-reader ambiguity remains.
 - Any non-blocking issue has an owner and a scheduled remediation decision.
 
+## Evidence record — complete on the pilot device
+
+Run the local release build with `bun run build && bun run preview -- --host 127.0.0.1 --port 5173`, then record one row per journey. Do not mark a row as passed from source review or automated tests alone.
+
+| Date | Tester | Browser + version | OS + version | Assistive technology + version | Journey | Result | Issue / reproduction path |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| _YYYY-MM-DD_ | _name_ | _e.g. Safari 18_ | _e.g. macOS 15_ | _e.g. VoiceOver, built in_ | Keyboard-only | _pass / fail_ | _required if fail_ |
+| _YYYY-MM-DD_ | _name_ | _e.g. Safari 18_ | _e.g. macOS 15_ | _e.g. VoiceOver, built in_ | Screen-reader | _pass / fail_ | _required if fail_ |
+
+For a failure, include the screen, exact control or announcement, expected behavior, observed behavior, and the shortest repeatable route. A pass requires completing the entire journey through reset.
+
 ## Evidence log
 
 ### 2026-08-18 — semantic preflight (not a screen-reader substitute)
