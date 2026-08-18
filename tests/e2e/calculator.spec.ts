@@ -19,7 +19,7 @@ async function continueFromPersonalization(page: import('@playwright/test').Page
   const continueButton = page.getByRole('button', { name: 'Continue', exact: true });
   await expect(continueButton).toBeEnabled({ timeout: 6_000 });
   await continueButton.click();
-  await expect(page.getByRole('heading', { name: 'Here’s what you’ll use.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Here’s what you’ll learn.' })).toBeVisible();
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Ready for a quick warm-up?' })).toBeVisible();
   await page.getByRole('button', { name: 'Start quiz' }).click();
