@@ -50,23 +50,35 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .onboarding-screen { display: grid; place-items: center; }
 .onboarding-content { margin-top: 26px; max-width: 760px; text-align: center; width: 100%; }
 .onboarding-content h1 { font-family: inherit; font-size: clamp(2.25rem, 3.8vw, 3.7rem); font-weight: 600; letter-spacing: -.045em; line-height: 1.08; margin-bottom: 0; white-space: nowrap; }
-.journey-back { align-items: center; background: transparent; border: 0; color: #3f4942; display: inline-flex; font-size: .92rem; font-weight: 700; gap: 7px; left: clamp(24px, 5vw, 80px); padding: 9px 4px; position: absolute; top: 25px; z-index: 6; }
-.journey-back svg { fill: none; height: 20px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; width: 20px; }
-.journey-back:hover { color: #111713; }
+.interest-heading { display: inline-block; position: relative; }
+.codelah-mascot { height: 82px; position: absolute; right: -96px; top: -20px; width: 82px; }
+.codelah-mascot__body { animation: mascot-float 3.2s ease-in-out infinite; transform-origin: 60px 62px; }
+.codelah-mascot__shadow { fill: #1620181c; }
+.onboarding-actions { bottom: 34px; display: flex; justify-content: space-between; left: clamp(24px, 5vw, 80px); position: absolute; right: clamp(24px, 5vw, 80px); }
+.journey-back { align-items: center; align-self: center; background: #fff; border: 1px solid #bfc8c0; border-bottom-color: #919d93; border-bottom-width: 4px; border-radius: 14px; color: #273029; display: inline-flex; font-size: 1rem; font-weight: 700; justify-content: center; min-height: 60px; min-width: 150px; padding: 0 28px; transition: background .16s ease, transform .16s ease; }
+.journey-back:hover { background: #f2f5f1; transform: translateY(-1px); }
 .onboarding-screen .progress { background: #dfe1df; border-radius: 999px; gap: 0; height: 8px; overflow: hidden; padding: 0; }
 .onboarding-screen .progress__segment { background: transparent; border-radius: 0; height: 100%; }
 .onboarding-screen .progress__segment--active { background: linear-gradient(90deg, #13c861, var(--lime)); }
 .interest-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 48px auto 0; max-width: 720px; }
-.interest-card { align-items: center; background: #fff; border: 1px solid #dce2dc; border-radius: 16px; color: var(--ink); display: grid; font-size: 1rem; font-weight: 700; grid-template-columns: 42px 1fr 22px; min-height: 82px; padding: 15px 18px; text-align: left; transition: background .15s ease, border-color .15s ease, box-shadow .15s ease; }
+.interest-card { align-items: center; background: #fff; border: 1px solid #dce2dc; border-radius: 16px; color: var(--ink); display: grid; font-size: 1rem; font-weight: 700; grid-template-columns: 48px 1fr 22px; min-height: 82px; padding: 15px 18px; text-align: left; transition: background .15s ease, border-color .15s ease, box-shadow .15s ease; }
 .interest-card:hover { border-color: #aeb9b0; box-shadow: 0 4px 14px #1012110a; }
 .interest-card--selected { background: #f6fbe9; border-color: #93c43a; box-shadow: 0 0 0 2px #c7fa5435; }
-.interest-card__glyph { align-items: center; color: #4c6953; display: inline-flex; height: 28px; justify-content: center; width: 28px; }
+.interest-card__glyph { align-items: center; border-radius: 10px; display: inline-flex; height: 36px; justify-content: center; width: 36px; }
 .interest-card__glyph svg { height: 25px; width: 25px; }
+.interest-card--sports .interest-card__glyph { background: #fff0e9; color: #ed6a35; }
+.interest-card--stem .interest-card__glyph { background: #edf0ff; color: #5865d7; }
+.interest-card--arts .interest-card__glyph { background: #f7ebff; color: #a855d5; }
+.interest-card--games .interest-card__glyph { background: #fff5dd; color: #e89b16; }
+.interest-card--business .interest-card__glyph { background: #e7f8ef; color: #23966a; }
+.interest-card--public .interest-card__glyph { background: #e9f3ff; color: #277fd5; }
 .interest-card__label { padding-right: 12px; }
 .interest-card__check { align-items: center; border: 1px solid #cfd6d0; border-radius: 50%; color: transparent; display: inline-flex; font-size: .75rem; height: 20px; justify-content: center; transition: all .15s ease; width: 20px; }
 .interest-card--selected .interest-card__check { background: #76a926; border-color: #76a926; color: #fff; }
-.onboarding-button { border-radius: 14px; bottom: 34px; font-weight: 700; min-width: 224px; position: absolute; right: clamp(24px, 5vw, 80px); }
+.onboarding-button { border-radius: 14px; font-weight: 700; min-width: 224px; }
 .onboarding-button:hover:not(:disabled) { transform: translateY(-1px); }
+
+@keyframes mascot-float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(2deg); } }
 
 /* Diagnostic */
 .diagnostic-screen { display: flex; justify-content: center; }
@@ -167,9 +179,12 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .onboarding-content h1 { font-size: 2rem; white-space: normal; }
   .interest-grid { gap: 10px; grid-template-columns: 1fr; margin-top: 30px; }
   .interest-card { min-height: 70px; padding: 12px 15px; }
-  .journey-back { left: 18px; top: 16px; }
   .onboarding-screen { display: block; overflow-y: auto; padding-bottom: 28px; }
-  .onboarding-button { display: flex; margin: 24px 0 8px auto; position: static; transform: none; }
+  .interest-heading { display: block; }
+  .codelah-mascot { height: 58px; right: 0; top: -52px; width: 58px; }
+  .onboarding-actions { margin: 24px 0 8px; position: static; }
+  .journey-back { min-width: 116px; padding: 0 20px; }
+  .onboarding-button { display: flex; transform: none; }
   .onboarding-button:hover:not(:disabled) { transform: translateY(-1px); }
   .answer-grid { grid-template-columns: 1fr; margin-top: 25px; }
   .answer-card { min-height: 112px; flex-direction: row; justify-content: flex-start; padding: 18px 25px; }
@@ -186,6 +201,10 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .run-column { display: flex; }
   .module-layout { padding-inline: 0; }
   .module-brief { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codelah-mascot__body { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
