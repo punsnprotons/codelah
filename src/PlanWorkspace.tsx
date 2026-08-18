@@ -98,10 +98,10 @@ export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
       name: 'codelah',
       base: Blockly.Themes.Classic,
       componentStyles: {
-        workspaceBackgroundColour: '#fbfcf9',
-        toolboxBackgroundColour: '#fbfcf9',
+        workspaceBackgroundColour: '#f7f8f6',
+        toolboxBackgroundColour: '#f7f8f6',
         toolboxForegroundColour: '#253029',
-        flyoutBackgroundColour: '#fbfcf9',
+        flyoutBackgroundColour: '#f7f8f6',
         flyoutForegroundColour: '#253029',
         flyoutOpacity: 1,
         scrollbarColour: '#9caea0',
@@ -114,13 +114,18 @@ export function PlanWorkspace({ onValid }: PlanWorkspaceProps) {
     const nextWorkspace = Blockly.inject(host.current, {
       theme,
       toolbox: {
-        kind: 'flyoutToolbox',
-        contents: REQUIRED_BLOCKS.map((type) => ({ kind: 'block', type })),
+        kind: 'categoryToolbox',
+        contents: [{
+          kind: 'category',
+          name: 'Steps',
+          colour: '#557d1e',
+          contents: REQUIRED_BLOCKS.map((type) => ({ kind: 'block', type })),
+        }],
       },
       grid: { spacing: 20, length: 3, colour: '#d9e3d6', snap: true },
-      trashcan: true,
-      zoom: { controls: false, wheel: false, startScale: 1.02, maxScale: 1.35, minScale: 0.78 },
-      move: { scrollbars: { horizontal: true, vertical: true }, drag: true, wheel: false },
+      trashcan: false,
+      zoom: { controls: false, wheel: false, startScale: 0.9, maxScale: 1.25, minScale: 0.72 },
+      move: { scrollbars: false, drag: true, wheel: false },
     });
     workspace.current = nextWorkspace;
     const resize = () => Blockly.svgResize(nextWorkspace);
