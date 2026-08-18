@@ -23,3 +23,13 @@ This is the remaining M1 manual acceptance check. Run it on the approved pilot b
 - No blocker prevents a learner from completing the canonical keyboard path.
 - No critical or high-severity screen-reader ambiguity remains.
 - Any non-blocking issue has an owner and a scheduled remediation decision.
+
+## Evidence log
+
+### 2026-08-18 — semantic preflight (not a screen-reader substitute)
+
+- The local release preview exposes one `main` landmark, a clear screen heading, native interest buttons, selected-state semantics (`aria-pressed`), and native answer-radio semantics (`role="radio"` with `aria-checked`). The code editor has the label `Python code for the current module`; decorative line numbers are outside the editable control.
+- Existing Chromium regression also covers activation of the keyboard-plan alternative with Enter, plus recovery from invalid plan, malformed code, and timeout states.
+- The required macOS VoiceOver run could not be executed in this workspace because macOS Computer Use permission is not granted. No VoiceOver speech, rotor, or focus-order result is claimed here.
+
+**Remaining acceptance action:** a tester with VoiceOver/NVDA access must complete the two manual journeys above on an approved pilot browser/device and fill in the required environment and result details before M1 can exit.
