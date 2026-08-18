@@ -49,7 +49,9 @@ CloudFront flat-rate plans cannot be attached to a distribution with an existing
 | Blast radius | one new private S3 bucket and one public CloudFront distribution |
 | Rollback | disable distribution, cancel any pricing plan, restore prior S3 object version, then delete only after the distribution is fully disabled |
 | Detection window | not measured; requires post-deploy synthetic HTTPS and browser-smoke evidence |
-| Blocking conditions | Free-plan eligibility unknown; no cost alert; no reviewed CloudFormation change set; no rollback rehearsal |
+| Existing stack check | `codelah-public-preview` does not exist (read-only check, 2026-08-18) |
+| Cost-allocation check | `Project` is not an active cost-allocation tag (read-only check, 2026-08-18); project-scoped cost alerts/budgets cannot be set yet |
+| Blocking conditions | Free-plan eligibility remains console-only; no project-scoped cost alert; no reviewed CloudFormation change set; no rollback rehearsal; detection window unmeasured |
 
 ## Local validation only
 

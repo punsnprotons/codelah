@@ -29,6 +29,8 @@ Do not provision while the last four facts are unresolved.
 | Action class | read-only discovery; no rollback required |
 | Independent corroboration | AWS STS response received locally; no CloudTrail event ID or approved evidence ledger is available yet |
 | Provisioning decision | refused pending the unresolved preflight facts and owner-approved IaC review |
+| Exact stack-name check | `codelah-public-preview` does not exist (read-only check, 2026-08-18) |
+| Cost-allocation check | `Project` is not an active cost-allocation tag (read-only check, 2026-08-18); do not substitute an account-wide project budget without separate owner approval |
 
 **Preflight decision:** the owner approved a public, no-account preview. The application will use a public CloudFront distribution URL while the S3 origin remains private behind Origin Access Control. No custom DNS is required for this phase. The temporary public URL is the CloudFront distribution domain; when a custom domain is acquired, attach it as an alternate domain name with an ACM certificate in `us-east-1`.
 
@@ -58,7 +60,7 @@ The public preview is intended for adults aged 18+. Because there is no identity
 | Learner smoke journey | local in-app browser | passed: interest → diagnostic → keyboard planner → five modules → assembly → transfer → reset |
 | Deployment / AWS resources | not run | none created |
 
-This evidence does **not** approve deployment. It does approve the M2 **read-only preflight** described below. AWS writes remain blocked until the preflight facts and IaC review are owner-approved.
+This evidence does **not** approve deployment. It does approve the M2 **read-only preflight** described below. AWS writes remain blocked until the preflight facts and IaC review are owner-approved, a project-scoped cost guardrail is possible, and rollback/detection are rehearsed.
 
 ## Accessibility deferral boundary
 
