@@ -48,7 +48,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 
 /* Onboarding */
 .onboarding-screen { display: grid; place-items: center; }
-.onboarding-content { margin-top: 26px; max-width: 760px; text-align: center; width: 100%; }
+.onboarding-content { margin-top: 0; max-width: 760px; text-align: center; transform: translateY(-70px); width: 100%; }
 .onboarding-content h1 { font-family: inherit; font-size: clamp(2.25rem, 3.8vw, 3.7rem); font-weight: 600; letter-spacing: -.045em; line-height: 1.08; margin-bottom: 0; white-space: nowrap; }
 .interest-heading { align-items: center; display: flex; flex-direction: column; }
 .codelah-mascot { height: 82px; margin-bottom: 12px; width: 82px; }
@@ -63,7 +63,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .interest-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 48px auto 0; max-width: 720px; }
 .interest-card { align-items: center; background: #fff; border: 1px solid #dce2dc; border-radius: 16px; color: var(--ink); display: grid; font-size: 1rem; font-weight: 700; grid-template-columns: 48px 1fr 22px; min-height: 82px; padding: 15px 18px; text-align: left; transition: background .15s ease, border-color .15s ease, box-shadow .15s ease; }
 .interest-card:hover { border-color: #aeb9b0; box-shadow: 0 4px 14px #1012110a; }
-.interest-card--selected { background: #f6fbe9; border-color: #93c43a; box-shadow: 0 0 0 2px #c7fa5435; }
+.interest-card--selected { background: #f8fced; border-color: #8fbd35; box-shadow: none; }
 .interest-card__glyph { align-items: center; border-radius: 10px; display: inline-flex; height: 36px; justify-content: center; width: 36px; }
 .interest-card__glyph svg { height: 25px; width: 25px; }
 .interest-card--sports .interest-card__glyph { background: #fff0e9; color: #ed6a35; }
@@ -73,12 +73,14 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .interest-card--business .interest-card__glyph { background: #e7f8ef; color: #23966a; }
 .interest-card--public .interest-card__glyph { background: #e9f3ff; color: #277fd5; }
 .interest-card__label { padding-right: 12px; }
-.interest-card__check { align-items: center; border: 1px solid #cfd6d0; border-radius: 50%; color: transparent; display: inline-flex; font-size: .75rem; height: 20px; justify-content: center; transition: all .15s ease; width: 20px; }
-.interest-card--selected .interest-card__check { background: #76a926; border-color: #76a926; color: #fff; }
+.interest-card__check { align-items: center; border: 1.5px solid #cbd4cc; border-radius: 8px; color: transparent; display: inline-flex; height: 24px; justify-content: center; transition: background .15s ease, border-color .15s ease, transform .15s ease; width: 24px; }
+.interest-card__check svg { fill: none; height: 16px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; width: 16px; }
+.interest-card--selected .interest-card__check { animation: selection-badge .22s ease-out; background: #76a926; border-color: #76a926; color: #fff; transform: rotate(-4deg); }
 .onboarding-button { border-radius: 14px; font-weight: 700; min-width: 224px; }
 .onboarding-button:hover:not(:disabled) { transform: translateY(-1px); }
 
 @keyframes mascot-float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(2deg); } }
+@keyframes selection-badge { 0% { transform: scale(.65) rotate(0); } 75% { transform: scale(1.12) rotate(-4deg); } 100% { transform: scale(1) rotate(-4deg); } }
 
 /* Diagnostic */
 .diagnostic-screen { display: flex; justify-content: center; }
@@ -175,7 +177,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .light-screen, .dark-screen { padding-inline: 18px; }
   .progress { top: 21px; width: 72vw; }
   .back-button { left: 18px; top: 56px; }
-  .onboarding-content { margin-top: 64px; }
+  .onboarding-content { margin-top: 64px; transform: none; }
   .onboarding-content h1 { font-size: 2rem; white-space: normal; }
   .interest-grid { gap: 10px; grid-template-columns: 1fr; margin-top: 30px; }
   .interest-card { min-height: 70px; padding: 12px 15px; }
