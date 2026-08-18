@@ -4,14 +4,16 @@ CodeLah is a browser-first learning product that helps beginners progress from u
 
 ## Current status
 
-Documentation baseline only. No application code, AWS resources, authentication, or production data exist yet.
+The first local, anonymous learning slice is implemented. It contains the interest picker, a formative concept check, a Blockly pseudocode plan, and a safe in-browser Python runner for the first calculator module. No AWS resources, authentication, or production data exist.
 
 The first vertical slice is a personalised Python calculator lesson:
 
 ```text
 interest selection -> concept check -> pseudocode blocks
--> code one block at a time -> deterministic tests -> assembled program
+-> code one block at a time -> deterministic tests
 ```
+
+Run it locally with `bun install` followed by `bun run dev`.
 
 ## Product principles
 
