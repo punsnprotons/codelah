@@ -22,6 +22,14 @@ const lessonContexts: Record<string, { label: string; project: string; fact: str
   fashion: { label: 'Fashion context', project: 'size calculator', fact: 'Fashion tools check measurements before suggesting a size.' },
 };
 
+type InspirationCard = { alt: string; image: string; title: string; copy: string };
+
+const sportsInspiration: InspirationCard[] = [
+  { image: '/images/inspiration/sports-computer-vision.png', alt: 'A footballer training beside a computer-vision monitor that maps their movement.', title: 'See movement, frame by frame', copy: 'Computer vision turns training video into movement data athletes can learn from.' },
+  { image: '/images/inspiration/sports-data-software.png', alt: 'A coach and athlete reviewing a code editor and performance dashboard on a laptop.', title: 'Turn training into insight', copy: 'Sports software turns sessions into patterns that teams can understand and act on.' },
+  { image: '/images/inspiration/sports-wearable-code.png', alt: 'An athlete fitting a wearable sensor beside a tablet with a code-and-data interface.', title: 'Wearable code, real feedback', copy: 'Sensors collect signals; code turns them into feedback that helps people train safely.' },
+];
+
 type ModuleSpec = { title: string; planStep: string; hint: string; why: string; starter: string; inputs: string[]; assertion: string; failureMessage: string };
 const modules: ModuleSpec[] = [
   { title: 'Turn text into a number', planStep: 'Convert the first score to a number', hint: 'Your program receives text. Convert it before calculating.', why: 'This makes the first value safe to use in math.', starter: 'first_score = float(input("Enter the first score: "))', inputs: ['4'], assertion: 'first_score == 4', failureMessage: 'Store the converted input in first_score. The test input is 4.' },
@@ -103,11 +111,14 @@ function PersonalizingScreen({ context, onBack, onContinue }: { context: { label
   const topic = context.label.replace(' context', '');
   const role = ({ Sports: 'athlete', Music: 'music creator', Science: 'scientist', Arts: 'artist', Games: 'game creator', Technology: 'builder', Film: 'filmmaker', Fashion: 'designer' } as Record<string, string>)[topic] ?? 'creator';
   const [ready, setReady] = useState(false);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const inspiration = sportsInspiration;
+  const currentInspiration = inspiration[slideIndex];
   useEffect(() => {
     const timer = window.setTimeout(() => setReady(true), 2200);
     return () => window.clearTimeout(timer);
   }, []);
-  return <main className="light-screen personalizing-screen"><Progress screen="personalizing" /><section className="personalizing-panel" aria-live="polite"><CodeLahMascot /><p className="personalizing-kicker">Your {topic} edge starts here</p><h1>Let’s help you become the best {role} you can be—with code.</h1><p className="personalizing-copy">The things you care about can become ideas you build, solve, and share.</p><div aria-hidden="true" className="motivation-build"><span className="motivation-build__code">Code</span><span className="motivation-build__topic"><InterestIcon interest={topic.toLowerCase()} />{topic}</span><strong className="motivation-build__edge">Your next level</strong></div><div className="personalization-loader" aria-hidden="true"><span /></div><p className="personalizing-status" role="status">{ready ? `Your ${topic.toLowerCase()} journey is ready.` : `Unlocking your ${topic.toLowerCase()} edge…`}</p></section><div className="onboarding-actions personalizing-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" disabled={!ready} onClick={onContinue} type="button">Continue</button></div></main>;
+  return <main className="light-screen personalizing-screen"><Progress screen="personalizing" /><section className="personalizing-panel" aria-live="polite"><CodeLahMascot /><h1>Let’s help you become the best {role} you can be—with code.</h1><p className="personalizing-copy">Here’s how code is already changing {topic.toLowerCase()}.</p><section aria-label={`${topic} inspiration`} className="inspiration-carousel"><article className="inspiration-carousel__card"><img alt={currentInspiration.alt} className="inspiration-carousel__image" src={currentInspiration.image} /><div className="inspiration-carousel__copy"><p>Built with code</p><h2>{currentInspiration.title}</h2><span>{currentInspiration.copy}</span></div></article><div className="inspiration-carousel__controls"><button aria-label="Show previous inspiration" className="carousel-control" disabled={slideIndex === 0} onClick={() => setSlideIndex((current) => current - 1)} type="button">Previous</button><div aria-label={`${slideIndex + 1} of ${inspiration.length}`} className="carousel-dots" role="status">{inspiration.map((item, index) => <span className={index === slideIndex ? 'carousel-dots__dot carousel-dots__dot--active' : 'carousel-dots__dot'} key={item.title} />)}</div><button aria-label="Show next inspiration" className="carousel-control" disabled={slideIndex === inspiration.length - 1} onClick={() => setSlideIndex((current) => current + 1)} type="button">Next</button></div></section><div className="personalization-loader" aria-hidden="true"><span /></div><p className="personalizing-status" role="status">{ready ? `Your ${topic.toLowerCase()} journey is ready.` : `Unlocking your ${topic.toLowerCase()} edge…`}</p></section><div className="onboarding-actions personalizing-actions"><button aria-label="Go back" className="journey-back" onClick={onBack} type="button">Back</button><button className="primary-button onboarding-button" disabled={!ready} onClick={onContinue} type="button">Continue</button></div></main>;
 }
 
 function DiagnosticScreen({ onContinue }: { onContinue: () => void }) {

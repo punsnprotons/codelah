@@ -57,12 +57,14 @@ test('exposes selected interests and diagnostic choices as named native controls
   await expect(page.getByRole('button', { name: /Continue/ })).toBeEnabled();
 
   await page.getByRole('button', { name: /Continue/ }).click();
-  await expect(page.getByText('Your Science edge starts here')).toBeVisible();
+  await expect(page.getByRole('heading', { name: /best scientist you can be/i })).toBeVisible();
   await page.getByRole('button', { name: 'Go back' }).click();
   await expect(page.getByRole('heading', { name: 'What are you curious about?' })).toBeVisible();
   await page.getByRole('button', { name: 'Science' }).click();
   await page.getByRole('button', { name: /Continue/ }).click();
-  await expect(page.getByText('Your Science edge starts here')).toBeVisible();
+  await expect(page.getByRole('heading', { name: /best scientist you can be/i })).toBeVisible();
+  await page.getByRole('button', { name: 'Show next inspiration' }).click();
+  await expect(page.getByRole('heading', { name: 'Turn training into insight' })).toBeVisible();
   await expect(page.getByText('Unlocking your science edge…')).toBeVisible();
   await continueFromPersonalization(page);
   const textAnswer = page.getByRole('radio', { name: 'Text' });

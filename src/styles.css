@@ -89,24 +89,27 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .personalizing-screen .progress { background: #dfe1df; border-radius: 999px; gap: 0; height: 8px; overflow: hidden; padding: 0; }
 .personalizing-screen .progress__segment { background: transparent; border-radius: 0; height: 100%; }
 .personalizing-screen .progress__segment--active { background: linear-gradient(90deg, #13c861, var(--lime)); }
-.personalizing-panel { max-width: 590px; text-align: center; transform: translateY(-18px); }
-.personalizing-panel .codelah-mascot { height: 116px; margin-bottom: 8px; width: 116px; }
-.personalizing-kicker { color: #5e7f1b; font-size: .78rem; font-weight: 800; letter-spacing: .1em; margin-bottom: 14px; text-transform: uppercase; }
-.personalizing-panel h1 { font-size: clamp(2.2rem, 4vw, 3.55rem); font-weight: 650; letter-spacing: -.05em; line-height: 1.06; margin-bottom: 16px; }
+.personalizing-panel { max-width: 660px; text-align: center; transform: translateY(-10px); }
+.personalizing-panel .codelah-mascot { height: 88px; margin-bottom: 6px; width: 88px; }
+.personalizing-panel h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 650; letter-spacing: -.05em; line-height: 1.06; margin-bottom: 12px; }
 .personalizing-copy { color: #5e6860; font-size: 1.06rem; line-height: 1.55; margin: 0 auto; max-width: 500px; }
-.motivation-build { height: 142px; margin: 28px auto 0; max-width: 400px; position: relative; }
-.motivation-build__code, .motivation-build__topic { align-items: center; animation-duration: .58s; animation-fill-mode: both; border-radius: 13px; display: inline-flex; font-size: .84rem; font-weight: 800; gap: 8px; padding: 12px 14px; position: absolute; }
-.motivation-build__code { animation-delay: .14s; animation-name: code-arrives; background: #eef0ff; color: #5665d2; left: 30px; top: 26px; }
-.motivation-build__topic { animation-delay: .53s; animation-name: topic-arrives; background: #fff1e2; color: #df6b36; right: 26px; top: 26px; }
-.motivation-build__topic svg { height: 21px; width: 21px; }
-.motivation-build__edge { align-items: center; animation: edge-arrives .46s 1.06s both; background: #effbd5; border: 1px solid #b8dc55; border-radius: 18px; bottom: 0; box-shadow: 0 12px 25px #25371810; color: #446717; display: inline-flex; font-size: .93rem; justify-content: center; left: 50%; min-height: 60px; padding: 10px 24px; position: absolute; transform: translateX(-50%); white-space: nowrap; }
-.personalization-loader { background: #e2e7e1; border-radius: 999px; height: 8px; margin: 14px auto 0; max-width: 450px; overflow: hidden; }
+.inspiration-carousel { margin: 20px auto 0; max-width: 600px; }
+.inspiration-carousel__card { background: #fff; border: 1px solid #dce2dc; border-radius: 18px; box-shadow: 0 10px 28px #1012110b; overflow: hidden; text-align: left; }
+.inspiration-carousel__image { display: block; height: 180px; object-fit: cover; width: 100%; }
+.inspiration-carousel__copy { padding: 15px 18px 17px; }
+.inspiration-carousel__copy > p { color: #5e7f1b; font-size: .7rem; font-weight: 800; letter-spacing: .1em; margin-bottom: 6px; text-transform: uppercase; }
+.inspiration-carousel__copy h2 { font-size: 1.24rem; letter-spacing: -.035em; line-height: 1.15; margin: 0 0 6px; }
+.inspiration-carousel__copy span { color: #5e6860; display: block; font-size: .9rem; line-height: 1.45; }
+.inspiration-carousel__controls { align-items: center; display: grid; grid-template-columns: 90px 1fr 90px; margin: 10px auto 0; }
+.carousel-control { background: transparent; border: 0; color: #4e5b52; font-size: .82rem; font-weight: 800; padding: 8px 4px; }
+.carousel-control:hover:not(:disabled) { color: #202820; }
+.carousel-dots { display: flex; gap: 6px; justify-content: center; }
+.carousel-dots__dot { background: #d7ded8; border-radius: 999px; height: 7px; transition: background .18s ease, width .18s ease; width: 7px; }
+.carousel-dots__dot--active { background: #77ab26; width: 22px; }
+.personalization-loader { background: #e2e7e1; border-radius: 999px; height: 7px; margin: 12px auto 0; max-width: 450px; overflow: hidden; }
 .personalization-loader span { animation: personalizing-load 2.6s ease-out forwards; background: linear-gradient(90deg, #18c968, #c7fa54); border-radius: inherit; display: block; height: 100%; transform-origin: left; }
-.personalizing-status { color: #647066; font-size: .9rem; margin: 14px 0 0; }
+.personalizing-status { color: #647066; font-size: .9rem; margin: 10px 0 0; }
 
-@keyframes code-arrives { from { opacity: 0; transform: translate(54px, 32px) rotate(7deg) scale(.78); } to { opacity: 1; transform: translate(0) rotate(0) scale(1); } }
-@keyframes topic-arrives { from { opacity: 0; transform: translate(-54px, 32px) rotate(-7deg) scale(.78); } to { opacity: 1; transform: translate(0) rotate(0) scale(1); } }
-@keyframes edge-arrives { from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(.84); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
 @keyframes personalizing-load { from { transform: scaleX(.08); } to { transform: scaleX(1); } }
 
 /* Diagnostic */
@@ -219,7 +222,8 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .personalizing-panel h1 { font-size: 2.1rem; }
   .personalizing-screen { display: block; overflow-y: auto; padding-bottom: 28px; }
   .personalizing-actions { margin: 24px 0 8px; position: static; }
-  .motivation-build { margin-top: 20px; transform: scale(.9); }
+  .inspiration-carousel__image { height: 145px; }
+  .inspiration-carousel__copy { padding: 13px 15px 15px; }
   .answer-grid { grid-template-columns: 1fr; margin-top: 25px; }
   .answer-card { min-height: 112px; flex-direction: row; justify-content: flex-start; padding: 18px 25px; }
   .answer-card__visual { font-size: 1rem; height: 45px; width: 55px; }
@@ -239,7 +243,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 
 @media (prefers-reduced-motion: reduce) {
   .codelah-mascot__body { animation: none; }
-  .motivation-build__code, .motivation-build__topic, .motivation-build__edge, .personalization-loader span { animation: none; }
+  .personalization-loader span { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
