@@ -2,7 +2,7 @@
 
 ## Scope
 
-This is the remaining M1 manual acceptance check. Run it on the approved pilot browser/device before declaring M1 complete.
+This manual check is **deferred from M1**. Run it on the intended browser/device before any external or minor-learner access; it is not required for the internal M2 AWS preflight.
 
 ## Keyboard-only journey
 
@@ -43,4 +43,4 @@ For a failure, include the screen, exact control or announcement, expected behav
 - Chromium regression also completes the canonical lesson with Tab and Enter only—from interest selection through reset—and checks named/selected controls, keyboard-plan activation with Enter, live status feedback for malformed code, and recovery from timeout states.
 - The required macOS VoiceOver run could not be executed in this workspace because macOS Computer Use permission is not granted. No VoiceOver speech, rotor, or focus-order result is claimed here.
 
-**Remaining acceptance action:** a tester with VoiceOver/NVDA access must complete the two manual journeys above on an approved pilot browser/device and fill in the required environment and result details before M1 can exit.
+**Deferred acceptance action:** a tester with VoiceOver/NVDA access must complete the two manual journeys above on the intended browser/device and fill in the required environment and result details before an external or minor-learner release.

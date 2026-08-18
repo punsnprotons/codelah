@@ -24,11 +24,17 @@ Do not provision while the last four facts are unresolved.
 | --- | --- | --- |
 | Calculator branch coverage | `bun run test:lesson` | passed: +, -, *, /, zero division, invalid operation |
 | Production build | `bun run build` | passed |
-| Browser regression | `bun run test:e2e` | passed: six Chromium cases, including malformed code and runaway-loop recovery |
+| Browser regression | `bun run test:e2e` | passed: eight Chromium cases, including a full Tab-and-Enter journey, labelled editor/live feedback, malformed code, and runaway-loop recovery |
 | Learner smoke journey | local in-app browser | passed: interest → diagnostic → keyboard planner → five modules → assembly → transfer → reset |
 | Deployment / AWS resources | not run | none created |
 
-This evidence does **not** approve deployment. The outstanding M1 checks in `ROADMAP.md` are required before revisiting AWS preflight.
+This evidence does **not** approve deployment. It does approve the M2 **read-only preflight** described below. AWS writes remain blocked until the preflight facts and IaC review are owner-approved.
+
+## Accessibility deferral boundary
+
+**Decision:** defer the manual VoiceOver/NVDA acceptance run from the current internal MVP phase. The automated keyboard journey and semantic regression remain required and have passed locally.
+
+**Boundary:** the first AWS environment is for internal product/tutor validation only. Do not invite external learners, expose a public endpoint, process learner personal data, or include minors until a manual screen-reader check is recorded on the intended browser/device and the applicable privacy/institutional approvals exist.
 
 ## Offline-support decision
 
