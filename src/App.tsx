@@ -5,9 +5,9 @@ import { usePythonRunner } from './usePythonRunner';
 type Screen = 'interests' | 'diagnostic' | 'plan' | 'module' | 'assembly' | 'transfer';
 
 const interests = [
-  { id: 'sports', label: 'Sports', glyph: '◌' }, { id: 'stem', label: 'STEM & Engineering', glyph: '◇' },
-  { id: 'arts', label: 'Arts & Media', glyph: '⌁' }, { id: 'games', label: 'Games & Storytelling', glyph: '◐' },
-  { id: 'business', label: 'Business', glyph: '↗' }, { id: 'public', label: 'Society & Public Service', glyph: '⊹' },
+  { id: 'sports', label: 'Sports' }, { id: 'stem', label: 'STEM & Engineering' },
+  { id: 'arts', label: 'Arts & Media' }, { id: 'games', label: 'Games & Storytelling' },
+  { id: 'business', label: 'Business' }, { id: 'public', label: 'Society & Public Service' },
 ];
 
 const lessonContexts: Record<string, { label: string; project: string; fact: string }> = {
@@ -50,10 +50,20 @@ function Progress({ screen }: { screen: Screen }) {
   return <div className="progress" aria-label={`Step ${active + 1} of 6`}>{Array.from({ length: 6 }).map((_, index) => <span className={index <= active ? 'progress__segment progress__segment--active' : 'progress__segment'} key={index} />)}</div>;
 }
 
+function InterestIcon({ interest }: { interest: string }) {
+  const common = { fill: 'none', stroke: 'currentColor', strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, strokeWidth: 1.8 };
+  if (interest === 'sports') return <svg aria-hidden="true" viewBox="0 0 24 24"><circle {...common} cx="12" cy="12" r="8" /><path {...common} d="m7.2 9.3 4.8-2.1 4.8 2.1v5.4L12 17l-4.8-2.3Z" /><path {...common} d="M12 7.2v4.3m4.8-2.2-3.7 2.2m-5.9-2.2 3.7 2.2m-3.7 5.4 3.7-2.2m5.9 2.2-3.7-2.2" /></svg>;
+  if (interest === 'stem') return <svg aria-hidden="true" viewBox="0 0 24 24"><rect {...common} x="6" y="6" width="12" height="12" rx="2" /><path {...common} d="M9 2v4m3-4v4m3-4v4M9 18v4m3-4v4m3-4v4M2 9h4m-4 3h4m-4 3h4m12-6h4m-4 3h4m-4 3h4" /></svg>;
+  if (interest === 'arts') return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M15.5 4.5v10.2a3.1 3.1 0 1 1-1.8-2.8V7l6-1.5v8.2a3.1 3.1 0 1 1-1.8-2.8V4Z" /></svg>;
+  if (interest === 'games') return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M7.3 9h9.4a3 3 0 0 1 2.9 2.2l1 3.8a2.5 2.5 0 0 1-4 2.5l-2.1-1.6h-5l-2.1 1.6a2.5 2.5 0 0 1-4-2.5l1-3.8A3 3 0 0 1 7.3 9Z" /><path {...common} d="M8 12v3m-1.5-1.5h3M16 12.5h.01M18 14h.01" /></svg>;
+  if (interest === 'business') return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M5 17 10 12l3.2 3.2L20 8.4" /><path {...common} d="M14.5 8.4H20V14" /></svg>;
+  return <svg aria-hidden="true" viewBox="0 0 24 24"><path {...common} d="M12 20s7-3.3 7-9V5.5L12 3 5 5.5V11c0 5.7 7 9 7 9Z" /><path {...common} d="m8.8 11.5 2.1 2.1 4.3-4.4" /></svg>;
+}
+
 function InterestScreen({ onContinue }: { onContinue: (selected: string[]) => void }) {
   const [selected, setSelected] = useState<string[]>([]);
   const toggle = (id: string) => setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length === 3 ? current : [...current, id]);
-  return <main className="light-screen onboarding-screen"><Progress screen="interests" /><section className="onboarding-content" aria-labelledby="interest-title"><p className="emblem" aria-hidden="true">⌘</p><h1 id="interest-title">What are you curious about?</h1><p className="screen-copy">For adult learners (18+). Choose up to three; you can change this anytime.</p><div className="interest-grid">{interests.map((interest) => { const isSelected = selected.includes(interest.id); return <button aria-pressed={isSelected} className={`interest-card ${isSelected ? 'interest-card--selected' : ''}`} key={interest.id} onClick={() => toggle(interest.id)} type="button"><span className="interest-card__glyph">{interest.glyph}</span><span>{interest.label}</span></button>; })}</div></section><button className="primary-button onboarding-button" disabled={!selected.length} onClick={() => onContinue(selected)} type="button">Continue <span>→</span></button></main>;
+  return <main className="light-screen onboarding-screen"><button aria-label="Go back" className="journey-back" onClick={() => window.history.back()} type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m14.5 5.5-6.5 6.5 6.5 6.5" /></svg><span>Back</span></button><Progress screen="interests" /><section className="onboarding-content" aria-labelledby="interest-title"><p className="onboarding-kicker">Choose your context</p><h1 id="interest-title">What are you curious about?</h1><p className="screen-copy">For adult learners (18+). Pick up to three topics to shape your first project.</p><div className="interest-grid">{interests.map((interest) => { const isSelected = selected.includes(interest.id); return <button aria-pressed={isSelected} className={`interest-card ${isSelected ? 'interest-card--selected' : ''}`} key={interest.id} onClick={() => toggle(interest.id)} type="button"><span className="interest-card__glyph"><InterestIcon interest={interest.id} /></span><span className="interest-card__label">{interest.label}</span><span aria-hidden="true" className="interest-card__check">✓</span></button>; })}</div></section><button className="primary-button onboarding-button" disabled={!selected.length} onClick={() => onContinue(selected)} type="button">Continue <span aria-hidden="true">→</span></button></main>;
 }
 
 function DiagnosticScreen({ onContinue }: { onContinue: () => void }) {
