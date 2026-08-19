@@ -1,5 +1,13 @@
 import { expect, test } from '@playwright/test';
 
+const moduleSolutions = [
+  'first_score = float(input("Enter the first score: "))',
+  'second_score = float(input("Enter the second score: "))',
+  'operation = input("Choose an operation (+, -, *, /): ")',
+  'if operation == "/" and second_score == 0:\n    message = "Error: You cannot divide by zero!"',
+  'if operation == "+":\n    result = first_score + second_score\nelif operation == "-":\n    result = first_score - second_score\nelif operation == "*":\n    result = first_score * second_score\nelif operation == "/":\n    result = first_score / second_score\nelse:\n    result = None',
+];
+
 async function tabTo(page: import('@playwright/test').Page, target: import('@playwright/test').Locator) {
   for (let attempt = 0; attempt < 40; attempt += 1) {
     if (await target.evaluate((element) => document.activeElement === element)) return;
@@ -64,6 +72,7 @@ async function reachFirstModule(page: import('@playwright/test').Page) {
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect(page.getByRole('heading', { name: /Turn “Get first score” into Python/i })).toBeVisible();
   await expect(page.getByRole('list', { name: 'Pseudocode plan' })).toContainText('Get first score');
+  await expect(page.getByRole('textbox', { name: 'Python code for the current module' })).toHaveValue('');
   await expect(page.getByRole('button', { name: /Check this block/ })).toBeEnabled();
 }
 
@@ -168,7 +177,7 @@ test('keeps the pseudocode palette open after placing a block', async ({ page })
   await expect(source).toBeVisible();
 });
 
-test('completes the canonical lesson using Tab and Enter only', async ({ page }) => {
+test('completes the canonical lesson with keyboard navigation and written code', async ({ page }) => {
   await page.goto('/');
   await activateWithKeyboard(page, page.getByRole('button', { name: 'Sports' }));
   await activateWithKeyboard(page, page.getByRole('button', { name: /Continue/ }));
@@ -192,8 +201,9 @@ test('completes the canonical lesson using Tab and Enter only', async ({ page })
   await activateWithKeyboard(page, page.getByRole('button', { name: 'Continue', exact: true }));
 
   for (let index = 0; index < 5; index += 1) {
+    await page.getByRole('textbox', { name: 'Python code for the current module' }).fill(moduleSolutions[index]);
     await activateWithKeyboard(page, page.getByRole('button', { name: /Check this block/ }));
-    const continueButton = page.getByRole('button', { name: index === 4 ? /Assemble the program/ : /Write the next block/ });
+    const continueButton = page.getByRole('button', { name: index === 4 ? /Assemble the program/ : /Write “/ });
     await expect(continueButton).toBeVisible();
     await activateWithKeyboard(page, continueButton);
   }
@@ -231,11 +241,12 @@ test('completes the deterministic calculator journey and resets safely', async (
   await reachFirstModule(page);
 
   for (let index = 0; index < 5; index += 1) {
+    await page.getByRole('textbox', { name: 'Python code for the current module' }).fill(moduleSolutions[index]);
     const check = page.getByRole('button', { name: /Check this block/ });
     await expect(check).toBeEnabled();
     await check.click();
     if (index < 4) {
-      const next = page.getByRole('button', { name: /Write the next block/ });
+      const next = page.getByRole('button', { name: /Write “/ });
       await expect(next).toBeVisible();
       await next.click();
     } else {

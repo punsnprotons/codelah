@@ -215,12 +215,12 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 
 /* Module: translate one visible planning block into code. */
 .module-screen { background-color: var(--paper); background-image: radial-gradient(#d8e1d6 1.15px, transparent 1.15px); background-size: 18px 18px; color: var(--ink); display: flex; flex-direction: column; min-height: 100vh; padding-bottom: 112px; }
-.module-title { margin: 88px auto 0; max-width: 860px; text-align: center; width: 100%; }
+.module-title { margin: 0; text-align: left; width: 100%; }
 .module-kicker { color: var(--lime-ink); font-size: .82rem; font-weight: 800; letter-spacing: .08em; margin-bottom: 10px; text-transform: uppercase; }
-.module-title h1 { font-family: inherit; font-size: clamp(2.35rem, 4.1vw, 4.15rem); font-weight: 650; letter-spacing: -.06em; margin-bottom: 10px; }
-.module-title > p:last-child { color: #5e6860; font-size: 1rem; margin-bottom: 0; }
-.module-workspace { align-items: start; display: grid; gap: clamp(22px, 3vw, 48px); grid-template-columns: minmax(250px, 300px) minmax(0, 800px); margin: 34px auto 0; max-width: 1180px; width: min(100%, 1180px); }
-.plan-sequence { display: grid; gap: 12px; list-style: none; margin: 44px 0 0; padding: 0; }
+.module-title h1 { font-family: inherit; font-size: clamp(1.85rem, 2.5vw, 2.5rem); font-weight: 650; letter-spacing: -.055em; line-height: 1.05; margin-bottom: 0; }
+.module-workspace { align-items: start; display: grid; gap: clamp(28px, 4vw, 64px); grid-template-columns: minmax(250px, 320px) minmax(0, 880px); margin: 100px auto 0; max-width: 1280px; width: min(100%, 1280px); }
+.module-sidebar { min-width: 0; }
+.plan-sequence { display: grid; gap: 12px; list-style: none; margin: 28px 0 0; padding: 0; }
 .plan-sequence__block { align-items: center; border: 2px solid color-mix(in srgb, var(--step-color), white 32%); border-radius: 10px; color: #fff; display: flex; font-size: .91rem; font-weight: 750; gap: 10px; justify-content: space-between; line-height: 1.2; min-height: 50px; opacity: .55; padding: 10px 14px 10px 20px; position: relative; transition: opacity .18s ease, transform .18s ease; }
 .plan-sequence__block::before, .current-plan-block::before { background: inherit; border-radius: 3px; content: ''; height: 10px; left: 14px; position: absolute; top: -5px; transform: rotate(45deg); width: 10px; }
 .plan-sequence__block > *, .current-plan-block > * { position: relative; z-index: 1; }
@@ -243,6 +243,7 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
 .module-check > span { color: #657168; font-size: .78rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .module-check code { background: #edf4e5; border-radius: 7px; color: #355b17; font-family: 'DM Mono', monospace; font-size: .88rem; font-weight: 700; padding: 5px 8px; }
 .module-check p { color: #5d6860; font-size: .9rem; margin: 0 0 0 auto; }
+.module-check__journey { color: #526057 !important; font-weight: 650; }
 .module-check--success { color: #3d7616 !important; font-weight: 800; }
 .module-check--error { color: #a43e31 !important; }
 .module-actions { bottom: 34px; display: flex; justify-content: flex-end; left: clamp(24px, 5vw, 80px); position: absolute; right: clamp(24px, 5vw, 80px); }
@@ -264,8 +265,9 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .progress { width: 70vw; }
   .interest-grid { margin-top: 34px; }
   .plan-layout { grid-template-columns: 1fr; }
-  .module-workspace { grid-template-columns: 1fr; max-width: 720px; padding: 0 18px; }
-  .plan-sequence { grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 0; }
+  .module-workspace { grid-template-columns: 1fr; margin-top: 94px; max-width: 720px; padding: 0 18px; }
+  .module-title { text-align: center; }
+  .plan-sequence { grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 28px 0 0; }
   .plan-sequence__block { justify-content: center; min-height: 66px; padding: 12px 8px; text-align: center; }
   .plan-sequence__block--active { transform: translateY(-5px); }
   .plan-sequence__block b { display: none; }
@@ -321,9 +323,9 @@ h1 { font-size: clamp(2.1rem, 4vw, 4.2rem); letter-spacing: -.065em; line-height
   .blockly-host { height: 52vh; min-height: 390px; }
   .stage-actions { bottom: auto; margin-top: 18px; position: static; }
   .module-screen { display: block; overflow-y: auto; padding-bottom: 28px; }
-  .module-title { margin-top: 78px; padding: 0 12px; }
+  .module-title { padding: 0 12px; }
   .module-title h1 { font-size: 2.55rem; }
-  .module-workspace { margin-top: 28px; padding: 0; }
+  .module-workspace { margin-top: 78px; padding: 0; }
   .plan-sequence { gap: 8px; grid-template-columns: repeat(2, 1fr); padding: 0 18px; }
   .plan-sequence__block { font-size: .82rem; min-height: 50px; }
   .plan-sequence__block--active { grid-column: span 2; transform: none; }
