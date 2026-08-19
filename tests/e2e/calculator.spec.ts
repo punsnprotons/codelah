@@ -62,6 +62,8 @@ async function reachFirstModule(page: import('@playwright/test').Page) {
   }
   await page.getByRole('button', { name: 'Submit plan' }).click();
   await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await expect(page.getByRole('heading', { name: /Turn “Get first score” into Python/i })).toBeVisible();
+  await expect(page.getByRole('list', { name: 'Pseudocode plan' })).toContainText('Get first score');
   await expect(page.getByRole('button', { name: /Check this block/ })).toBeEnabled();
 }
 
