@@ -73,7 +73,7 @@ async function reachFirstModule(page: import('@playwright/test').Page) {
   await expect(page.getByRole('heading', { name: /Turn “Get first score” into Python/i })).toBeVisible();
   await expect(page.getByRole('list', { name: 'Pseudocode plan' })).toContainText('Get first score');
   await expect(page.getByRole('textbox', { name: 'Python code for the current module' })).toHaveValue('');
-  await expect(page.getByRole('button', { name: /Check this block/ })).toBeEnabled();
+  await expect(page.getByRole('button', { name: /Run this block/ })).toBeEnabled();
 }
 
 test('exposes selected interests and diagnostic choices as named native controls', async ({ page }) => {
@@ -202,7 +202,7 @@ test('completes the canonical lesson with keyboard navigation and written code',
 
   for (let index = 0; index < 5; index += 1) {
     await page.getByRole('textbox', { name: 'Python code for the current module' }).fill(moduleSolutions[index]);
-    await activateWithKeyboard(page, page.getByRole('button', { name: /Check this block/ }));
+    await activateWithKeyboard(page, page.getByRole('button', { name: /Run this block/ }));
     const continueButton = page.getByRole('button', { name: index === 4 ? /Assemble the program/ : /Write “/ });
     await expect(continueButton).toBeVisible();
     await activateWithKeyboard(page, continueButton);
@@ -224,17 +224,25 @@ test('keeps a learner in the module after malformed Python', async ({ page }) =>
   await expect(editor).toHaveAccessibleName('Python code for the current module');
   await expect(page.locator('.line-number')).toHaveAttribute('aria-hidden', 'true');
   await editor.fill('first_score = float(');
-  await page.getByRole('button', { name: /Check this block/ }).click();
+  await page.getByRole('button', { name: /Run this block/ }).click();
   await expect(page.getByRole('status')).toContainText(/Python found an issue/);
   await expect(page.getByRole('button', { name: /Write the next block/ })).toHaveCount(0);
+});
+
+test('accepts a valid implementation without requiring a canonical variable name', async ({ page }) => {
+  await reachFirstModule(page);
+  await page.getByRole('textbox', { name: 'Python code for the current module' }).fill('input = float(input("Enter the first number: "))');
+  await page.getByRole('button', { name: 'Run this block' }).click();
+  await expect(page.getByText('Python ran successfully')).toBeVisible();
+  await expect(page.getByRole('button', { name: /Write “Get second score”/ })).toBeVisible();
 });
 
 test('terminates a runaway block and restores a usable runner', async ({ page }) => {
   await reachFirstModule(page);
   await page.getByRole('textbox', { name: /Python code for the current module/ }).fill('while True:\n    pass');
-  await page.getByRole('button', { name: /Check this block/ }).click();
+  await page.getByRole('button', { name: /Run this block/ }).click();
   await expect(page.getByText('That took too long. The runner was reset safely.')).toBeVisible({ timeout: 8_000 });
-  await expect(page.getByRole('button', { name: /Check this block/ })).toBeEnabled({ timeout: 12_000 });
+  await expect(page.getByRole('button', { name: /Run this block/ })).toBeEnabled({ timeout: 12_000 });
 });
 
 test('completes the deterministic calculator journey and resets safely', async ({ page }) => {
@@ -242,7 +250,7 @@ test('completes the deterministic calculator journey and resets safely', async (
 
   for (let index = 0; index < 5; index += 1) {
     await page.getByRole('textbox', { name: 'Python code for the current module' }).fill(moduleSolutions[index]);
-    const check = page.getByRole('button', { name: /Check this block/ });
+    const check = page.getByRole('button', { name: /Run this block/ });
     await expect(check).toBeEnabled();
     await check.click();
     if (index < 4) {

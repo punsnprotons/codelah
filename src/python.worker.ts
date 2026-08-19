@@ -2,8 +2,6 @@ type RunRequest = {
   type: 'run';
   source: string;
   inputs: string[];
-  assertion?: string;
-  failureMessage?: string;
 };
 
 type RunResponse =
@@ -33,23 +31,32 @@ self.addEventListener('message', async ({ data }: MessageEvent<RunRequest>) => {
   try {
     const pyodide = await pyodideReady;
     pyodide.globals.set('codelah_inputs', data.inputs);
-    await pyodide.runPythonAsync(`
+    pyodide.globals.set('codelah_source', data.source);
+    const output = JSON.parse(String(await pyodide.runPythonAsync(`
 import builtins
 import json
+
 _codelah_values = iter(codelah_inputs)
 _codelah_output = []
-builtins.input = lambda prompt='': next(_codelah_values)
-builtins.print = lambda *args, **kwargs: _codelah_output.append(' '.join(str(arg) for arg in args))
-`);
-    await pyodide.runPythonAsync(data.source);
-    if (data.assertion) {
-      const assertionPassed = await pyodide.runPythonAsync(data.assertion);
-      if (assertionPassed !== true) {
-        self.postMessage({ type: 'failed', message: data.failureMessage ?? 'That block is not producing the expected value yet.' } satisfies RunResponse);
-        return;
-      }
-    }
-    const output = JSON.parse(String(await pyodide.runPythonAsync('json.dumps(_codelah_output)'))) as string[];
+_codelah_builtins = dict(vars(builtins))
+_codelah_builtins['input'] = lambda prompt='': next(_codelah_values)
+_codelah_builtins['print'] = lambda *args, **kwargs: _codelah_output.append(' '.join(str(arg) for arg in args))
+def _codelah_number(value):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return value
+
+_codelah_scope = {
+    '__builtins__': _codelah_builtins,
+    # These are test-fixture values, not required learner variable names.
+    'first_score': _codelah_number(codelah_inputs[0]) if len(codelah_inputs) > 0 else None,
+    'second_score': _codelah_number(codelah_inputs[1]) if len(codelah_inputs) > 1 else None,
+    'operation': codelah_inputs[2] if len(codelah_inputs) > 2 else None,
+}
+exec(compile(codelah_source, '<learner code>', 'exec'), _codelah_scope, _codelah_scope)
+json.dumps(_codelah_output)
+`))) as string[];
     self.postMessage({ type: 'passed', output } satisfies RunResponse);
   } catch (error) {
     const detail = error instanceof Error ? error.message.split('\n')[0] : 'Python could not run that step yet.';

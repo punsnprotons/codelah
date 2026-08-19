@@ -46,10 +46,10 @@ export function usePythonRunner() {
     };
   }, [createWorker]);
 
-  const run = useCallback((source: string, inputs: string[], assertion?: string, failureMessage?: string) => {
+  const run = useCallback((source: string, inputs: string[]) => {
     if (!workerRef.current) return;
     setState({ status: 'running' });
-    workerRef.current.postMessage({ type: 'run', source, inputs, assertion, failureMessage });
+    workerRef.current.postMessage({ type: 'run', source, inputs });
     timeoutRef.current = window.setTimeout(() => {
       workerRef.current?.terminate();
       setState({ status: 'timed_out' });
